@@ -32,13 +32,21 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-	[logbox setTextColor:[UIColor whiteColor]];
     [super viewDidLoad];
+
+	// set up log box
+	[logbox setTextColor:[UIColor whiteColor]];
+	
+	// set up tool bar
 	UIToolbar *cBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, 768.0, 44.0)];
 	cBar.barStyle = UIBarStyleBlackOpaque;
 	[super.view addSubview:cBar];
-	UIImage *offImage = [[UIImage imageNamed:@"grayBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
-	UIImage *onImage = [[UIImage imageNamed:@"blueBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
+	
+	// button images
+	offImage = [[UIImage imageNamed:@"grayBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
+	onImage = [[UIImage imageNamed:@"blueBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
+
+	// titles
 	NSArray* titles = [NSArray arrayWithObjects:
 					    @"Nurse",
 					    @"Doctor",
@@ -47,28 +55,50 @@
 					    @"Family",
 					    @"Patient",
 					    nil];
+
+	// empty buttons array
 	NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:10 ];
 	
+	// creating buttons
 	for (NSString* title in titles) {
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		[button setTitle:title forState:UIControlStateNormal];
 		[button sizeToFit];
 		[button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+		[button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
 		[button setBackgroundImage:offImage forState:UIControlStateNormal];
-		[button setBackgroundImage:onImage forState:UIControlStateHighlighted ];
+		[button setBackgroundImage:onImage forState:UIControlStateHighlighted];
 		[button addTarget:self action:@selector(pushed:) forControlEvents:UIControlEventTouchUpInside ];
 		[buttons addObject:[[UIBarButtonItem alloc] initWithCustomView:button]];
 //		[buttons addObject:[[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(pushed:) ]];
-		NSLog(@"%@", title);
+//		NSLog(@"%@", title);
 		
 	}
+	
+	// fill buttons array
 	[cBar setItems:buttons animated:NO ];
 
 }
 
 -(IBAction) pushed:(id)sender{
-	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
-	[self.logbox setText:[NSString stringWithFormat: @"%@ at %@", [sender currentTitle], [[NSDate date] description]]];
+//	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
+//	NSLog(@"%@", [sender backgroundImageForState: UIControlStateNormal]);
+	[self.logbox setText:[NSString stringWithFormat: @"%@ at %@", [((UIButton*)sender) currentTitle], [[NSDate date] description]]];
+	
+	if ([((UIButton*)sender) backgroundImageForState: UIControlStateNormal] == offImage) {
+		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateNormal];
+		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateHighlighted ];
+		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+
+	}else {
+		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateNormal];
+		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateHighlighted ];
+		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+
+	}
+
 	
 //	UIImage *onImage = [[UIImage imageNamed:@"blueSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
 //	UIImage *offImage = [[UIImage imageNamed:@"graySegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];

@@ -11,6 +11,8 @@
 @interface timeFlowViewController : UIViewController {
 
 	UILabel *logbox;
+	UIImage *offImage;
+	UIImage *onImage;
 }
 
 -(IBAction) pushed:(id)sender;
