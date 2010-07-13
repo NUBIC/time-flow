@@ -10,6 +10,7 @@
 
 @implementation timeFlowViewController
 
+@synthesize logbox;
 
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -28,13 +29,60 @@
 */
 
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	[logbox setTextColor:[UIColor whiteColor]];
     [super viewDidLoad];
-}
-*/
+	UIToolbar *cBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, 768.0, 44.0)];
+	cBar.barStyle = UIBarStyleBlackOpaque;
+	[super.view addSubview:cBar];
+	UIImage *offImage = [[UIImage imageNamed:@"grayBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
+	UIImage *onImage = [[UIImage imageNamed:@"blueBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
+	NSArray* titles = [NSArray arrayWithObjects:
+					    @"Nurse",
+					    @"Doctor",
+					    @"Ancillary Staff",
+					    @"NonClinical Staff",
+					    @"Family",
+					    @"Patient",
+					    nil];
+	NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:10 ];
+	
+	for (NSString* title in titles) {
+		UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		[button setTitle:title forState:UIControlStateNormal];
+		[button sizeToFit];
+		[button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+		[button setBackgroundImage:offImage forState:UIControlStateNormal];
+		[button setBackgroundImage:onImage forState:UIControlStateHighlighted ];
+		[button addTarget:self action:@selector(pushed:) forControlEvents:UIControlEventTouchUpInside ];
+		[buttons addObject:[[UIBarButtonItem alloc] initWithCustomView:button]];
+//		[buttons addObject:[[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(pushed:) ]];
+		NSLog(@"%@", title);
+		
+	}
+	[cBar setItems:buttons animated:NO ];
 
+}
+
+-(IBAction) pushed:(id)sender{
+	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
+	[self.logbox setText:[NSString stringWithFormat: @"%@ at %@", [sender currentTitle], [[NSDate date] description]]];
+	
+//	UIImage *onImage = [[UIImage imageNamed:@"blueSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
+//	UIImage *offImage = [[UIImage imageNamed:@"graySegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
+//	
+//	if([[sender currentTitle] isEqualToString:@"Start"]){
+//		[sender setTitle:@"Stop" forState:UIControlStateNormal];
+//		[sender setBackgroundImage:onImage forState:UIControlStateNormal];
+//	}
+//	else {
+//		[sender setTitle:@"Start" forState:UIControlStateNormal];
+//		[sender setBackgroundImage:offImage forState:UIControlStateNormal];		
+//	}
+	
+}
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

@@ -10,7 +10,12 @@
 
 @interface timeFlowViewController : UIViewController {
 
+	UILabel *logbox;
 }
+
+-(IBAction) pushed:(id)sender;
+
+@property (assign) IBOutlet UILabel *logbox;
 
 @end
 
