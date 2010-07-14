@@ -45,14 +45,14 @@
 					<object class="IBUILabel" id="560625185">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{0, 776}, {768, 21}}</string>
+						<string key="NSFrame">{{20, 775}, {768, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">Label</string>
+						<string key="IBUIText"/>
 						<object class="NSColor" key="IBUITextColor" id="542466965">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
@@ -135,8 +135,8 @@
 						<reference key="object" ref="766721923"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="560625185"/>
 							<reference ref="820440886"/>
+							<reference ref="560625185"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -177,7 +177,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>timeFlowViewController</string>
 					<string>UIResponder</string>
-					<string>{{405, 637}, {783, 856}}</string>
+					<string>{{424, 128}, {768, 1024}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
