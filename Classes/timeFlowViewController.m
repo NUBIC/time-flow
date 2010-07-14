@@ -12,6 +12,14 @@
 
 @synthesize logbox;
 
+#define pageTop			65.0
+#define barHeight		44.0
+#define barWidth		768.0
+#define labelHeight		21.0
+#define labelWidth		748.0
+#define labelLeftPad	20.0
+#define rowPad			10.0
+
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -35,7 +43,7 @@
     /*
      Return a label for the bar with index barIndex
      */
-    CGRect frame = CGRectMake(20.0, 44.0 + ((21.0+44.0) * barIndex), 748.0, 21.0);
+    CGRect frame = CGRectMake(labelLeftPad, pageTop + ((labelHeight+barHeight+rowPad) * barIndex), labelWidth, labelHeight);
     UILabel *aLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
     aLabel.textAlignment = UITextAlignmentLeft;
 	aLabel.textColor = [UIColor whiteColor];
@@ -50,7 +58,7 @@
     /*
      Return a bar at index barIndex
      */
-	UIToolbar *aBar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 65.0 + ((21.0+44.0) * barIndex), 768.0, 44.0)] autorelease];
+	UIToolbar *aBar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0.0, pageTop + labelHeight + ((labelHeight+barHeight+rowPad) * barIndex), barWidth, barHeight)] autorelease];
 	aBar.barStyle = UIBarStyleBlackOpaque;
     return aBar;
 }
@@ -75,29 +83,125 @@
 
 	// set up log box
 	[logbox setTextColor:[UIColor whiteColor]];
-	
-	// set up tool bar
-	[super.view addSubview:[self labelForBar:0.0 withText:@"Communication"]];
-	UIToolbar *cBar = [self barAtIndex:0.0];
-	[super.view addSubview: cBar];
-	
+
 	// button images
 	offImage = [[UIImage imageNamed:@"grayBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
 	onImage = [[UIImage imageNamed:@"blueBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
+	
+	// set up tool bar
+	[super.view addSubview:[self labelForBar:0.0 withText:@"Location"]];
+	UIToolbar *lBar = [self barAtIndex:0.0];
+	[super.view addSubview: lBar];
+	
+	[super.view addSubview:[self labelForBar:1.0 withText:@"Communication: Face-to-face"]];
+	UIToolbar *cfBar = [self barAtIndex:1.0];
+	[super.view addSubview: cfBar];
 
+	[super.view addSubview:[self labelForBar:2.0 withText:@"Communication: Phone"]];
+	UIToolbar *cpBar = [self barAtIndex:2.0];
+	[super.view addSubview: cpBar];
+
+	[super.view addSubview:[self labelForBar:3.0 withText:@"Communication: Page"]];
+	UIToolbar *cgBar = [self barAtIndex:3.0];
+	[super.view addSubview: cgBar];
+
+	[super.view addSubview:[self labelForBar:4.0 withText:@"Bedside care"]];
+	UIToolbar *bcBar = [self barAtIndex:4.0];
+	[super.view addSubview: bcBar];
+	
+	[super.view addSubview:[self labelForBar:5.0 withText:@"Documents: EMR"]];
+	UIToolbar *deBar = [self barAtIndex:5.0];
+	[super.view addSubview: deBar];
+
+	[super.view addSubview:[self labelForBar:6.0 withText:@"Documents: Paper"]];
+	UIToolbar *dpBar = [self barAtIndex:6.0];
+	[super.view addSubview: dpBar];
+
+	[super.view addSubview:[self labelForBar:7.0 withText:@"Indirect Care"]];
+	UIToolbar *icBar = [self barAtIndex:7.0];
+	[super.view addSubview: icBar];
+	
 	// titles
-	NSArray *cButtons = [[NSArray arrayWithObjects:
-						 [self toggleButtonWithTitle:@"Nurse"],
-						 [self toggleButtonWithTitle:@"Doctor"],
-						 [self toggleButtonWithTitle:@"Ancillary"],
-						 [self toggleButtonWithTitle:@"NonClinical Staff"],
-						 [self toggleButtonWithTitle:@"Family"],
-						 [self toggleButtonWithTitle:@"Patient"],
-						 nil] autorelease];
+	NSArray *lButtons = [[NSArray arrayWithObjects:
+						   [self toggleButtonWithTitle:@"In room"],
+						   [self toggleButtonWithTitle:@"Out of room"],
+						   [self toggleButtonWithTitle:@"Nursing station"],
+						   [self toggleButtonWithTitle:@"Rounds"],
+						   [self toggleButtonWithTitle:@"Roadtrip"],
+						   [self toggleButtonWithTitle:@"Breaks"],
+						   [self toggleButtonWithTitle:@"Personal"],
+						   nil] autorelease];
+	
+	NSArray *cfButtons = [[NSArray arrayWithObjects:
+						   [self toggleButtonWithTitle:@"Nurse"],
+						   [self toggleButtonWithTitle:@"Doctor"],
+						   [self toggleButtonWithTitle:@"Ancillary"],
+						   [self toggleButtonWithTitle:@"Non-Clinical Staff"],
+						   [self toggleButtonWithTitle:@"Family"],
+						   [self toggleButtonWithTitle:@"Patient"],
+						   nil] autorelease];
 
+	NSArray *cpButtons = [[NSArray arrayWithObjects:
+						  [self toggleButtonWithTitle:@"Nurse"],
+						  [self toggleButtonWithTitle:@"Doctor"],
+						  [self toggleButtonWithTitle:@"Ancillary"],
+						  [self toggleButtonWithTitle:@"Non-Clinical Staff"],
+						  [self toggleButtonWithTitle:@"Family"],
+						  nil] autorelease];
+
+	NSArray *cgButtons = [[NSArray arrayWithObjects:
+						   [self toggleButtonWithTitle:@"Nurse"],
+						   [self toggleButtonWithTitle:@"Doctor"],
+						   [self toggleButtonWithTitle:@"Ancillary"],
+						   [self toggleButtonWithTitle:@"Non-Clinical Staff"],
+						   nil] autorelease];
+	
+	NSArray *bcButtons = [[NSArray arrayWithObjects:
+						   [self toggleButtonWithTitle:@"Hands-On"],
+						   [self toggleButtonWithTitle:@"Non-Contact"],
+						   [self toggleButtonWithTitle:@"Assessment"],
+						   [self toggleButtonWithTitle:@"Other"],
+						   nil] autorelease];
+	
+	NSArray *deButtons = [[NSArray arrayWithObjects:
+						   [self toggleButtonWithTitle:@"MAR"],
+						   [self toggleButtonWithTitle:@"To-Do/PAL"],
+						   [self toggleButtonWithTitle:@"Orders"],
+						   [self toggleButtonWithTitle:@"Pt Assessment"],
+						   [self toggleButtonWithTitle:@"Flow"],
+						   [self toggleButtonWithTitle:@"Review"],
+						   [self toggleButtonWithTitle:@"Waiting"],
+						   [self toggleButtonWithTitle:@"Other"],
+						   nil] autorelease];
+	
+	NSArray *dpButtons = [[NSArray arrayWithObjects:
+						   [self toggleButtonWithTitle:@"Flow"],
+						   [self toggleButtonWithTitle:@"CVVH"],
+						   [self toggleButtonWithTitle:@"Rounding"],
+						   [self toggleButtonWithTitle:@"Review"],
+						   [self toggleButtonWithTitle:@"Other"],
+						   nil] autorelease];
+
+	NSArray *icButtons = [[NSArray arrayWithObjects:
+						   [self toggleButtonWithTitle:@"Tele"],
+						   [self toggleButtonWithTitle:@"Supply Gathering"],
+						   [self toggleButtonWithTitle:@"Drug Gathering"],
+						   [self toggleButtonWithTitle:@"Person Finding"],
+						   [self toggleButtonWithTitle:@"Other"],
+						   [self toggleButtonWithTitle:@"Internet"],
+						   nil] autorelease];
+	
 	// fill buttons array
-	[cBar setItems:cButtons animated:NO ];
+	[lBar setItems:lButtons animated:NO ];
+	[cfBar setItems:cfButtons animated:NO ];
+	[cpBar setItems:cpButtons animated:NO ];
+	[cgBar setItems:cgButtons animated:NO ];
+	[bcBar setItems:bcButtons animated:NO ];
+	[deBar setItems:deButtons animated:NO ];
+	[dpBar setItems:dpButtons animated:NO ];
+	[icBar setItems:icButtons animated:NO ];
 
+	
 }
 //
 //-(IBAction) toggleTouchDown:(id)sender{
