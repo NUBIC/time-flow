@@ -3,7 +3,7 @@
 //  timeFlow
 //
 //  Created by Mark Yoon on 7/13/2010.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
+//  Copyright NUBIC 2010. All rights reserved.
 //
 
 #import "timeFlowAppDelegate.h"

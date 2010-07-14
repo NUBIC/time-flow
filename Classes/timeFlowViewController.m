@@ -3,7 +3,7 @@
 //  timeFlow
 //
 //  Created by Mark Yoon on 7/13/2010.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
+//  Copyright NUBIC 2010. All rights reserved.
 //
 
 #import "timeFlowViewController.h"
@@ -28,6 +28,45 @@
 }
 */
 
+#pragma mark -
+#pragma mark View elements
+
+- (UIView *)labelForBar:(CGFloat)barIndex withText:(NSString *)text {    
+    /*
+     Return a label for the bar with index barIndex
+     */
+    CGRect frame = CGRectMake(20.0, 44.0 + ((21.0+44.0) * barIndex), 748.0, 21.0);
+    UILabel *aLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
+    aLabel.textAlignment = UITextAlignmentLeft;
+	aLabel.textColor = [UIColor whiteColor];
+    aLabel.backgroundColor = [UIColor clearColor];
+    aLabel.font = [UIFont systemFontOfSize:17.0];
+    aLabel.userInteractionEnabled = NO;
+    aLabel.text = text;
+    return aLabel;
+}
+
+- (UIToolbar *)barAtIndex:(CGFloat)barIndex {    
+    /*
+     Return a bar at index barIndex
+     */
+	UIToolbar *aBar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 65.0 + ((21.0+44.0) * barIndex), 768.0, 44.0)] autorelease];
+	aBar.barStyle = UIBarStyleBlackOpaque;
+    return aBar;
+}
+
+- (UIBarButtonItem *)toggleButtonWithTitle:(NSString *)title {
+	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] autorelease];
+	[aButton setTitle:title forState:UIControlStateNormal];
+	[aButton sizeToFit];
+	[aButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+	[aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+	[aButton setBackgroundImage:offImage forState:UIControlStateNormal];
+	[aButton setBackgroundImage:onImage forState:UIControlStateHighlighted];
+	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+	UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:aButton];
+	return item;
+}
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -38,64 +77,60 @@
 	[logbox setTextColor:[UIColor whiteColor]];
 	
 	// set up tool bar
-	UIToolbar *cBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, 768.0, 44.0)];
-	cBar.barStyle = UIBarStyleBlackOpaque;
-	[super.view addSubview:cBar];
+	[super.view addSubview:[self labelForBar:0.0 withText:@"Communication"]];
+	UIToolbar *cBar = [self barAtIndex:0.0];
+	[super.view addSubview: cBar];
 	
 	// button images
 	offImage = [[UIImage imageNamed:@"grayBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
 	onImage = [[UIImage imageNamed:@"blueBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
 
 	// titles
-	NSArray* titles = [NSArray arrayWithObjects:
-					    @"Nurse",
-					    @"Doctor",
-					    @"Ancillary Staff",
-					    @"NonClinical Staff",
-					    @"Family",
-					    @"Patient",
-					    nil];
+	NSArray *cButtons = [[NSArray arrayWithObjects:
+						 [self toggleButtonWithTitle:@"Nurse"],
+						 [self toggleButtonWithTitle:@"Doctor"],
+						 [self toggleButtonWithTitle:@"Ancillary"],
+						 [self toggleButtonWithTitle:@"NonClinical Staff"],
+						 [self toggleButtonWithTitle:@"Family"],
+						 [self toggleButtonWithTitle:@"Patient"],
+						 nil] autorelease];
 
-	// empty buttons array
-	NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:10 ];
-	
-	// creating buttons
-	for (NSString* title in titles) {
-		UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		[button setTitle:title forState:UIControlStateNormal];
-		[button sizeToFit];
-		[button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-		[button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
-		[button setBackgroundImage:offImage forState:UIControlStateNormal];
-		[button setBackgroundImage:onImage forState:UIControlStateHighlighted];
-		[button addTarget:self action:@selector(pushed:) forControlEvents:UIControlEventTouchUpInside ];
-		[buttons addObject:[[UIBarButtonItem alloc] initWithCustomView:button]];
-//		[buttons addObject:[[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(pushed:) ]];
-//		NSLog(@"%@", title);
-		
-	}
-	
 	// fill buttons array
-	[cBar setItems:buttons animated:NO ];
+	[cBar setItems:cButtons animated:NO ];
 
 }
+//
+//-(IBAction) toggleTouchDown:(id)sender{
+//	NSLog(@"toggleTouchDown");
+//}
+//-(IBAction) toggleTouchUpOutside:(id)sender{
+//	NSLog(@"toggleTouchUpOutside");
+//}
+//-(IBAction) toggleTouchDragInside:(id)sender{
+//	NSLog(@"toggleTouchDragInside");
+//}
+//-(IBAction) toggleTouchDragOutside:(id)sender{
+//	NSLog(@"toggleTouchDragOutside");
+//}
 
--(IBAction) pushed:(id)sender{
+-(IBAction) toggleTouchUpInside:(id)sender{
+	NSLog(@"toggleTouchUpInside");
 //	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
 //	NSLog(@"%@", [sender backgroundImageForState: UIControlStateNormal]);
 	[self.logbox setText:[NSString stringWithFormat: @"%@ at %@", [((UIButton*)sender) currentTitle], [[NSDate date] description]]];
 	
-	if ([((UIButton*)sender) backgroundImageForState: UIControlStateNormal] == offImage) {
+	if ([((UIButton*)sender) backgroundImageForState: UIControlStateHighlighted] == onImage) {
+		// the button is currently "off"
 		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateNormal];
-		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateHighlighted ];
+		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateHighlighted ];
 		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
 
 	}else {
 		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateNormal];
-		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateHighlighted ];
+		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateHighlighted ];
 		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
 
 	}
 
