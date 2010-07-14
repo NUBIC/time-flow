@@ -218,9 +218,8 @@
 //}
 
 -(IBAction) toggleTouchUpInside:(id)sender{
-	NSLog(@"toggleTouchUpInside");
+//	NSLog(@"toggleTouchUpInside");
 //	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
-//	NSLog(@"%@", [sender backgroundImageForState: UIControlStateNormal]);
 	[self.logbox setText:[NSString stringWithFormat: @"%@ at %@", [((UIButton*)sender) currentTitle], [[NSDate date] description]]];
 	
 	if ([((UIButton*)sender) backgroundImageForState: UIControlStateHighlighted] == onImage) {
@@ -229,28 +228,14 @@
 		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateHighlighted ];
 		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
-
+		[self.logbox setText:[NSString stringWithFormat: @"%@ ON at %@", [((UIButton*)sender) currentTitle], [[NSDate date] description]]];
 	}else {
 		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateNormal];
 		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateHighlighted ];
 		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
 		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-
+		[self.logbox setText:[NSString stringWithFormat: @"%@ OFF at %@", [((UIButton*)sender) currentTitle], [[NSDate date] description]]];
 	}
-
-	
-//	UIImage *onImage = [[UIImage imageNamed:@"blueSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
-//	UIImage *offImage = [[UIImage imageNamed:@"graySegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
-//	
-//	if([[sender currentTitle] isEqualToString:@"Start"]){
-//		[sender setTitle:@"Stop" forState:UIControlStateNormal];
-//		[sender setBackgroundImage:onImage forState:UIControlStateNormal];
-//	}
-//	else {
-//		[sender setTitle:@"Start" forState:UIControlStateNormal];
-//		[sender setBackgroundImage:offImage forState:UIControlStateNormal];		
-//	}
-	
 }
 
 // Override to allow orientations other than the default portrait orientation.
