@@ -64,7 +64,7 @@
 }
 
 - (UIBarButtonItem *)toggleButtonWithTitle:(NSString *)title {
-	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] autorelease];
+	UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[aButton setTitle:title forState:UIControlStateNormal];
 	[aButton sizeToFit];
 	[aButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
@@ -72,7 +72,7 @@
 	[aButton setBackgroundImage:offImage forState:UIControlStateNormal];
 	[aButton setBackgroundImage:onImage forState:UIControlStateHighlighted];
 	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-	UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:aButton];
+	UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:aButton] autorelease];
 	return item;
 }
 
@@ -122,7 +122,7 @@
 	[super.view addSubview: icBar];
 	
 	// titles
-	NSArray *lButtons = [[NSArray arrayWithObjects:
+	NSArray *lButtons = [NSArray arrayWithObjects:
 						   [self toggleButtonWithTitle:@"In room"],
 						   [self toggleButtonWithTitle:@"Out of room"],
 						   [self toggleButtonWithTitle:@"Nursing station"],
@@ -130,40 +130,40 @@
 						   [self toggleButtonWithTitle:@"Roadtrip"],
 						   [self toggleButtonWithTitle:@"Breaks"],
 						   [self toggleButtonWithTitle:@"Personal"],
-						   nil] autorelease];
+						   nil];
 	
-	NSArray *cfButtons = [[NSArray arrayWithObjects:
+	NSArray *cfButtons = [NSArray arrayWithObjects:
 						   [self toggleButtonWithTitle:@"Nurse"],
 						   [self toggleButtonWithTitle:@"Doctor"],
 						   [self toggleButtonWithTitle:@"Ancillary"],
 						   [self toggleButtonWithTitle:@"Non-Clinical Staff"],
 						   [self toggleButtonWithTitle:@"Family"],
 						   [self toggleButtonWithTitle:@"Patient"],
-						   nil] autorelease];
+						  nil];
 
-	NSArray *cpButtons = [[NSArray arrayWithObjects:
+	NSArray *cpButtons = [NSArray arrayWithObjects:
 						  [self toggleButtonWithTitle:@"Nurse"],
 						  [self toggleButtonWithTitle:@"Doctor"],
 						  [self toggleButtonWithTitle:@"Ancillary"],
 						  [self toggleButtonWithTitle:@"Non-Clinical Staff"],
 						  [self toggleButtonWithTitle:@"Family"],
-						  nil] autorelease];
+						  nil];
 
-	NSArray *cgButtons = [[NSArray arrayWithObjects:
+	NSArray *cgButtons = [NSArray arrayWithObjects:
 						   [self toggleButtonWithTitle:@"Nurse"],
 						   [self toggleButtonWithTitle:@"Doctor"],
 						   [self toggleButtonWithTitle:@"Ancillary"],
 						   [self toggleButtonWithTitle:@"Non-Clinical Staff"],
-						   nil] autorelease];
+						  nil];
 	
-	NSArray *bcButtons = [[NSArray arrayWithObjects:
+	NSArray *bcButtons = [NSArray arrayWithObjects:
 						   [self toggleButtonWithTitle:@"Hands-On"],
 						   [self toggleButtonWithTitle:@"Non-Contact"],
 						   [self toggleButtonWithTitle:@"Assessment"],
 						   [self toggleButtonWithTitle:@"Other"],
-						   nil] autorelease];
+						  nil];
 	
-	NSArray *deButtons = [[NSArray arrayWithObjects:
+	NSArray *deButtons = [NSArray arrayWithObjects:
 						   [self toggleButtonWithTitle:@"MAR"],
 						   [self toggleButtonWithTitle:@"To-Do/PAL"],
 						   [self toggleButtonWithTitle:@"Orders"],
@@ -172,24 +172,24 @@
 						   [self toggleButtonWithTitle:@"Review"],
 						   [self toggleButtonWithTitle:@"Waiting"],
 						   [self toggleButtonWithTitle:@"Other"],
-						   nil] autorelease];
+						  nil];
 	
-	NSArray *dpButtons = [[NSArray arrayWithObjects:
+	NSArray *dpButtons = [NSArray arrayWithObjects:
 						   [self toggleButtonWithTitle:@"Flow"],
 						   [self toggleButtonWithTitle:@"CVVH"],
 						   [self toggleButtonWithTitle:@"Rounding"],
 						   [self toggleButtonWithTitle:@"Review"],
 						   [self toggleButtonWithTitle:@"Other"],
-						   nil] autorelease];
+						  nil];
 
-	NSArray *icButtons = [[NSArray arrayWithObjects:
+	NSArray *icButtons = [NSArray arrayWithObjects:
 						   [self toggleButtonWithTitle:@"Tele"],
 						   [self toggleButtonWithTitle:@"Supply Gathering"],
 						   [self toggleButtonWithTitle:@"Drug Gathering"],
 						   [self toggleButtonWithTitle:@"Person Finding"],
 						   [self toggleButtonWithTitle:@"Other"],
 						   [self toggleButtonWithTitle:@"Internet"],
-						   nil] autorelease];
+						  nil];
 	
 	// fill buttons array
 	[lBar setItems:lButtons animated:NO ];
