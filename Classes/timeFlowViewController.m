@@ -11,6 +11,7 @@
 @implementation timeFlowViewController
 
 @synthesize logbox;
+@synthesize clockLabel;
 
 #define pageTop			65.0
 #define barHeight		44.0
@@ -76,10 +77,25 @@
 	return item;
 }
 
+- (void) startClockTimer{
+	// Starts timer which fires updateClock method every 1.0 seconds
+	clockTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0 target: self selector: @selector(updateClock) userInfo: nil repeats: YES];
+}
+- (void) updateClock{
+	// Run every 1.0 seconds
+	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
+	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
+	[clockLabel setText:[timeFormat stringFromDate: [NSDate date]]];
+}
+
+
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	// start the clock
+	[self startClockTimer];
 
 	// set up log box
 	[logbox setTextColor:[UIColor whiteColor]];
@@ -220,21 +236,23 @@
 -(IBAction) toggleTouchUpInside:(id)sender{
 //	NSLog(@"toggleTouchUpInside");
 //	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
-	[self.logbox setText:[NSString stringWithFormat: @"%@ at %@", [((UIButton*)sender) currentTitle], [[NSDate date] description]]];
 	
+	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
+	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
+		
 	if ([((UIButton*)sender) backgroundImageForState: UIControlStateHighlighted] == onImage) {
 		// the button is currently "off"
 		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateNormal];
 		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateHighlighted ];
 		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
-		[self.logbox setText:[NSString stringWithFormat: @"%@ ON at %@", [((UIButton*)sender) currentTitle], [[NSDate date] description]]];
+		[self.logbox setText:[NSString stringWithFormat: @"%@ ON at %@", [((UIButton*)sender) currentTitle], [timeFormat stringFromDate:[NSDate date]]]];
 	}else {
 		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateNormal];
 		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateHighlighted ];
 		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
 		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-		[self.logbox setText:[NSString stringWithFormat: @"%@ OFF at %@", [((UIButton*)sender) currentTitle], [[NSDate date] description]]];
+		[self.logbox setText:[NSString stringWithFormat: @"%@ OFF at %@", [((UIButton*)sender) currentTitle], [timeFormat stringFromDate:[NSDate date]]]];
 	}
 }
 
