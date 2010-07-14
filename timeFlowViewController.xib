@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="24"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -75,7 +75,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUINavigationItem" id="584144711">
 								<reference key="IBUINavigationBar" ref="820440886"/>
-								<string key="IBUITitle">timeFlow: Nurse ICU study</string>
+								<string key="IBUITitle">timeFlow: ICU Nursing</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
 						</object>
@@ -177,7 +177,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>timeFlowViewController</string>
 					<string>UIResponder</string>
-					<string>{{424, 128}, {768, 1024}}</string>
+					<string>{{329, 128}, {768, 1024}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
