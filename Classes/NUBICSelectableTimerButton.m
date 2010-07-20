@@ -11,7 +11,7 @@
 
 @implementation NUBICSelectableTimerButton
 
-//@synthesize time;
+@synthesize startTime;
 
 - (id)initWithFrame: (CGRect)frame andTitle:(NSString*)title {
 	if (self = [super initWithFrame: frame])
@@ -52,6 +52,8 @@
 		time.userInteractionEnabled = NO;
 		time.text = @"";
 		
+		startTime = nil;
+		
 		[self addSubview:time];
 		
 	}
@@ -59,19 +61,13 @@
 	return self;
 }
 - (void)setTimeText:(NSString *)str {
-	if([str length] == 0){
-		self.titleEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
-	}else {
+	if([str length]){
 		self.titleEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 13.0, 0.0);
+	}else {
+		self.titleEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
 	}
-
 	time.text = str;
 }
-/*
-- (id)getTimeText {
-	return time.text;
-}
-*/
 
 - (void)button_clicked: (id)sender
 {
