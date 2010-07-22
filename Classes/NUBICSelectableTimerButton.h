@@ -17,7 +17,7 @@
 
 @property(retain) NSDate *startTime;
 
-- (id)initWithFrame: (CGRect)frame andTitle: (NSString*)title;
-- (void)setTimeText: (NSString *)str;
+- (id)initWithFrame:(CGRect)frame title:(NSString*)title;
+- (void)setTimeText:(NSString *)str;
 
 @end

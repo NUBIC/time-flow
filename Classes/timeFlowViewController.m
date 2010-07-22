@@ -11,15 +11,16 @@
 
 @implementation timeFlowViewController
 
-@synthesize logbox;
+#pragma mark -
+#pragma mark Constants
 
-#define pageTop			65.0
-#define barHeight		44.0
-#define barWidth		768.0
-#define labelHeight		21.0
-#define labelWidth		748.0
-#define labelLeftPad	20.0
-#define rowPad			10.0
+#define pageTop			65
+#define barHeight		44
+#define barWidth		768
+#define labelHeight		21
+#define labelWidth		748
+#define labelLeftPad	20
+#define rowPad			10
 
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -58,65 +59,52 @@
 
 
 - (void) startClockTimer{
-	NSLog(@"startClockTimer");
-	// Starts timer which fires updateClock method every 1.0 seconds
-	clockTimer = [NSTimer scheduledTimerWithTimeInterval: 0.5 target: self selector: @selector(updateClock) userInfo: nil repeats: YES];
+//	NSLog(@"startClockTimer");
+/*
+ Starts timer which fires updateClock method every 1.0 seconds
+ */
 	
+	// scheduledTimerWithTimeInterval returns an autoreleased object
+	clockTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0 target: self selector: @selector(updateClock) userInfo: nil repeats: YES];	
 }
 - (void) updateClock{
-	// Run every 1.0 seconds
-//	NSLog(@"updateClock");
-//	
-//	NSLog(@"%f", [startDate timeIntervalSinceNow]);
-	
-//	NUBICSelectableTimerButton *runningTimer;
-//	for (runningTimer in runningTimers){
-//		NSLog(@"%f", [[runningTimer startTime] timeIntervalSinceNow] );
-////		NSLog(@"The following timer is running: %@", [runningTimer currentTitle]);
-//	}
-	
-	//	NSLog(@"%f", [startDate timeIntervalSinceNow]);
-	//	[self.logbox setText:[NSString stringWithFormat: @"%f", [startDate timeIntervalSinceNow]]];
-	
+// NSLog(@"updateClock");
+/*
+ Runs every 1.0 seconds
+ Updates running timers' labels
+ */
+
 	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
 	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
-
-
 	
 	NUBICSelectableTimerButton *runningTimer;
 	for (runningTimer in runningTimers){
-		NSLog(@"The following timer is running: %@", [runningTimer currentTitle]);
-		NSLog(@"%@", [timeFormat stringFromDate:[runningTimer startTime]]);
+		// NSLog(@"The following timer is running: %@", [runningTimer currentTitle]);
+		// NSLog(@"%@", [timeFormat stringFromDate:[runningTimer startTime]]);
 		
-		unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+		unsigned int unitFlags = NSMinuteCalendarUnit | NSSecondCalendarUnit;
+		// currentCalendar returns an autoreleased object
 		NSCalendar *gregorian = [NSCalendar currentCalendar];
+		// components fromDate toDate returns an autoreleased object
 		NSDateComponents *comps = [gregorian components:unitFlags fromDate:[runningTimer startTime]  toDate:[NSDate date]  options:0];
-		int minutes = [comps minute];
-		int seconds = [comps second];
-		
-		NSLog(@"%d:%02d", minutes, seconds);
-		[runningTimer setTimeText:[NSString stringWithFormat:@"%d:%02d", minutes, seconds]];
-		
+
+		// NSLog(@"%d:%02d", [comps minute], [comps second]);
+		[runningTimer setTimeText:[NSString stringWithFormat:@"%d:%02d", [comps minute], [comps second]]];
 	}
 	
 }
 
 -(IBAction) toggleTouchUpInside:(id)sender{	
-	NSLog(@"toggleTouchUpInside");
-//	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
+//	NSLog(@"toggleTouchUpInside");
+/*
+ Toggles label and startTime for button, add/removes it from runningTimers
+ */
 	
 	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
 	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
 
 	if (((NUBICSelectableTimerButton*)sender).selected) {
-//		[(NUBICSelectableTimerButton*)sender setTimeText:[timeFormat stringFromDate:[NSDate date]] ];
-
-//		[(NUBICSelectableTimerButton *)sender setStartTime:[NSDate date]];
 		((NUBICSelectableTimerButton*)sender).startTime = [NSDate date];
-		NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
-		[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
-		NSLog(@"startTime is %@", [timeFormat stringFromDate:[(NUBICSelectableTimerButton*)sender startTime]]);
-
 		[(NUBICSelectableTimerButton*)sender setTimeText:@"0:00"];
 		[runningTimers addObject: sender];
 	}else {
@@ -124,45 +112,60 @@
 		[(NUBICSelectableTimerButton*)sender setTimeText:@""];
 		[runningTimers removeObject: sender];
 	}
-	
-//	NUBICSelectableTimerButton *runningTimer;
-//	for (runningTimer in runningTimers){
-//		NSLog(@"The following timer is running: %@", [runningTimer currentTitle]);
-//	}
-//		[self.logbox setText:[NSString stringWithFormat: @"%@ ON at %@", [((UIButton*)sender) currentTitle], [timeFormat stringFromDate:[NSDate date]]]];
 }
 
 #pragma mark -
 #pragma mark View elements
 
-- (UIView *)labelForBar:(CGFloat)barIndex withText:(NSString *)text {    
-    /*
-     Return a label for the bar with index barIndex
-     */
+- (UIView *)labelForBar:(int)barIndex withText:(NSString *)text {
+//	NSLog(@"labelForBar %d %@", barIndex, text);
+/*
+ Return an autoreleased label for the bar with index barIndex
+ */
+
     CGRect frame = CGRectMake(labelLeftPad, pageTop + ((labelHeight+barHeight+rowPad) * barIndex), labelWidth, labelHeight);
-    UILabel *aLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
+	// alloc
+	UILabel *aLabel = [[UILabel alloc] initWithFrame:frame];
     aLabel.textAlignment = UITextAlignmentLeft;
 	aLabel.textColor = [UIColor whiteColor];
     aLabel.backgroundColor = [UIColor clearColor];
     aLabel.font = [UIFont systemFontOfSize:17.0];
     aLabel.userInteractionEnabled = NO;
     aLabel.text = text;
+	// autorelease
+	[aLabel autorelease];
     return aLabel;
 }
 
-- (UIToolbar *)barAtIndex:(CGFloat)barIndex {    
-    /*
-     Return a bar at index barIndex
-     */
-	UIToolbar *aBar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0.0, pageTop + labelHeight + ((labelHeight+barHeight+rowPad) * barIndex), barWidth, barHeight)] autorelease];
+- (UIToolbar *)barAtIndex:(int)barIndex {    
+//	NSLog(@"barAtIndex %d", barIndex);
+/*
+ Return an autoreleased bar at index barIndex
+ */
+
+	// alloc
+	UIToolbar *aBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, pageTop + labelHeight + ((labelHeight+barHeight+rowPad) * barIndex), barWidth, barHeight)];
 	aBar.barStyle = UIBarStyleBlackOpaque;
+	// autorelease
+	[aBar autorelease];
     return aBar;
 }
 
+
 - (UIBarButtonItem *)toggleButtonWithTitle:(NSString *)title {
-	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) andTitle:title  ];
+//	NSLog(@"toggleButtonWithTitle %@", title);
+/*
+ Return a autoreleased ui bar button item, with a custom view - nubic selectable timer button, with the given title
+ */
+
+	// alloc
+	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title];
+	UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:aButton];
 	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-	UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:aButton] autorelease];
+
+	// release and autorelease
+	[aButton release];
+	[item autorelease];
 	return item;
 }
 
@@ -176,49 +179,39 @@
     [super viewDidLoad];
 										  
 	// start the clock
-	startDate = [[NSDate date] retain];
-	
 	[self startClockTimer];
 	
-	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
-	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
-	NSLog(@"startDate is %@", [timeFormat stringFromDate:startDate]);
-	
-
-	// set up log box
-	[logbox setTextColor:[UIColor whiteColor]];
-
 	// set up tool bar
-	[super.view addSubview:[self labelForBar:0.0 withText:@"Location"]];
-	UIToolbar *lBar = [self barAtIndex:0.0];
+	[super.view addSubview:[self labelForBar:0 withText:@"Location"]];
+	UIToolbar *lBar = [self barAtIndex:0];
 	[super.view addSubview: lBar];
 	
-	[super.view addSubview:[self labelForBar:1.0 withText:@"Communication: Face-to-face"]];
-	UIToolbar *cfBar = [self barAtIndex:1.0];
+	[super.view addSubview:[self labelForBar:1 withText:@"Communication: Face-to-face"]];
+	UIToolbar *cfBar = [self barAtIndex:1];
 	[super.view addSubview: cfBar];
 
-	[super.view addSubview:[self labelForBar:2.0 withText:@"Communication: Phone"]];
-	UIToolbar *cpBar = [self barAtIndex:2.0];
+	[super.view addSubview:[self labelForBar:2 withText:@"Communication: Phone"]];
+	UIToolbar *cpBar = [self barAtIndex:2];
 	[super.view addSubview: cpBar];
 
-	[super.view addSubview:[self labelForBar:3.0 withText:@"Communication: Page"]];
-	UIToolbar *cgBar = [self barAtIndex:3.0];
+	[super.view addSubview:[self labelForBar:3 withText:@"Communication: Page"]];
+	UIToolbar *cgBar = [self barAtIndex:3];
 	[super.view addSubview: cgBar];
 
-	[super.view addSubview:[self labelForBar:4.0 withText:@"Bedside care"]];
-	UIToolbar *bcBar = [self barAtIndex:4.0];
+	[super.view addSubview:[self labelForBar:4 withText:@"Bedside care"]];
+	UIToolbar *bcBar = [self barAtIndex:4];
 	[super.view addSubview: bcBar];
 	
-	[super.view addSubview:[self labelForBar:5.0 withText:@"Documents: EMR"]];
-	UIToolbar *deBar = [self barAtIndex:5.0];
+	[super.view addSubview:[self labelForBar:5 withText:@"Documents: EMR"]];
+	UIToolbar *deBar = [self barAtIndex:5];
 	[super.view addSubview: deBar];
 
-	[super.view addSubview:[self labelForBar:6.0 withText:@"Documents: Paper"]];
-	UIToolbar *dpBar = [self barAtIndex:6.0];
+	[super.view addSubview:[self labelForBar:6 withText:@"Documents: Paper"]];
+	UIToolbar *dpBar = [self barAtIndex:6];
 	[super.view addSubview: dpBar];
 
-	[super.view addSubview:[self labelForBar:7.0 withText:@"Indirect Care"]];
-	UIToolbar *icBar = [self barAtIndex:7.0];
+	[super.view addSubview:[self labelForBar:7 withText:@"Indirect Care"]];
+	UIToolbar *icBar = [self barAtIndex:7];
 	[super.view addSubview: icBar];
 	
 	// titles
@@ -301,7 +294,7 @@
 	[dpBar setItems:dpButtons animated:NO ];
 	[icBar setItems:icButtons animated:NO ];
 
-	// allocate and initialize running timers array
+	// running timers array
 	runningTimers = [[NSMutableArray alloc] init];
 }
 
@@ -325,7 +318,7 @@
 
 
 - (void)dealloc {
-    [super dealloc];
+	[super dealloc];
 }
 
 @end

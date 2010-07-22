@@ -13,7 +13,7 @@
 
 @synthesize startTime;
 
-- (id)initWithFrame: (CGRect)frame andTitle:(NSString*)title {
+- (id)initWithFrame:(CGRect)frame title:(NSString*)title {
 	if (self = [super initWithFrame: frame])
 	{
 		// Create background images
@@ -75,10 +75,7 @@
 }
 
 - (id)initWithFrame:(CGRect)frame {
-    if ((self = [super initWithFrame:frame])) {
-        // Initialization code
-    }
-    return self;
+    return [self initWithFrame:frame title:@"Button"];
 }
 
 /*
