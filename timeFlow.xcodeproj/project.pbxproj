@@ -15,8 +15,9 @@
 		2899E5220DE3E06400AC0155 /* timeFlowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		3B49CE6111ECF63E0041CE70 /* timeFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */; };
-		3BE7C80811ED0AE600458677 /* blueBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BE7C80611ED0AE600458677 /* blueBlackSegment.png */; };
-		3BE7C80911ED0AE600458677 /* grayBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BE7C80711ED0AE600458677 /* grayBlackSegment.png */; };
+		3BF2436511EF76F300016791 /* blueBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF2436311EF76F300016791 /* blueBlackSegment.png */; };
+		3BF2436611EF76F300016791 /* grayBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF2436411EF76F300016791 /* grayBlackSegment.png */; };
+		3BF243CD11EFB24000016791 /* NUBICSelectableTimerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +33,10 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* timeFlow_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeFlow_Prefix.pch; sourceTree = "<group>"; };
 		3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timeFlowViewController.m; sourceTree = "<group>"; };
-		3BE7C80611ED0AE600458677 /* blueBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueBlackSegment.png; sourceTree = "<group>"; };
-		3BE7C80711ED0AE600458677 /* grayBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayBlackSegment.png; sourceTree = "<group>"; };
+		3BF2436311EF76F300016791 /* blueBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueBlackSegment.png; sourceTree = "<group>"; };
+		3BF2436411EF76F300016791 /* grayBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayBlackSegment.png; sourceTree = "<group>"; };
+		3BF243CB11EFB24000016791 /* NUBICSelectableTimerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NUBICSelectableTimerButton.h; sourceTree = "<group>"; };
+		3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NUBICSelectableTimerButton.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* timeFlow-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "timeFlow-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,6 +61,8 @@
 				1D3623250D0F684500981E51 /* timeFlowAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* timeFlowViewController.h */,
 				3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */,
+				3BF243CB11EFB24000016791 /* NUBICSelectableTimerButton.h */,
+				3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -94,8 +99,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3BE7C80611ED0AE600458677 /* blueBlackSegment.png */,
-				3BE7C80711ED0AE600458677 /* grayBlackSegment.png */,
+				3BF2436311EF76F300016791 /* blueBlackSegment.png */,
+				3BF2436411EF76F300016791 /* grayBlackSegment.png */,
 				2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* timeFlow-Info.plist */,
@@ -160,8 +165,8 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* timeFlowViewController.xib in Resources */,
-				3BE7C80811ED0AE600458677 /* blueBlackSegment.png in Resources */,
-				3BE7C80911ED0AE600458677 /* grayBlackSegment.png in Resources */,
+				3BF2436511EF76F300016791 /* blueBlackSegment.png in Resources */,
+				3BF2436611EF76F300016791 /* grayBlackSegment.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +180,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* timeFlowAppDelegate.m in Sources */,
 				3B49CE6111ECF63E0041CE70 /* timeFlowViewController.m in Sources */,
+				3BF243CD11EFB24000016791 /* NUBICSelectableTimerButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

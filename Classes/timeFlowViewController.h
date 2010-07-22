@@ -11,12 +11,9 @@
 @interface timeFlowViewController : UIViewController {
 
 	UILabel *logbox;
-	UILabel *clockLabel;
-
 	NSTimer *clockTimer;
-
-	UIImage *offImage;
-	UIImage *onImage;
+	NSMutableArray *runningTimers;
+	NSDate *startDate;
 
 }
 
@@ -27,7 +24,6 @@
 //-(IBAction) toggleTouchDragOutside:(id)sender;
 
 @property (assign) IBOutlet UILabel *logbox;
-@property (assign) IBOutlet UILabel *clockLabel;
 
 
 @end

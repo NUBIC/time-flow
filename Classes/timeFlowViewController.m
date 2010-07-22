@@ -7,11 +7,11 @@
 //
 
 #import "timeFlowViewController.h"
+#import "NUBICSelectableTimerButton.h"
 
 @implementation timeFlowViewController
 
 @synthesize logbox;
-@synthesize clockLabel;
 
 #define pageTop			65.0
 #define barHeight		44.0
@@ -36,6 +36,101 @@
 - (void)loadView {
 }
 */
+
+
+
+#pragma mark -
+#pragma mark Event responsders
+
+//
+//-(IBAction) toggleTouchDown:(id)sender{
+//	NSLog(@"toggleTouchDown");
+//}
+//-(IBAction) toggleTouchUpOutside:(id)sender{
+//	NSLog(@"toggleTouchUpOutside");
+//}
+//-(IBAction) toggleTouchDragInside:(id)sender{
+//	NSLog(@"toggleTouchDragInside");
+//}
+//-(IBAction) toggleTouchDragOutside:(id)sender{
+//	NSLog(@"toggleTouchDragOutside");
+//}
+
+
+- (void) startClockTimer{
+	NSLog(@"startClockTimer");
+	// Starts timer which fires updateClock method every 1.0 seconds
+	clockTimer = [NSTimer scheduledTimerWithTimeInterval: 0.5 target: self selector: @selector(updateClock) userInfo: nil repeats: YES];
+	
+}
+- (void) updateClock{
+	// Run every 1.0 seconds
+//	NSLog(@"updateClock");
+//	
+//	NSLog(@"%f", [startDate timeIntervalSinceNow]);
+	
+//	NUBICSelectableTimerButton *runningTimer;
+//	for (runningTimer in runningTimers){
+//		NSLog(@"%f", [[runningTimer startTime] timeIntervalSinceNow] );
+////		NSLog(@"The following timer is running: %@", [runningTimer currentTitle]);
+//	}
+	
+	//	NSLog(@"%f", [startDate timeIntervalSinceNow]);
+	//	[self.logbox setText:[NSString stringWithFormat: @"%f", [startDate timeIntervalSinceNow]]];
+	
+	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
+	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
+
+
+	
+	NUBICSelectableTimerButton *runningTimer;
+	for (runningTimer in runningTimers){
+		NSLog(@"The following timer is running: %@", [runningTimer currentTitle]);
+		NSLog(@"%@", [timeFormat stringFromDate:[runningTimer startTime]]);
+		
+		unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+		NSCalendar *gregorian = [NSCalendar currentCalendar];
+		NSDateComponents *comps = [gregorian components:unitFlags fromDate:[runningTimer startTime]  toDate:[NSDate date]  options:0];
+		int minutes = [comps minute];
+		int seconds = [comps second];
+		
+		NSLog(@"%d:%02d", minutes, seconds);
+		[runningTimer setTimeText:[NSString stringWithFormat:@"%d:%02d", minutes, seconds]];
+		
+	}
+	
+}
+
+-(IBAction) toggleTouchUpInside:(id)sender{	
+	NSLog(@"toggleTouchUpInside");
+//	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
+	
+	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
+	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
+
+	if (((NUBICSelectableTimerButton*)sender).selected) {
+//		[(NUBICSelectableTimerButton*)sender setTimeText:[timeFormat stringFromDate:[NSDate date]] ];
+
+//		[(NUBICSelectableTimerButton *)sender setStartTime:[NSDate date]];
+		((NUBICSelectableTimerButton*)sender).startTime = [NSDate date];
+		NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
+		[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
+		NSLog(@"startTime is %@", [timeFormat stringFromDate:[(NUBICSelectableTimerButton*)sender startTime]]);
+
+		[(NUBICSelectableTimerButton*)sender setTimeText:@"0:00"];
+		[runningTimers addObject: sender];
+	}else {
+		[(NUBICSelectableTimerButton*)sender setStartTime:nil];
+		[(NUBICSelectableTimerButton*)sender setTimeText:@""];
+		[runningTimers removeObject: sender];
+	}
+	
+//	NUBICSelectableTimerButton *runningTimer;
+//	for (runningTimer in runningTimers){
+//		NSLog(@"The following timer is running: %@", [runningTimer currentTitle]);
+//	}
+//		[self.logbox setText:[NSString stringWithFormat: @"%@ ON at %@", [((UIButton*)sender) currentTitle], [timeFormat stringFromDate:[NSDate date]]]];
+}
 
 #pragma mark -
 #pragma mark View elements
@@ -65,45 +160,34 @@
 }
 
 - (UIBarButtonItem *)toggleButtonWithTitle:(NSString *)title {
-	UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[aButton setTitle:title forState:UIControlStateNormal];
-	[aButton sizeToFit];
-	[aButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-	[aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-	[aButton setBackgroundImage:offImage forState:UIControlStateNormal];
-	[aButton setBackgroundImage:onImage forState:UIControlStateHighlighted];
+	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) andTitle:title  ];
 	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
 	UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:aButton] autorelease];
 	return item;
 }
 
-- (void) startClockTimer{
-	// Starts timer which fires updateClock method every 1.0 seconds
-	clockTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0 target: self selector: @selector(updateClock) userInfo: nil repeats: YES];
-}
-- (void) updateClock{
-	// Run every 1.0 seconds
-	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
-	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
-	[clockLabel setText:[timeFormat stringFromDate: [NSDate date]]];
-}
 
+#pragma mark -
+#pragma mark View Controller Configuration
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+										  
 	// start the clock
+	startDate = [[NSDate date] retain];
+	
 	[self startClockTimer];
+	
+	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
+	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
+	NSLog(@"startDate is %@", [timeFormat stringFromDate:startDate]);
+	
 
 	// set up log box
 	[logbox setTextColor:[UIColor whiteColor]];
 
-	// button images
-	offImage = [[UIImage imageNamed:@"grayBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
-	onImage = [[UIImage imageNamed:@"blueBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
-	
 	// set up tool bar
 	[super.view addSubview:[self labelForBar:0.0 withText:@"Location"]];
 	UIToolbar *lBar = [self barAtIndex:0.0];
@@ -217,44 +301,10 @@
 	[dpBar setItems:dpButtons animated:NO ];
 	[icBar setItems:icButtons animated:NO ];
 
-	
+	// allocate and initialize running timers array
+	runningTimers = [[NSMutableArray alloc] init];
 }
-//
-//-(IBAction) toggleTouchDown:(id)sender{
-//	NSLog(@"toggleTouchDown");
-//}
-//-(IBAction) toggleTouchUpOutside:(id)sender{
-//	NSLog(@"toggleTouchUpOutside");
-//}
-//-(IBAction) toggleTouchDragInside:(id)sender{
-//	NSLog(@"toggleTouchDragInside");
-//}
-//-(IBAction) toggleTouchDragOutside:(id)sender{
-//	NSLog(@"toggleTouchDragOutside");
-//}
 
--(IBAction) toggleTouchUpInside:(id)sender{
-//	NSLog(@"toggleTouchUpInside");
-//	NSLog(@"%@ at %@", [sender currentTitle], [NSDate date]);
-	
-	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
-	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
-		
-	if ([((UIButton*)sender) backgroundImageForState: UIControlStateHighlighted] == onImage) {
-		// the button is currently "off"
-		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateNormal];
-		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateHighlighted ];
-		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
-		[self.logbox setText:[NSString stringWithFormat: @"%@ ON at %@", [((UIButton*)sender) currentTitle], [timeFormat stringFromDate:[NSDate date]]]];
-	}else {
-		[((UIButton*)sender) setBackgroundImage:offImage forState:UIControlStateNormal];
-		[((UIButton*)sender) setBackgroundImage:onImage forState:UIControlStateHighlighted ];
-		[((UIButton*)sender) setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-		[((UIButton*)sender) setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-		[self.logbox setText:[NSString stringWithFormat: @"%@ OFF at %@", [((UIButton*)sender) currentTitle], [timeFormat stringFromDate:[NSDate date]]]];
-	}
-}
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
