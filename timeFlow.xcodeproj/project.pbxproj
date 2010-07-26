@@ -15,6 +15,10 @@
 		2899E5220DE3E06400AC0155 /* timeFlowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		3B49CE6111ECF63E0041CE70 /* timeFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */; };
+		3B7D936C11FE1F590064BABF /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D936B11FE1F590064BABF /* RootViewController.m */; };
+		3B7D936E11FE1F620064BABF /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D936D11FE1F620064BABF /* RootViewController.xib */; };
+		3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D938F11FE20C30064BABF /* CoreData.framework */; };
+		3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */; };
 		3BF2436511EF76F300016791 /* blueBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF2436311EF76F300016791 /* blueBlackSegment.png */; };
 		3BF2436611EF76F300016791 /* grayBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF2436411EF76F300016791 /* grayBlackSegment.png */; };
 		3BF243CD11EFB24000016791 /* NUBICSelectableTimerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */; };
@@ -33,6 +37,11 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* timeFlow_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeFlow_Prefix.pch; sourceTree = "<group>"; };
 		3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timeFlowViewController.m; sourceTree = "<group>"; };
+		3B7D936A11FE1F590064BABF /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		3B7D936B11FE1F590064BABF /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		3B7D936D11FE1F620064BABF /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		3B7D938F11FE20C30064BABF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = coredataproject.xcdatamodel; sourceTree = "<group>"; };
 		3BF2436311EF76F300016791 /* blueBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueBlackSegment.png; sourceTree = "<group>"; };
 		3BF2436411EF76F300016791 /* grayBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayBlackSegment.png; sourceTree = "<group>"; };
 		3BF243CB11EFB24000016791 /* NUBICSelectableTimerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NUBICSelectableTimerButton.h; sourceTree = "<group>"; };
@@ -48,6 +57,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
+				3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +71,8 @@
 				1D3623250D0F684500981E51 /* timeFlowAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* timeFlowViewController.h */,
 				3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */,
+				3B7D936A11FE1F590064BABF /* RootViewController.h */,
+				3B7D936B11FE1F590064BABF /* RootViewController.m */,
 				3BF243CB11EFB24000016791 /* NUBICSelectableTimerButton.h */,
 				3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */,
 			);
@@ -99,9 +111,11 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */,
 				3BF2436311EF76F300016791 /* blueBlackSegment.png */,
 				3BF2436411EF76F300016791 /* grayBlackSegment.png */,
 				2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */,
+				3B7D936D11FE1F620064BABF /* RootViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* timeFlow-Info.plist */,
 			);
@@ -114,6 +128,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
+				3B7D938F11FE20C30064BABF /* CoreData.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -167,6 +182,7 @@
 				2899E5220DE3E06400AC0155 /* timeFlowViewController.xib in Resources */,
 				3BF2436511EF76F300016791 /* blueBlackSegment.png in Resources */,
 				3BF2436611EF76F300016791 /* grayBlackSegment.png in Resources */,
+				3B7D936E11FE1F620064BABF /* RootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +197,8 @@
 				1D3623260D0F684500981E51 /* timeFlowAppDelegate.m in Sources */,
 				3B49CE6111ECF63E0041CE70 /* timeFlowViewController.m in Sources */,
 				3BF243CD11EFB24000016791 /* NUBICSelectableTimerButton.m in Sources */,
+				3B7D936C11FE1F590064BABF /* RootViewController.m in Sources */,
+				3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +283,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */,
+			);
+			currentVersion = 3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */;
+			path = coredataproject.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }
