@@ -9,9 +9,16 @@
 #import "NUBICSelectableTimerButton.h"
 
 
+
 @implementation NUBICSelectableTimerButton
 
 @synthesize startTime;
+
+#pragma mark -
+#pragma mark Constants
+
+#define padWidth	10
+#define minHeight	44
 
 - (id)initWithFrame:(CGRect)frame title:(NSString*)title {
 	if (self = [super initWithFrame: frame])
@@ -39,8 +46,8 @@
 		// Sizing
 		[self sizeToFit];
 		
-		CGSize minSize = CGSizeMake(MAX([@"00:00:00" sizeWithFont:[UIFont systemFontOfSize:14.0]].width + 15.0, self.frame.size.width + 15.0), 
-									MAX(44.0, self.frame.size.height));
+		CGSize minSize = CGSizeMake(MAX([@"00:00:00" sizeWithFont:[UIFont systemFontOfSize:14.0]].width, self.frame.size.width) + padWidth, 
+									MAX(minHeight, self.frame.size.height));
 		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, minSize.width, minSize.height);
 
 		// Time label
