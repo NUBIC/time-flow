@@ -19,6 +19,8 @@
 		3B7D936E11FE1F620064BABF /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D936D11FE1F620064BABF /* RootViewController.xib */; };
 		3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D938F11FE20C30064BABF /* CoreData.framework */; };
 		3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */; };
+		3B98DC1411FF2E76002D6B88 /* itemInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B98DC1211FF2E76002D6B88 /* itemInputController.m */; };
+		3B98DC1511FF2E76002D6B88 /* itemInputController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B98DC1311FF2E76002D6B88 /* itemInputController.xib */; };
 		3BF2436511EF76F300016791 /* blueBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF2436311EF76F300016791 /* blueBlackSegment.png */; };
 		3BF2436611EF76F300016791 /* grayBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF2436411EF76F300016791 /* grayBlackSegment.png */; };
 		3BF243CD11EFB24000016791 /* NUBICSelectableTimerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */; };
@@ -42,6 +44,9 @@
 		3B7D936D11FE1F620064BABF /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 		3B7D938F11FE20C30064BABF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = coredataproject.xcdatamodel; sourceTree = "<group>"; };
+		3B98DC1111FF2E76002D6B88 /* itemInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itemInputController.h; sourceTree = "<group>"; };
+		3B98DC1211FF2E76002D6B88 /* itemInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = itemInputController.m; sourceTree = "<group>"; };
+		3B98DC1311FF2E76002D6B88 /* itemInputController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = itemInputController.xib; path = Classes/itemInputController.xib; sourceTree = "<group>"; };
 		3BF2436311EF76F300016791 /* blueBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueBlackSegment.png; sourceTree = "<group>"; };
 		3BF2436411EF76F300016791 /* grayBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayBlackSegment.png; sourceTree = "<group>"; };
 		3BF243CB11EFB24000016791 /* NUBICSelectableTimerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NUBICSelectableTimerButton.h; sourceTree = "<group>"; };
@@ -75,6 +80,8 @@
 				3B7D936B11FE1F590064BABF /* RootViewController.m */,
 				3BF243CB11EFB24000016791 /* NUBICSelectableTimerButton.h */,
 				3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */,
+				3B98DC1111FF2E76002D6B88 /* itemInputController.h */,
+				3B98DC1211FF2E76002D6B88 /* itemInputController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -116,6 +123,7 @@
 				3BF2436411EF76F300016791 /* grayBlackSegment.png */,
 				2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */,
 				3B7D936D11FE1F620064BABF /* RootViewController.xib */,
+				3B98DC1311FF2E76002D6B88 /* itemInputController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* timeFlow-Info.plist */,
 			);
@@ -183,6 +191,7 @@
 				3BF2436511EF76F300016791 /* blueBlackSegment.png in Resources */,
 				3BF2436611EF76F300016791 /* grayBlackSegment.png in Resources */,
 				3B7D936E11FE1F620064BABF /* RootViewController.xib in Resources */,
+				3B98DC1511FF2E76002D6B88 /* itemInputController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +208,7 @@
 				3BF243CD11EFB24000016791 /* NUBICSelectableTimerButton.m in Sources */,
 				3B7D936C11FE1F590064BABF /* RootViewController.m in Sources */,
 				3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */,
+				3B98DC1411FF2E76002D6B88 /* itemInputController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "itemInputController.h"
 
 @interface RootViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
+
+	itemInputController *inputController;
 
 @private
     NSFetchedResultsController *fetchedResultsController_;
