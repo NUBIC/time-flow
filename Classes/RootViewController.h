@@ -10,16 +10,20 @@
 #import <CoreData/CoreData.h>
 #import "itemInputController.h"
 
-@interface RootViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
 
+@interface RootViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate> {
+	// http://stackoverflow.com/questions/1664724/objective-c-double-delegate-protocol	
 	itemInputController *inputController;
 
 @private
-    NSFetchedResultsController *fetchedResultsController_;
+    Boolean changeIsUserDriven;
+	NSFetchedResultsController *fetchedResultsController_;
     NSManagedObjectContext *managedObjectContext_;
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
 @end

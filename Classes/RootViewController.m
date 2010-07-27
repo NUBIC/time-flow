@@ -8,12 +8,6 @@
 
 #import "RootViewController.h"
 
-
-@interface RootViewController ()
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-@end
-
-
 @implementation RootViewController
 
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
@@ -91,9 +85,15 @@
 		NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
 		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
 		
+		
+		NSArray *items = [self.fetchedResultsController fetchedObjects];
+		
 		// If appropriate, configure the new managed object.
 		[newManagedObject setValue:item forKey:@"groupTitle"];
+//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
+		[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
 		
+		NSLog(@"insert at count %i", [items count]);
 		// Save the context.
 		NSError *error = nil;
 		if (![context save:&error]) {
@@ -175,10 +175,50 @@
 
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // The table view should not be re-orderable.
-    return NO;
+    // The table view should be re-orderable.
+    return YES;
 }
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+	changeIsUserDriven = YES;
+	
+	NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+	NSMutableArray *items = [[self.fetchedResultsController fetchedObjects] mutableCopy];
+	
+	// Grab the item we're moving.
+	NSManagedObject *item = [[self fetchedResultsController] objectAtIndexPath:sourceIndexPath];
+	
+	// Remove the object we're moving from the array.
+	[items removeObject:item];
+	// Now re-insert it at the destination.
+	[items insertObject:item atIndex:[destinationIndexPath row]];
+	
+	// All of the objects are now in their correct order. Update each
+	// object's groupOrder field by iterating through the array.
+	int i = 0;
+	for (NSManagedObject *managedObject in items)
+	{
+		[managedObject setValue:[NSNumber numberWithInt:i] forKey:@"displayOrder"];
+		NSLog(@"Updated %@ to %i", managedObject, i);
+		i++;
+	}	
 
+	// Save the context.
+	NSError *error = nil;
+	if (![context save:&error]) {
+		/*
+		 Replace this implementation with code to handle the error appropriately.
+		 
+		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+		 */
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}
+	
+	[items release], items = nil;
+	
+	changeIsUserDriven = NO;
+
+}
 
 #pragma mark -
 #pragma mark Table view delegate
@@ -218,7 +258,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"groupTitle" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -254,22 +294,27 @@
 
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
+	if(!changeIsUserDriven){
+		[self.tableView beginUpdates];
+	}
 }
 
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
+	if(!changeIsUserDriven){
+		NSLog(@"didChangeSection");
+		switch(type) {
+			case NSFetchedResultsChangeInsert:
+				[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+				break;
+				
+			case NSFetchedResultsChangeDelete:
+				[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+				break;
+		}
+	}
 }
 
 
@@ -277,32 +322,39 @@
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     
-    UITableView *tableView = self.tableView;
-    
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
+	if(!changeIsUserDriven){
+		NSLog(@"didChangeObject");
+		UITableView *tableView = self.tableView;
+		
+		switch(type) {
+				
+			case NSFetchedResultsChangeInsert:
+				[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+				break;
+				
+			case NSFetchedResultsChangeDelete:
+				[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+				break;
+				
+			case NSFetchedResultsChangeUpdate:
+				[self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+				break;
+				
+			case NSFetchedResultsChangeMove:
+				[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+				[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
+				break;
+		}
+	}
+
 }
 
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
+	if(!changeIsUserDriven){
+		NSLog(@"controllerDidChangeContent");
+		[self.tableView endUpdates];
+	}
 }
 
 
