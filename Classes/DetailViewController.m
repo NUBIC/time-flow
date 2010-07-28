@@ -30,7 +30,6 @@
 	self.navigationItem.title = [[self.timerGroup valueForKey:@"groupTitle"] description];
 
     [addButton release];
-	
 }
 
 
@@ -63,7 +62,8 @@
 */
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    
+//  NSLog(@"configureCell atIndexPath %@", indexPath);
+//	NSLog(@"results %@", [self.fetchedResultsController fetchedObjects]);
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [[managedObject valueForKey:@"timerTitle"] description];
 }
@@ -93,8 +93,10 @@
 		[newManagedObject setValue:item forKey:@"timerTitle"];
 		//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
 		[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
+		[newManagedObject setValue:self.timerGroup forKey:@"timerGroup"];
 		
-		NSLog(@"insert at count %i", [items count]);
+//		NSLog(@"inserted %@", newManagedObject);
+//		NSLog(@"insert at %i", [items count]);
 		// Save the context.
 		NSError *error = nil;
 		if (![context save:&error]) {
@@ -245,7 +247,9 @@
     if (fetchedResultsController_ != nil) {
         return fetchedResultsController_;
     }
-    
+//	NSLog(@"fetchedResultsController");
+//	NSLog(@"timerGroup %@", self.timerGroup);
+
     /*
      Set up the fetched results controller.
 	 */
@@ -258,6 +262,11 @@
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
+	// http://iphoneincubator.com/blog/data-management/delete-the-nsfetchedresultscontroller-cache-before-changing-the-nspredicate/comment-page-1
+	[NSFetchedResultsController deleteCacheWithName:nil];  
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"timerGroup == %@", self.timerGroup];
+	[fetchRequest setPredicate:predicate];
+	
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
@@ -275,6 +284,8 @@
     [sortDescriptor release];
     [sortDescriptors release];
     
+//	NSLog(@"fetchRequest %@", fetchRequest);
+	
     NSError *error = nil;
     if (![fetchedResultsController_ performFetch:&error]) {
         /*
@@ -305,7 +316,7 @@
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
 	if(!changeIsUserDriven){
-		NSLog(@"didChangeSection");
+//		NSLog(@"didChangeSection");
 		switch(type) {
 			case NSFetchedResultsChangeInsert:
 				[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
@@ -324,7 +335,7 @@
       newIndexPath:(NSIndexPath *)newIndexPath {
     
 	if(!changeIsUserDriven){
-		NSLog(@"didChangeObject");
+//		NSLog(@"didChangeObject");
 		UITableView *tableView = self.tableView;
 		
 		switch(type) {
@@ -353,7 +364,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	if(!changeIsUserDriven){
-		NSLog(@"controllerDidChangeContent");
+//		NSLog(@"controllerDidChangeContent");
 		[self.tableView endUpdates];
 	}
 }
