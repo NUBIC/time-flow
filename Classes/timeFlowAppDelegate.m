@@ -7,13 +7,11 @@
 //
 
 #import "timeFlowAppDelegate.h"
-//#import "timeFlowViewController.h"
-#import "RootViewController.h"
 
 @implementation timeFlowAppDelegate
 
 @synthesize window;
-//@synthesize viewController;
+@synthesize viewController;
 @synthesize tabBarController;
 @synthesize navigationController;
 
@@ -25,6 +23,7 @@
     
     RootViewController *rootViewController = (RootViewController *)[navigationController topViewController];
     rootViewController.managedObjectContext = self.managedObjectContext;
+	viewController.managedObjectContext = self.managedObjectContext;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    

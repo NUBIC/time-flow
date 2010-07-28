@@ -11,6 +11,8 @@
 
 @implementation timeFlowViewController
 
+@synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
+
 #pragma mark -
 #pragma mark Constants
 
@@ -37,8 +39,6 @@
 - (void)loadView {
 }
 */
-
-
 
 #pragma mark -
 #pragma mark Event responsders
@@ -171,139 +171,126 @@
 
 
 #pragma mark -
-#pragma mark View Controller Configuration
+#pragma mark Fetched results controller
 
+- (NSFetchedResultsController *)fetchedResultsController {
+    
+    if (fetchedResultsController_ != nil) {
+        return fetchedResultsController_;
+    }
+    
+    /*
+     Set up the fetched results controller.
+	 */
+    // Create the fetch request for the entity.
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"TimerGroup" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
+    aFetchedResultsController.delegate = self;
+    self.fetchedResultsController = aFetchedResultsController;
+    
+    [aFetchedResultsController release];
+    [fetchRequest release];
+    [sortDescriptor release];
+    [sortDescriptors release];
+    
+    NSError *error = nil;
+    if (![fetchedResultsController_ performFetch:&error]) {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+         */
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return fetchedResultsController_;
+}    
+
+- (void) populateTimers {
+	NSArray *groups = [self.fetchedResultsController fetchedObjects];
+	int i = 0;
+	NSManagedObject *group;
+	for(group in groups){
+		[super.view addSubview:[self labelForBar:i withText:[[group valueForKey:@"groupTitle"] description]]];
+		UIToolbar *bar = [self barAtIndex:i];
+		[super.view addSubview:bar];
+		i++;
+
+		NSMutableArray *buttons = [[NSMutableArray alloc] init];
+		NSManagedObject *timer;
+		for(timer in [group valueForKey:@"timers"]){
+			[buttons addObject:[self toggleButtonWithTitle:[[timer valueForKey:@"timerTitle"] description]]];
+		}
+		[bar setItems:buttons animated:NO];	
+	}
+}
+
+#pragma mark -
+#pragma mark View lifecycle
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-										  
+	
 	// start the clock
 	[self startClockTimer];
-	
-	// set up tool bar
-	[super.view addSubview:[self labelForBar:0 withText:@"Location"]];
-	UIToolbar *lBar = [self barAtIndex:0];
-	[super.view addSubview: lBar];
-	
-	[super.view addSubview:[self labelForBar:1 withText:@"Communication: Face-to-face"]];
-	UIToolbar *cfBar = [self barAtIndex:1];
-	[super.view addSubview: cfBar];
-
-	[super.view addSubview:[self labelForBar:2 withText:@"Communication: Phone"]];
-	UIToolbar *cpBar = [self barAtIndex:2];
-	[super.view addSubview: cpBar];
-
-	[super.view addSubview:[self labelForBar:3 withText:@"Communication: Page"]];
-	UIToolbar *cgBar = [self barAtIndex:3];
-	[super.view addSubview: cgBar];
-
-	[super.view addSubview:[self labelForBar:4 withText:@"Bedside care"]];
-	UIToolbar *bcBar = [self barAtIndex:4];
-	[super.view addSubview: bcBar];
-	
-	[super.view addSubview:[self labelForBar:5 withText:@"Documents: EMR"]];
-	UIToolbar *deBar = [self barAtIndex:5];
-	[super.view addSubview: deBar];
-
-	[super.view addSubview:[self labelForBar:6 withText:@"Documents: Paper"]];
-	UIToolbar *dpBar = [self barAtIndex:6];
-	[super.view addSubview: dpBar];
-
-	[super.view addSubview:[self labelForBar:7 withText:@"Indirect Care"]];
-	UIToolbar *icBar = [self barAtIndex:7];
-	[super.view addSubview: icBar];
-	
-	// titles
-	NSArray *lButtons = [NSArray arrayWithObjects:
-						   [self toggleButtonWithTitle:@"In room"],
-						   [self toggleButtonWithTitle:@"Out of room"],
-						   [self toggleButtonWithTitle:@"Nursing station"],
-						   [self toggleButtonWithTitle:@"Rounds"],
-						   [self toggleButtonWithTitle:@"Roadtrip"],
-						   [self toggleButtonWithTitle:@"Breaks"],
-						   [self toggleButtonWithTitle:@"Personal"],
-						   nil];
-	
-	NSArray *cfButtons = [NSArray arrayWithObjects:
-						   [self toggleButtonWithTitle:@"Nurse"],
-						   [self toggleButtonWithTitle:@"Doctor"],
-						   [self toggleButtonWithTitle:@"Ancillary"],
-						   [self toggleButtonWithTitle:@"Non-Clinical Staff"],
-						   [self toggleButtonWithTitle:@"Family"],
-						   [self toggleButtonWithTitle:@"Patient"],
-						  nil];
-
-	NSArray *cpButtons = [NSArray arrayWithObjects:
-						  [self toggleButtonWithTitle:@"Nurse"],
-						  [self toggleButtonWithTitle:@"Doctor"],
-						  [self toggleButtonWithTitle:@"Ancillary"],
-						  [self toggleButtonWithTitle:@"Non-Clinical Staff"],
-						  [self toggleButtonWithTitle:@"Family"],
-						  nil];
-
-	NSArray *cgButtons = [NSArray arrayWithObjects:
-						   [self toggleButtonWithTitle:@"Nurse"],
-						   [self toggleButtonWithTitle:@"Doctor"],
-						   [self toggleButtonWithTitle:@"Ancillary"],
-						   [self toggleButtonWithTitle:@"Non-Clinical Staff"],
-						  nil];
-	
-	NSArray *bcButtons = [NSArray arrayWithObjects:
-						   [self toggleButtonWithTitle:@"Hands-On"],
-						   [self toggleButtonWithTitle:@"Non-Contact"],
-						   [self toggleButtonWithTitle:@"Assessment"],
-						   [self toggleButtonWithTitle:@"Other"],
-						  nil];
-	
-	NSArray *deButtons = [NSArray arrayWithObjects:
-						   [self toggleButtonWithTitle:@"MAR"],
-						   [self toggleButtonWithTitle:@"To-Do/PAL"],
-						   [self toggleButtonWithTitle:@"Orders"],
-						   [self toggleButtonWithTitle:@"Pt Assessment"],
-						   [self toggleButtonWithTitle:@"Flow"],
-						   [self toggleButtonWithTitle:@"Review"],
-						   [self toggleButtonWithTitle:@"Waiting"],
-						   [self toggleButtonWithTitle:@"Other"],
-						  nil];
-	
-	NSArray *dpButtons = [NSArray arrayWithObjects:
-						   [self toggleButtonWithTitle:@"Flow"],
-						   [self toggleButtonWithTitle:@"CVVH"],
-						   [self toggleButtonWithTitle:@"Rounding"],
-						   [self toggleButtonWithTitle:@"Review"],
-						   [self toggleButtonWithTitle:@"Other"],
-						  nil];
-
-	NSArray *icButtons = [NSArray arrayWithObjects:
-						   [self toggleButtonWithTitle:@"Tele"],
-						   [self toggleButtonWithTitle:@"Supply Gathering"],
-						   [self toggleButtonWithTitle:@"Drug Gathering"],
-						   [self toggleButtonWithTitle:@"Person Finding"],
-						   [self toggleButtonWithTitle:@"Other"],
-						   [self toggleButtonWithTitle:@"Internet"],
-						  nil];
-	
-	// fill buttons array
-	[lBar setItems:lButtons animated:NO ];
-	[cfBar setItems:cfButtons animated:NO ];
-	[cpBar setItems:cpButtons animated:NO ];
-	[cgBar setItems:cgButtons animated:NO ];
-	[bcBar setItems:bcButtons animated:NO ];
-	[deBar setItems:deButtons animated:NO ];
-	[dpBar setItems:dpButtons animated:NO ];
-	[icBar setItems:icButtons animated:NO ];
-
+		
 	// running timers array
 	runningTimers = [[NSMutableArray alloc] init];
 }
 
+// Implement viewWillAppear: to do additional setup before the view is presented.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+	// populate the timers
+	[self populateTimers];
 
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-// Return YES for supported orientations.
-return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+
+/*
+ - (void)viewDidAppear:(BOOL)animated {
+ [super viewDidAppear:animated];
+ }
+ */
+/*
+ - (void)viewWillDisappear:(BOOL)animated {
+ [super viewWillDisappear:animated];
+ }
+ */
+/*
+ - (void)viewDidDisappear:(BOOL)animated {
+ [super viewDidDisappear:animated];
+ }
+ */
+
+/*
+ // Override to allow orientations other than the default portrait orientation.
+ - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+ // Return YES for supported orientations.
+ return (interfaceOrientation == UIInterfaceOrientationPortrait);
+ }
+ */
+
+
+#pragma mark -
+#pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.

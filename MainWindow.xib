@@ -102,7 +102,7 @@
 							<bool key="IBUIMultipleTouchEnabled">YES</bool>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						</object>
-						<object class="IBUIToolbar" key="IBUIToolbar" id="220179547">
+						<object class="IBUIToolbar" key="IBUIToolbar" id="181826219">
 							<nil key="NSNextResponder"/>
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{0, 980}, {768, 44}}</string>
@@ -178,6 +178,14 @@
 					</object>
 					<int key="connectionID">22</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">viewController</string>
+						<reference key="source" ref="250404236"/>
+						<reference key="destination" ref="38545839"/>
+					</object>
+					<int key="connectionID">25</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -248,7 +256,7 @@
 							<reference ref="637332444"/>
 							<reference ref="959496080"/>
 							<reference ref="592567161"/>
-							<reference ref="220179547"/>
+							<reference ref="181826219"/>
 						</object>
 						<reference key="parent" ref="893231683"/>
 					</object>
@@ -278,7 +286,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">24</int>
-						<reference key="object" ref="220179547"/>
+						<reference key="object" ref="181826219"/>
 						<reference key="parent" ref="283111409"/>
 					</object>
 				</object>
@@ -310,7 +318,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIApplication</string>
 					<string>UIResponder</string>
-					<string>{{304, 246}, {768, 1024}}</string>
+					<string>{{1114, 246}, {768, 1024}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>timeFlowViewController</string>
@@ -344,7 +352,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">24</int>
+			<int key="maxID">25</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -366,12 +374,14 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>navigationController</string>
 							<string>tabBarController</string>
+							<string>viewController</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UINavigationController</string>
 							<string>UITabBarController</string>
+							<string>timeFlowViewController</string>
 							<string>UIWindow</string>
 						</object>
 					</object>
@@ -381,6 +391,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>navigationController</string>
 							<string>tabBarController</string>
+							<string>viewController</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -392,6 +403,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">tabBarController</string>
 								<string key="candidateClassName">UITabBarController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">viewController</string>
+								<string key="candidateClassName">timeFlowViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">window</string>

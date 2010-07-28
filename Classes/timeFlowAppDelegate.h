@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "timeFlowViewController.h"
+#import "RootViewController.h"
+
 
 //@class timeFlowViewController;
 
 @interface timeFlowAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-//    timeFlowViewController *viewController;
+    timeFlowViewController *viewController;
 	UITabBarController *tabBarController;
 	UINavigationController *navigationController;
 
@@ -24,7 +27,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-//@property (nonatomic, retain) IBOutlet timeFlowViewController *viewController;
+@property (nonatomic, retain) IBOutlet timeFlowViewController *viewController;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 

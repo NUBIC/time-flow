@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+//	NSLog(@"RootViewController moc: %@", self.managedObjectContext);
     // Set up the edit and add buttons.
     [self setToolbarItems:[NSArray arrayWithObject:self.editButtonItem]];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
