@@ -16,13 +16,13 @@
 #pragma mark -
 #pragma mark Constants
 
-#define pageTop			65
+#define pageTop			49//65
 #define barHeight		44
 #define barWidth		768
 #define labelHeight		21
 #define labelWidth		748
 #define labelLeftPad	20
-#define rowPad			10
+#define rowPad			5 //10
 
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -112,6 +112,15 @@
 		[(NUBICSelectableTimerButton*)sender setTimeText:@""];
 		[runningTimers removeObject: sender];
 	}
+//	NSLog(@"badge: %i", [runningTimers count]);
+	if ([runningTimers count] > 0) {
+		self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i", [runningTimers count]];
+	}else {
+		self.tabBarItem.badgeValue = nil;
+	}
+
+	
+	
 }
 
 #pragma mark -
@@ -197,6 +206,9 @@
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
+	// http://iphoneincubator.com/blog/data-management/delete-the-nsfetchedresultscontroller-cache-before-changing-the-nspredicate/comment-page-1
+	[NSFetchedResultsController deleteCacheWithName:nil];  
+
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
@@ -223,6 +235,7 @@
 }    
 
 - (void) populateTimers {
+	self.fetchedResultsController = nil;
 	NSArray *groups = [self.fetchedResultsController fetchedObjects];
 	int i = 0;
 	NSManagedObject *group;
@@ -234,10 +247,12 @@
 
 		NSMutableArray *buttons = [[NSMutableArray alloc] init];
 		NSManagedObject *timer;
-		for(timer in [group valueForKey:@"timers"]){
+		NSSortDescriptor *byDisplayOrder = [[[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES] autorelease];
+		NSArray *sortDescriptors = [NSArray arrayWithObjects:byDisplayOrder, nil];
+		for(timer in [[[group valueForKey:@"timers"] allObjects] sortedArrayUsingDescriptors:sortDescriptors]){
 			[buttons addObject:[self toggleButtonWithTitle:[[timer valueForKey:@"timerTitle"] description]]];
 		}
-		[bar setItems:buttons animated:NO];	
+		[bar setItems:buttons animated:NO];
 	}
 }
 
@@ -250,17 +265,18 @@
 	
 	// start the clock
 	[self startClockTimer];
-		
+	
+	// populate the timers
+	[self populateTimers];
+	
 	// running timers array
 	runningTimers = [[NSMutableArray alloc] init];
 }
 
 // Implement viewWillAppear: to do additional setup before the view is presented.
 - (void)viewWillAppear:(BOOL)animated {
+//	NSLog(@"timeFlowViewController viewWillAppear");
     [super viewWillAppear:animated];
-	// populate the timers
-	[self populateTimers];
-
 }
 
 
