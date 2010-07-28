@@ -1,40 +1,44 @@
 //
-//  RootViewController.m
-//  coredataproject
+//  DetailViewController.m
+//  timeFlow
 //
-//  Created by Mark Yoon on 7/23/2010.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
+//  Created by Mark Yoon on 7/28/2010.
+//  Copyright 2010 NUBIC. All rights reserved.
 //
 
-#import "RootViewController.h"
 #import "DetailViewController.h"
 
-@implementation RootViewController
 
-@synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
+@implementation DetailViewController
+
+@synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_, timerGroup;
 
 
 #pragma mark -
 #pragma mark View lifecycle
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+	
     // Set up the edit and add buttons.
-    [self setToolbarItems:[NSArray arrayWithObject:self.editButtonItem]];
+	[self setToolbarItems:[NSArray arrayWithObject:self.editButtonItem]];    
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
     self.navigationItem.rightBarButtonItem = addButton;
-	self.navigationItem.title = @"Groups";
+//	self.navigationItem.title = @"Timers";
+//	self.navigationItem.backBarButtonItem.title = [[self.timerGroup valueForKey:@"groupTitle"] description];
+	self.navigationItem.title = [[self.timerGroup valueForKey:@"groupTitle"] description];
+
     [addButton release];
+	
 }
 
 
-// Implement viewWillAppear: to do additional setup before the view is presented.
+/*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 }
-
-
+*/
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -52,20 +56,17 @@
 */
 
 /*
- // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    // Override to allow orientations other than the default portrait orientation.
+    return YES;
 }
- */
-
+*/
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[managedObject valueForKey:@"groupTitle"] description];
+    cell.textLabel.text = [[managedObject valueForKey:@"timerTitle"] description];
 }
-
 
 #pragma mark -
 #pragma mark Add a new object
@@ -89,8 +90,8 @@
 		NSArray *items = [self.fetchedResultsController fetchedObjects];
 		
 		// If appropriate, configure the new managed object.
-		[newManagedObject setValue:item forKey:@"groupTitle"];
-//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
+		[newManagedObject setValue:item forKey:@"timerTitle"];
+		//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
 		[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
 		
 		NSLog(@"insert at count %i", [items count]);
@@ -108,7 +109,6 @@
 	}
 	[self dismissModalViewControllerAnimated:YES];
 }
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -143,12 +143,12 @@
 
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 
 // Override to support editing the table view.
@@ -173,11 +173,13 @@
     }   
 }
 
-
+// Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     // The table view should be re-orderable.
     return YES;
 }
+
+// Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
 	changeIsUserDriven = YES;
 	
@@ -201,7 +203,7 @@
 		NSLog(@"Updated %@ to %i", managedObject, i);
 		i++;
 	}	
-
+	
 	// Save the context.
 	NSError *error = nil;
 	if (![context save:&error]) {
@@ -217,25 +219,23 @@
 	[items release], items = nil;
 	
 	changeIsUserDriven = NO;
-
+	
 }
+
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here -- for example, create and push another view controller.
-	DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
-	NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-	detailViewController.managedObjectContext = self.managedObjectContext;
-	detailViewController.timerGroup = selectedObject;
-	
-	// ...
-	// Pass the selected object to the new view controller.
-	[self.navigationController pushViewController:detailViewController animated:YES];
-	[detailViewController release];
+    // Navigation logic may go here. Create and push another view controller.
+	/*
+	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+	 [self.navigationController pushViewController:detailViewController animated:YES];
+	 [detailViewController release];
+	 */
 }
-
 
 #pragma mark -
 #pragma mark Fetched results controller
@@ -248,11 +248,11 @@
     
     /*
      Set up the fetched results controller.
-    */
+	 */
     // Create the fetch request for the entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"TimerGroup" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Timer" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Set the batch size to a suitable number.
@@ -347,7 +347,7 @@
 				break;
 		}
 	}
-
+	
 }
 
 
@@ -360,13 +360,15 @@
 
 
 /*
-// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
+ // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
  
  - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
-}
+ // In the simplest, most efficient, case, reload the table view.
+ [self.tableView reloadData];
+ }
  */
+
+
 
 
 #pragma mark -
@@ -379,7 +381,6 @@
     // Relinquish ownership any cached data, images, etc that aren't in use.
 }
 
-
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
@@ -387,7 +388,7 @@
 
 
 - (void)dealloc {
-    [fetchedResultsController_ release];
+	[fetchedResultsController_ release];
     [managedObjectContext_ release];
     [super dealloc];
 }
