@@ -56,7 +56,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUINavigationItem" id="584144711">
 								<reference key="IBUINavigationBar" ref="820440886"/>
-								<string key="IBUITitle">timeFlow: ICU Nursing</string>
+								<string key="IBUITitle">timeFlow</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
 						</object>
@@ -149,7 +149,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>timeFlowViewController</string>
 					<string>UIResponder</string>
-					<string>{{329, 336}, {768, 1024}}</string>
+					<string>{{1114, 336}, {768, 1024}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -188,17 +188,6 @@
 						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">toggleTouchUpInside:</string>
 							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">logbox</string>
-						<string key="NS.object.0">UILabel</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">logbox</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">logbox</string>
-							<string key="candidateClassName">UILabel</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -342,14 +331,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UIBarItem.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UILabel</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">UIKit.framework/Headers/UILabel.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

@@ -17,6 +17,9 @@
 		3B49CE6111ECF63E0041CE70 /* timeFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */; };
 		3B564A1A1200696F00ABF53F /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B564A181200696F00ABF53F /* DetailViewController.m */; };
 		3B564A1B1200696F00ABF53F /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B564A191200696F00ABF53F /* DetailViewController.xib */; };
+		3B564CB31200D9F800ABF53F /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B564CB21200D9F800ABF53F /* timer.png */; };
+		3B564CDE1200DFDF00ABF53F /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B564CDD1200DFDF00ABF53F /* gear.png */; };
+		3B564CE51200E04700ABF53F /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B564CE41200E04700ABF53F /* Icon-72.png */; };
 		3B7D936C11FE1F590064BABF /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D936B11FE1F590064BABF /* RootViewController.m */; };
 		3B7D936E11FE1F620064BABF /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D936D11FE1F620064BABF /* RootViewController.xib */; };
 		3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D938F11FE20C30064BABF /* CoreData.framework */; };
@@ -44,6 +47,9 @@
 		3B564A171200696F00ABF53F /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		3B564A181200696F00ABF53F /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		3B564A191200696F00ABF53F /* DetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DetailViewController.xib; path = Classes/DetailViewController.xib; sourceTree = "<group>"; };
+		3B564CB21200D9F800ABF53F /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
+		3B564CDD1200DFDF00ABF53F /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
+		3B564CE41200E04700ABF53F /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		3B7D936A11FE1F590064BABF /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		3B7D936B11FE1F590064BABF /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		3B7D936D11FE1F620064BABF /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
@@ -126,8 +132,11 @@
 			isa = PBXGroup;
 			children = (
 				3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */,
+				3B564CE41200E04700ABF53F /* Icon-72.png */,
 				3BF2436311EF76F300016791 /* blueBlackSegment.png */,
 				3BF2436411EF76F300016791 /* grayBlackSegment.png */,
+				3B564CDD1200DFDF00ABF53F /* gear.png */,
+				3B564CB21200D9F800ABF53F /* timer.png */,
 				2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */,
 				3B7D936D11FE1F620064BABF /* RootViewController.xib */,
 				3B564A191200696F00ABF53F /* DetailViewController.xib */,
@@ -201,6 +210,9 @@
 				3B7D936E11FE1F620064BABF /* RootViewController.xib in Resources */,
 				3B98DC1511FF2E76002D6B88 /* itemInputController.xib in Resources */,
 				3B564A1B1200696F00ABF53F /* DetailViewController.xib in Resources */,
+				3B564CB31200D9F800ABF53F /* timer.png in Resources */,
+				3B564CDE1200DFDF00ABF53F /* gear.png in Resources */,
+				3B564CE51200E04700ABF53F /* Icon-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
