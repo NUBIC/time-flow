@@ -8,6 +8,7 @@
 
 #import "timeFlowViewController.h"
 #import "NUBICSelectableTimerButton.h"
+#import "NUBICTimerBar.h"
 
 @implementation timeFlowViewController
 
@@ -16,13 +17,9 @@
 #pragma mark -
 #pragma mark Constants
 
-#define pageTop			49//65
-#define barHeight		44
+#define pageTop			44
+#define barHeight		0.0
 #define barWidth		768
-#define labelHeight		21
-#define labelWidth		748
-#define labelLeftPad	20
-#define rowPad			5 //10
 
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -124,62 +121,6 @@
 }
 
 #pragma mark -
-#pragma mark View elements
-
-- (UIView *)labelForBar:(int)barIndex withText:(NSString *)text {
-//	NSLog(@"labelForBar %d %@", barIndex, text);
-/*
- Return an autoreleased label for the bar with index barIndex
- */
-
-    CGRect frame = CGRectMake(labelLeftPad, pageTop + ((labelHeight+barHeight+rowPad) * barIndex), labelWidth, labelHeight);
-	// alloc
-	UILabel *aLabel = [[UILabel alloc] initWithFrame:frame];
-    aLabel.textAlignment = UITextAlignmentLeft;
-	aLabel.textColor = [UIColor whiteColor];
-    aLabel.backgroundColor = [UIColor clearColor];
-    aLabel.font = [UIFont systemFontOfSize:17.0];
-    aLabel.userInteractionEnabled = NO;
-    aLabel.text = text;
-	// autorelease
-	[aLabel autorelease];
-    return aLabel;
-}
-
-- (UIToolbar *)barAtIndex:(int)barIndex {    
-//	NSLog(@"barAtIndex %d", barIndex);
-/*
- Return an autoreleased bar at index barIndex
- */
-
-	// alloc
-	UIToolbar *aBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, pageTop + labelHeight + ((labelHeight+barHeight+rowPad) * barIndex), barWidth, barHeight)];
-	aBar.barStyle = UIBarStyleBlackOpaque;
-	// autorelease
-	[aBar autorelease];
-    return aBar;
-}
-
-
-- (UIBarButtonItem *)toggleButtonWithTitle:(NSString *)title {
-//	NSLog(@"toggleButtonWithTitle %@", title);
-/*
- Return a autoreleased ui bar button item, with a custom view - nubic selectable timer button, with the given title
- */
-
-	// alloc
-	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title];
-	UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:aButton];
-	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-
-	// release and autorelease
-	[aButton release];
-	[item autorelease];
-	return item;
-}
-
-
-#pragma mark -
 #pragma mark Fetched results controller
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -234,25 +175,65 @@
     return fetchedResultsController_;
 }    
 
+
+#pragma mark -
+#pragma mark View elements
+
+- (NUBICSelectableTimerButton *)toggleButtonWithTitle:(NSString *)title {
+	//	NSLog(@"toggleButtonWithTitle %@", title);
+	/*
+	 Return a autoreleased ui bar button item, with a custom view - nubic selectable timer button, with the given title
+	 */
+	
+	// alloc
+	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title];
+	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+	
+	// autorelease
+	[aButton autorelease];
+	return aButton;
+}
+
+//- (UIBarButtonItem *)toggleButtonWithTitle:(NSString *)title {
+////	NSLog(@"toggleButtonWithTitle %@", title);
+///*
+// Return a autoreleased ui bar button item, with a custom view - nubic selectable timer button, with the given title
+// */
+//
+//	// alloc
+//	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title];
+//	UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:aButton];
+//	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+//
+//	// release and autorelease
+//	[aButton release];
+//	[item autorelease];
+//	return item;
+//}
+
+
 - (void) populateTimers {
 	self.fetchedResultsController = nil;
 	NSArray *groups = [self.fetchedResultsController fetchedObjects];
 	int i = 0;
+	int y = pageTop;
 	NSManagedObject *group;
 	for(group in groups){
-		[super.view addSubview:[self labelForBar:i withText:[[group valueForKey:@"groupTitle"] description]]];
-		UIToolbar *bar = [self barAtIndex:i];
+		NUBICTimerBar *bar = [[NUBICTimerBar alloc] initWithFrame:CGRectMake(0.0, y, barWidth, barHeight)
+															 text:[[group valueForKey:@"groupTitle"] description]];
 		[super.view addSubview:bar];
 		i++;
 
-		NSMutableArray *buttons = [[NSMutableArray alloc] init];
 		NSManagedObject *timer;
 		NSSortDescriptor *byDisplayOrder = [[[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES] autorelease];
 		NSArray *sortDescriptors = [NSArray arrayWithObjects:byDisplayOrder, nil];
 		for(timer in [[[group valueForKey:@"timers"] allObjects] sortedArrayUsingDescriptors:sortDescriptors]){
-			[buttons addObject:[self toggleButtonWithTitle:[[timer valueForKey:@"timerTitle"] description]]];
+			[bar addSubview:[self toggleButtonWithTitle:[[timer valueForKey:@"timerTitle"] description]]];
 		}
-		[bar setItems:buttons animated:NO];
+		[bar layoutSubviews];
+		NSLog(@"bar.frame.origin.y %f, bar.frame.size.height %f", bar.frame.origin.y, bar.frame.size.height);
+		y += bar.frame.size.height;
+		[bar release];
 	}
 }
 

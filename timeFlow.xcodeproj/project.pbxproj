@@ -14,6 +14,7 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		2899E5220DE3E06400AC0155 /* timeFlowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		3B112DEA120227C300478454 /* NUBICTimerBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B112DE9120227C300478454 /* NUBICTimerBar.m */; };
 		3B49CE6111ECF63E0041CE70 /* timeFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */; };
 		3B564A1A1200696F00ABF53F /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B564A181200696F00ABF53F /* DetailViewController.m */; };
 		3B564A1B1200696F00ABF53F /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B564A191200696F00ABF53F /* DetailViewController.xib */; };
@@ -43,6 +44,8 @@
 		28D7ACF60DDB3853001CB0EB /* timeFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeFlowViewController.h; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* timeFlow_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeFlow_Prefix.pch; sourceTree = "<group>"; };
+		3B112DE8120227C300478454 /* NUBICTimerBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NUBICTimerBar.h; sourceTree = "<group>"; };
+		3B112DE9120227C300478454 /* NUBICTimerBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NUBICTimerBar.m; sourceTree = "<group>"; };
 		3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timeFlowViewController.m; sourceTree = "<group>"; };
 		3B564A171200696F00ABF53F /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		3B564A181200696F00ABF53F /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
@@ -95,6 +98,8 @@
 				3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */,
 				3B98DC1111FF2E76002D6B88 /* itemInputController.h */,
 				3B98DC1211FF2E76002D6B88 /* itemInputController.m */,
+				3B112DE8120227C300478454 /* NUBICTimerBar.h */,
+				3B112DE9120227C300478454 /* NUBICTimerBar.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -231,6 +236,7 @@
 				3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */,
 				3B98DC1411FF2E76002D6B88 /* itemInputController.m in Sources */,
 				3B564A1A1200696F00ABF53F /* DetailViewController.m in Sources */,
+				3B112DEA120227C300478454 /* NUBICTimerBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
