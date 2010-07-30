@@ -32,6 +32,7 @@
 // Implement viewWillAppear: to do additional setup before the view is presented.
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+//	self.tableView.allowsSelectionDuringEditing = YES;
 }
 
 
@@ -224,16 +225,21 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here -- for example, create and push another view controller.
-	DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
-	NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-	detailViewController.managedObjectContext = self.managedObjectContext;
-	detailViewController.timerGroup = selectedObject;
+    if (tableView.editing) {
+		NSLog(@"didSelectRowAtIndexPath while editing");
+	}else {
+		// Navigation logic may go here -- for example, create and push another view controller.
+		DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+		detailViewController.managedObjectContext = self.managedObjectContext;
+		detailViewController.timerGroup = selectedObject;
+
+		// ...
+		// Pass the selected object to the new view controller.
+		[self.navigationController pushViewController:detailViewController animated:YES];
+		[detailViewController release];
 	
-	// ...
-	// Pass the selected object to the new view controller.
-	[self.navigationController pushViewController:detailViewController animated:YES];
-	[detailViewController release];
+	}
 }
 
 

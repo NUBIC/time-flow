@@ -21,6 +21,7 @@
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 
 -(IBAction) toggleTouchUpInside:(id)sender;
 

@@ -12,12 +12,12 @@
 
 @implementation timeFlowViewController
 
-@synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
+@synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_, scrollView;
 
 #pragma mark -
 #pragma mark Constants
 
-#define pageTop			44
+#define pageTop			0.0
 #define barHeight		0.0
 #define barWidth		768
 
@@ -221,7 +221,7 @@
 	for(group in groups){
 		NUBICTimerBar *bar = [[NUBICTimerBar alloc] initWithFrame:CGRectMake(0.0, y, barWidth, barHeight)
 															 text:[[group valueForKey:@"groupTitle"] description]];
-		[super.view addSubview:bar];
+		[[self scrollView] addSubview:bar];
 		i++;
 
 		NSManagedObject *timer;
@@ -231,10 +231,11 @@
 			[bar addSubview:[self toggleButtonWithTitle:[[timer valueForKey:@"timerTitle"] description]]];
 		}
 		[bar layoutSubviews];
-		NSLog(@"bar.frame.origin.y %f, bar.frame.size.height %f", bar.frame.origin.y, bar.frame.size.height);
+//		NSLog(@"bar.frame.origin.y %f, bar.frame.size.height %f", bar.frame.origin.y, bar.frame.size.height);
 		y += bar.frame.size.height;
 		[bar release];
 	}
+	[self scrollView].contentSize = CGSizeMake(768.0, y);
 }
 
 #pragma mark -

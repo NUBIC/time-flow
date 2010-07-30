@@ -49,7 +49,7 @@
 */
 
 - (void) setItems:(NSArray *)buttons animated:(Boolean)animated {
-	NSLog(@"setItems");
+//	NSLog(@"setItems");
 	UIView *button;
 	for(button in buttons){
 		[self addSubview:button];
@@ -57,12 +57,12 @@
 }
 
 - (void)layoutSubviews {
-	NSLog(@"subviews: %@", self.subviews);
+//	NSLog(@"subviews: %@", self.subviews);
 	CGFloat x = _padding, y = _padding;
 	CGFloat maxX = 0, lastHeight = 0;
 	CGFloat maxWidth = self.frame.size.width - _padding*2;
 	for (UIView* subview in self.subviews) {
-		NSLog(@"x %f, y %f, maxX %f, lastHeight %f, maxWidth %f", x, y, maxX, lastHeight, maxWidth);
+//		NSLog(@"x %f, y %f, maxX %f, lastHeight %f, maxWidth %f", x, y, maxX, lastHeight, maxWidth);
 		if (x + subview.frame.size.width > maxWidth) {
 			x = _padding;
 			y += lastHeight + _spacing;
