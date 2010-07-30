@@ -20,7 +20,6 @@
 #pragma mark Application lifecycle
 
 - (void)awakeFromNib {    
-    
     RootViewController *rootViewController = (RootViewController *)[navigationController topViewController];
     rootViewController.managedObjectContext = self.managedObjectContext;
 	viewController.managedObjectContext = self.managedObjectContext;
