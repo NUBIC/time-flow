@@ -18,10 +18,11 @@
 }
 
 
-@property (retain) IBOutlet UITextField *textField;
-@property (retain) IBOutlet UINavigationItem *navItem;
+@property (nonatomic, retain) IBOutlet UITextField *textField;
+@property (nonatomic, retain) IBOutlet UINavigationItem *navItem;
+@property (nonatomic, retain) NSString *inputType;
+
 @property (assign) id<itemInputControllerDelegate> delegate;
-@property (retain) NSString *inputType;
 
 - (IBAction)doneButtonPressed:(id)sender;
 - (IBAction)cancelButtonPressed:(id)sender;

@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "itemInputController.h"
 
-@interface DetailViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate> {
+@interface DetailViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate, UISplitViewControllerDelegate> {
 	
 	itemInputController *inputController;
 	NSManagedObject *timerGroup;

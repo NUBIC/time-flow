@@ -10,27 +10,53 @@
 
 @implementation timeFlowAppDelegate
 
-@synthesize window;
-@synthesize viewController;
-@synthesize tabBarController;
-@synthesize navigationController;
+@synthesize window, tabBarController, timersViewController, setupSplitController, navigationController;
 
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (void)awakeFromNib {    
-    RootViewController *rootViewController = (RootViewController *)[navigationController topViewController];
-    rootViewController.managedObjectContext = self.managedObjectContext;
-	viewController.managedObjectContext = self.managedObjectContext;
+- (void)awakeFromNib {
+
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after app launch. 
-    // [window addSubview:viewController.view];
+	tabBarController = [[UITabBarController alloc] init];
+	tabBarController.delegate = self;
+	
+	// setup tabs
+	timersViewController = [[timeFlowViewController alloc] init];
+	timersViewController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Timers" image:[UIImage imageNamed:@"timer.png"] tag:0] autorelease];	
+	
+	setupSplitController = [[UISplitViewController alloc] init];
+	setupSplitController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Setup" image:[UIImage imageNamed:@"gear.png"] tag:0] autorelease];	
+	
+	// setup split view
+	[setupSplitController setHidesMasterViewInPortrait:NO];
+
+	// left pane
+	RootViewController *setupRootController = [[RootViewController alloc] init];
+	UINavigationController *setupNavigationController = [[UINavigationController alloc] initWithRootViewController:setupRootController];
+	setupNavigationController.toolbarHidden = NO;
+
+	// right pane (blank)
+	UIViewController *setupDetailController = [[UIViewController alloc] init];
+	setupDetailController.view = [[UIView alloc] init];
+	setupDetailController.view.backgroundColor = [UIColor whiteColor];
+
+	// core data
+	timersViewController.managedObjectContext = self.managedObjectContext;
+	setupRootController.managedObjectContext = self.managedObjectContext;
+
+	// add controllers to split view and tab bar
+	setupSplitController.viewControllers = [NSArray arrayWithObjects:setupNavigationController, setupDetailController, nil];
+	tabBarController.viewControllers = [NSArray arrayWithObjects:timersViewController, setupSplitController, nil];
+	
 	[window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
 	[UIApplication sharedApplication].idleTimerDisabled = YES;
+
 	return YES;
 }
 
@@ -80,9 +106,16 @@
 #pragma mark UITabBarControllerDelegate
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)tappedViewController {
-	NSLog(@"tab %@", tappedViewController);
+//	NSLog(@"tab %@", tappedViewController);
+	if ([[timersViewController runningTimers] count] > 0 && tappedViewController == setupSplitController) {
+		UIAlertView *timersAreRunning = [[UIAlertView alloc] initWithTitle:@"Timers running" message:@"Please stop all timers before setup" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		[timersAreRunning show];
+		return NO;
+	}else {
+		return YES;
+	}
+
 //	return tappedViewController != navigationController;
-	return true;
 }
 
 #pragma mark -
@@ -198,8 +231,10 @@
     [managedObjectModel_ release];
     [persistentStoreCoordinator_ release];
 	
-//    [viewController release];
+	[timersViewController release];
+	[setupSplitController release];
 	[tabBarController release];
+
     [window release];
     [super dealloc];
 }

@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "timeFlowViewController.h"
 #import "RootViewController.h"
+#import "DetailViewController.h"
 
 #define UIAppDelegate ((timeFlowAppDelegate *)[UIApplication sharedApplication].delegate)
 
@@ -17,9 +18,10 @@
 
 @interface timeFlowAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
     UIWindow *window;
-    timeFlowViewController *viewController;
+    timeFlowViewController *timersViewController;
 	UITabBarController *tabBarController;
 	UINavigationController *navigationController;
+	UISplitViewController *setupSplitController;
 
 @private
     NSManagedObjectContext *managedObjectContext_;
@@ -28,9 +30,10 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet timeFlowViewController *viewController;
+@property (nonatomic, retain) IBOutlet timeFlowViewController *timersViewController;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@property (nonatomic, retain) IBOutlet UISplitViewController *setupSplitController;
 
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;

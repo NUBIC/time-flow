@@ -24,7 +24,7 @@
     [self setToolbarItems:[NSArray arrayWithObject:self.editButtonItem]];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
     self.navigationItem.rightBarButtonItem = addButton;
-	self.navigationItem.title = @"Groups";
+	self.navigationItem.title = [NSString stringWithFormat:@"Groups (%d)", [[self.fetchedResultsController fetchedObjects] count]];
     [addButton release];
 }
 
@@ -65,7 +65,7 @@
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [[managedObject valueForKey:@"groupTitle"] description];
 	if ([[[managedObject valueForKey:@"timers"] allObjects] count] != 0) {
-		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} 
 	
 }
@@ -99,7 +99,7 @@
 //		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
 		[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
 		
-		NSLog(@"insert at count %i", [items count]);
+//		NSLog(@"insert at count %i", [items count]);
 		// Save the context.
 		NSError *error = nil;
 		if (![context save:&error]) {
@@ -151,7 +151,7 @@
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
-    return [UIAppDelegate.viewController.runningTimers count] == 0;
+    return [UIAppDelegate.timersViewController.runningTimers count] == 0;
 //	return YES;
 }
 
@@ -229,25 +229,34 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView.editing) {
+
+	if (tableView.editing) {
 		NSLog(@"didSelectRowAtIndexPath while editing");
 	}else {
-		// Navigation logic may go here -- for example, create and push another view controller.
-		DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+		// setup right pane
+		DetailViewController *detailViewController = [[DetailViewController alloc] init];
+		UINavigationController *setupDetailNavigationController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+		setupDetailNavigationController.toolbarHidden = NO;
+		
+		// passing in group, core data
 		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-		detailViewController.managedObjectContext = self.managedObjectContext;
 		detailViewController.timerGroup = selectedObject;
-
-		// ...
-		// Pass the selected object to the new view controller.
-		[self.navigationController pushViewController:detailViewController animated:YES];
+		detailViewController.managedObjectContext = self.managedObjectContext;
+		
+		UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
+		split.viewControllers = [[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], setupDetailNavigationController, nil];
+		
+//		[self.navigationController pushViewController:detailViewController animated:YES];
 		[detailViewController release];
+		[setupDetailNavigationController release];
 	
 	}
 }
+/*
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	[self tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
+ */
 
 
 #pragma mark -
@@ -366,9 +375,11 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	if(!changeIsUserDriven){
-		NSLog(@"controllerDidChangeContent");
+//		NSLog(@"controllerDidChangeContent");
+		
 		[self.tableView endUpdates];
 	}
+	self.navigationItem.title = [NSString stringWithFormat:@"Groups (%d)", [[self.fetchedResultsController fetchedObjects] count]];
 }
 
 

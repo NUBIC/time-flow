@@ -25,10 +25,10 @@
 	[self setToolbarItems:[NSArray arrayWithObject:self.editButtonItem]];    
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
     self.navigationItem.rightBarButtonItem = addButton;
-//	self.navigationItem.title = @"Timers";
-//	self.navigationItem.backBarButtonItem.title = [[self.timerGroup valueForKey:@"groupTitle"] description];
-	self.navigationItem.title = [[self.timerGroup valueForKey:@"groupTitle"] description];
 
+	if(self.timerGroup){
+		self.navigationItem.title = [NSString stringWithFormat:@"%@ Timers (%d)", [[self.timerGroup valueForKey:@"groupTitle"] description], [[self.fetchedResultsController fetchedObjects] count]];
+	}
     [addButton release];
 }
 
@@ -366,7 +366,9 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	if(!changeIsUserDriven){
 //		NSLog(@"controllerDidChangeContent");
+				self.navigationItem.title = [NSString stringWithFormat:@"%@ Timers (%d)", [[self.timerGroup valueForKey:@"groupTitle"] description], [[self.fetchedResultsController fetchedObjects] count]];
 		[self.tableView endUpdates];
+		
 	}
 }
 
