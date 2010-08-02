@@ -12,7 +12,7 @@
 
 @implementation timeFlowViewController
 
-@synthesize managedObjectContext=managedObjectContext_, scrollView, runningTimers;
+@synthesize managedObjectContext=managedObjectContext_, scrollView, runningTimers, timersChanged;
 
 #pragma mark -
 #pragma mark Constants
@@ -222,6 +222,9 @@
 	
 	// running timers array
 	runningTimers = [[NSMutableArray alloc] init];
+	
+	// populate the timers
+	[self populateTimers];
 }
 
 // Implement viewWillAppear: to do additional setup before the view is presented.
@@ -229,8 +232,11 @@
 //	NSLog(@"timeFlowViewController viewWillAppear");
     [super viewWillAppear:animated];
 
-	// populate the timers
-	[self populateTimers];
+	if (timersChanged) {
+		// populate the timers
+		[self populateTimers];
+		self.timersChanged = NO;
+	}
 }
 
 

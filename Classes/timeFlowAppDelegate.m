@@ -115,6 +115,9 @@
 		UIAlertView *timersAreRunning = [[UIAlertView alloc] initWithTitle:@"Timers running" message:@"Please stop all timers before setup" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 		[timersAreRunning show];
 		return NO;
+	}else if (tappedViewController == setupSplitController) {
+		timersViewController.timersChanged = YES;
+		return YES;
 	}else {
 		return YES;
 	}

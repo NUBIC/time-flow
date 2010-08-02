@@ -12,6 +12,7 @@
 @interface timeFlowViewController : UIViewController <NSFetchedResultsControllerDelegate> {
 	NSTimer *clockTimer;
 	NSMutableArray *runningTimers;
+	Boolean *timersChanged;
 
 @private
     NSManagedObjectContext *managedObjectContext_;
@@ -20,6 +21,8 @@
 @property (nonatomic, retain) NSMutableArray *runningTimers;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+
+@property (nonatomic, assign) Boolean *timersChanged;
 
 -(IBAction) toggleTouchUpInside:(id)sender;
 
