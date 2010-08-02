@@ -65,7 +65,7 @@
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [[managedObject valueForKey:@"groupTitle"] description];
 	if ([[[managedObject valueForKey:@"timers"] allObjects] count] != 0) {
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	} 
 	
 }
@@ -244,6 +244,9 @@
 		[detailViewController release];
 	
 	}
+}
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 
