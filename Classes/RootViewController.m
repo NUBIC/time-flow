@@ -8,11 +8,11 @@
 
 #import "RootViewController.h"
 #import "DetailViewController.h"
+#import "timeFlowAppDelegate.h"
 
 @implementation RootViewController
 
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
-
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -64,6 +64,10 @@
     
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [[managedObject valueForKey:@"groupTitle"] description];
+	if ([[[managedObject valueForKey:@"timers"] allObjects] count] != 0) {
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	} 
+	
 }
 
 
@@ -73,6 +77,8 @@
 - (void)insertNewObject {
 	inputController = [[itemInputController alloc] init];
 	inputController.delegate = self;
+	inputController.modalPresentationStyle = UIModalPresentationFormSheet;
+	inputController.inputType = @"Group";
 	[self presentModalViewController:inputController animated:YES];
 	[inputController release];
 }
@@ -142,13 +148,12 @@
 
 
 
-/*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
+    return [UIAppDelegate.viewController.runningTimers count] == 0;
+//	return YES;
 }
-*/
 
 
 // Override to support editing the table view.

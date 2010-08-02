@@ -12,7 +12,7 @@
 
 @implementation timeFlowViewController
 
-@synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_, scrollView;
+@synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_, scrollView, runningTimers;
 
 #pragma mark -
 #pragma mark Constants

@@ -15,7 +15,6 @@
 @synthesize tabBarController;
 @synthesize navigationController;
 
-
 #pragma mark -
 #pragma mark Application lifecycle
 
@@ -75,6 +74,15 @@
         } 
     }
 	
+}
+
+#pragma mark -
+#pragma mark UITabBarControllerDelegate
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)tappedViewController {
+	NSLog(@"tab %@", tappedViewController);
+//	return tappedViewController != navigationController;
+	return true;
 }
 
 #pragma mark -

@@ -10,7 +10,6 @@
 #import <CoreData/CoreData.h>
 #import "itemInputController.h"
 
-
 @interface RootViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate> {
 	// http://stackoverflow.com/questions/1664724/objective-c-double-delegate-protocol	
 	itemInputController *inputController;

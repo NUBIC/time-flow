@@ -12,13 +12,19 @@
 
 @interface itemInputController : UIViewController {
 	UITextField *textField;
+	UINavigationItem *navItem;
 	id<itemInputControllerDelegate> delegate;
+	NSString *inputType;
 }
 
+
 @property (retain) IBOutlet UITextField *textField;
+@property (retain) IBOutlet UINavigationItem *navItem;
 @property (assign) id<itemInputControllerDelegate> delegate;
+@property (retain) NSString *inputType;
 
 - (IBAction)doneButtonPressed:(id)sender;
+- (IBAction)cancelButtonPressed:(id)sender;
 
 @end
 

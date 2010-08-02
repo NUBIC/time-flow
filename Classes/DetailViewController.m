@@ -73,6 +73,8 @@
 - (void)insertNewObject {
 	inputController = [[itemInputController alloc] init];
 	inputController.delegate = self;
+	inputController.modalPresentationStyle = UIModalPresentationFormSheet;
+	inputController.inputType = @"Timer";
 	[self presentModalViewController:inputController animated:YES];
 	[inputController release];
 }

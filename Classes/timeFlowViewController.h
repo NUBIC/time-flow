@@ -12,13 +12,14 @@
 @interface timeFlowViewController : UIViewController <NSFetchedResultsControllerDelegate> {
 	
 	NSTimer *clockTimer;
+	NSMutableArray *runningTimers;
 
 @private
 	NSFetchedResultsController *fetchedResultsController_;
     NSManagedObjectContext *managedObjectContext_;
-	NSMutableArray *runningTimers;
 }
 
+@property (nonatomic, retain) NSMutableArray *runningTimers;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;

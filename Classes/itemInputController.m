@@ -10,8 +10,7 @@
 
 @implementation itemInputController
 
-@synthesize textField;
-@synthesize delegate;
+@synthesize delegate, textField, navItem, inputType;
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -22,16 +21,38 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	if (!self.inputType) {
+		self.inputType = @"Item";
+	}
+	UILabel *aLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 60.0, 21.0)];
+	aLabel.textAlignment = UITextAlignmentLeft;
+	aLabel.textColor = [UIColor blackColor];
+	aLabel.backgroundColor = [UIColor clearColor];
+	aLabel.font = [UIFont boldSystemFontOfSize:16.0];
+	aLabel.userInteractionEnabled = NO;
+	aLabel.text = @"Title";
+	textField.font = [UIFont systemFontOfSize:16.0];
+	textField.leftView = aLabel;
+	textField.leftViewMode = UITextFieldViewModeAlways;
+	textField.placeholder = [NSString stringWithFormat:@"%@ Title", self.inputType];
+	[aLabel release];
+	navItem.title = [NSString stringWithFormat:@"New %@", inputType];
+	[textField becomeFirstResponder];
+
 }
-*/
+
 
 - (IBAction)doneButtonPressed:(id)sender{
 	[self.delegate itemInputController:self didAddItem:textField.text];
 }
+- (IBAction)cancelButtonPressed:(id)sender{
+	[self.delegate itemInputController:self didAddItem:@""];
+}
+
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

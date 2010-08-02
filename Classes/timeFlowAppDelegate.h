@@ -11,10 +11,11 @@
 #import "timeFlowViewController.h"
 #import "RootViewController.h"
 
+#define UIAppDelegate ((timeFlowAppDelegate *)[UIApplication sharedApplication].delegate)
 
 //@class timeFlowViewController;
 
-@interface timeFlowAppDelegate : NSObject <UIApplicationDelegate> {
+@interface timeFlowAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
     UIWindow *window;
     timeFlowViewController *viewController;
 	UITabBarController *tabBarController;
@@ -36,6 +37,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 - (NSString *)applicationDocumentsDirectory;
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController;
 
 
 @end
