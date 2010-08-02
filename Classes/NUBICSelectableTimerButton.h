@@ -13,9 +13,14 @@
 
 @interface NUBICSelectableTimerButton : UIButton {
 	UILabel *time;
+	NSString *timerTitle;
+	NSString *groupTitle;
+	NSDate *startTime;
 }
 
-@property(retain) NSDate *startTime;
+@property (nonatomic, retain) NSString *timerTitle;
+@property (nonatomic, retain) NSString *groupTitle;
+@property (nonatomic, retain) NSDate *startTime;
 
 - (id)initWithFrame:(CGRect)frame title:(NSString*)title;
 - (void)setTimeText:(NSString *)str;

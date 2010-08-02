@@ -12,7 +12,7 @@
 
 @implementation NUBICSelectableTimerButton
 
-@synthesize startTime;
+@synthesize timerTitle, groupTitle, startTime;
 
 #pragma mark -
 #pragma mark Constants
@@ -29,6 +29,7 @@
 		UIImage* selectedImage = [[UIImage imageNamed: @"blueBlackSegment.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0.0];
 		
 		// Set title
+		self.timerTitle = title;
 		[self setTitle: title forState: UIControlStateNormal];	// Will be used for all states
 		[self setTitleColor: [UIColor darkGrayColor] forState: UIControlStateNormal];
 //		[self setTitleColor: [UIColor blackColor] forState:UIControlStateHighlighted];

@@ -10,7 +10,7 @@
 
 @implementation timeFlowAppDelegate
 
-@synthesize window, tabBarController, timersViewController, setupSplitController, navigationController;
+@synthesize window, tabBarController, timersViewController, setupSplitController, logViewController;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -32,6 +32,9 @@
 	setupSplitController = [[UISplitViewController alloc] init];
 	setupSplitController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Setup" image:[UIImage imageNamed:@"gear.png"] tag:0] autorelease];	
 	
+	logViewController = [[LogViewController alloc] init];
+	logViewController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Log" image:[UIImage imageNamed:@"gear.png"] tag:0] autorelease];		
+	
 	// setup split view
 	[setupSplitController setHidesMasterViewInPortrait:NO];
 
@@ -48,10 +51,11 @@
 	// core data
 	timersViewController.managedObjectContext = self.managedObjectContext;
 	setupRootController.managedObjectContext = self.managedObjectContext;
+	logViewController.managedObjectContext = self.managedObjectContext;
 
 	// add controllers to split view and tab bar
 	setupSplitController.viewControllers = [NSArray arrayWithObjects:setupNavigationController, setupDetailController, nil];
-	tabBarController.viewControllers = [NSArray arrayWithObjects:timersViewController, setupSplitController, nil];
+	tabBarController.viewControllers = [NSArray arrayWithObjects:timersViewController, setupSplitController, logViewController, nil];
 	
 	[window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
