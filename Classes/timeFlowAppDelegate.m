@@ -46,13 +46,13 @@
 
 	// setup: right pane (blank)
 	UIViewController *setupDetailController = [[UIViewController alloc] init];
-	setupDetailController.view = [[UIView alloc] init];
 	setupDetailController.view.backgroundColor = [UIColor whiteColor];
-
+	UINavigationController *setupNavigationDetailController = [[UINavigationController alloc] initWithRootViewController:setupDetailController];
+	setupDetailController.navigationItem.title = @"Timers";
+	
 	// log: left pane
 	LogViewController *logRootController = [[LogViewController alloc] init];
 	UINavigationController *logNavigationController = [[UINavigationController alloc] initWithRootViewController:logRootController];
-//	logNavigationController.toolbarHidden = NO;
 	
 	// log: right pane (blank)
 	UIViewController *logDetailController = [[UIViewController alloc] init];
@@ -67,7 +67,7 @@
 
 	// add controllers to split view and tab bar
 	tabBarController.viewControllers = [NSArray arrayWithObjects:timersViewController, setupSplitController, logSplitController, nil];
-	setupSplitController.viewControllers = [NSArray arrayWithObjects:setupNavigationController, setupDetailController, nil];
+	setupSplitController.viewControllers = [NSArray arrayWithObjects:setupNavigationController, setupNavigationDetailController, nil];
 	logSplitController.viewControllers = [NSArray arrayWithObjects:logNavigationController, logDetailController, nil];
 	
 	[window addSubview:tabBarController.view];
@@ -128,9 +128,6 @@
 		UIAlertView *timersAreRunning = [[UIAlertView alloc] initWithTitle:@"Timers running" message:@"Please stop all timers before setup" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 		[timersAreRunning show];
 		return NO;
-	}else if (tappedViewController == setupSplitController) {
-		timersViewController.timersChanged = YES;
-		return YES;
 	}else {
 		return YES;
 	}

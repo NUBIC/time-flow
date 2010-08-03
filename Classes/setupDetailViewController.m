@@ -27,7 +27,7 @@
     self.navigationItem.rightBarButtonItem = addButton;
 
 	if(self.timerGroup){
-		self.navigationItem.title = [NSString stringWithFormat:@"%@ Timers (%d)", [[self.timerGroup valueForKey:@"groupTitle"] description], [[self.fetchedResultsController fetchedObjects] count]];
+		self.navigationItem.title = [NSString stringWithFormat:@"Timers (%d)", [[self.fetchedResultsController fetchedObjects] count]];
 	}
     [addButton release];
 }
@@ -366,10 +366,12 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	if(!changeIsUserDriven){
 //		NSLog(@"controllerDidChangeContent");
-				self.navigationItem.title = [NSString stringWithFormat:@"%@ Timers (%d)", [[self.timerGroup valueForKey:@"groupTitle"] description], [[self.fetchedResultsController fetchedObjects] count]];
+				self.navigationItem.title = [NSString stringWithFormat:@"Timers (%d)", [[self.fetchedResultsController fetchedObjects] count]];
 		[self.tableView endUpdates];
 		
 	}
+	NSLog(@"timers changed");
+	UIAppDelegate.timersViewController.timersChanged = YES;
 }
 
 

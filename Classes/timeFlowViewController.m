@@ -49,7 +49,7 @@
 }
 
 -(void) closeEvent:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn {
-	NSLog(@"closeEvent tt:%@ gt:%@ so:%@", timerTitle, groupTitle, startedOn);
+//	NSLog(@"closeEvent tt:%@ gt:%@ so:%@", timerTitle, groupTitle, startedOn);
 	// setup fetch request
 	NSError *error = nil;
 	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"runningTimer" substitutionVariables:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:timerTitle, groupTitle, startedOn, nil] forKeys:[NSArray arrayWithObjects: @"timerTitle", @"groupTitle", @"startedOn", nil]]];
@@ -65,7 +65,7 @@
         abort();
     }
 	[[timers lastObject] setValue:[NSDate date] forKey:@"endedOn"];
-	NSLog(@"timers lastObject %@", [[timers lastObject] changedValues]);
+//	NSLog(@"timers lastObject %@", [[timers lastObject] changedValues]);
 	// Save the context.
 	if (![self.managedObjectContext save:&error]) {
 		/*

@@ -40,7 +40,6 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
 	// Set up the edit and add buttons.
-
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil] autorelease];
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:nil] autorelease];
 	self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
@@ -84,7 +83,8 @@
 
 	UILabel *startLabel = [[UILabel alloc] init];
 	startLabel.font = [UIFont systemFontOfSize:13.0];
-	startLabel.textColor = [UIColor grayColor];
+	startLabel.textColor = [UIColor lightGrayColor];
+	startLabel.backgroundColor = [UIColor clearColor];
 	
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	[df setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"]; 
@@ -198,15 +198,7 @@
 	 [self.navigationController pushViewController:detailViewController animated:YES];
 	 [detailViewController release];
 	 */
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	((UILabel *)cell.accessoryView).textColor = [UIColor whiteColor];
 }
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	((UILabel *)cell.accessoryView).textColor = [UIColor grayColor];
-		
-}
-
 
 #pragma mark -
 #pragma mark Fetched results controller
@@ -295,7 +287,7 @@
       newIndexPath:(NSIndexPath *)newIndexPath {
     
 	if(!changeIsUserDriven){
-		NSLog(@"didChangeObject");
+		// NSLog(@"didChangeObject");
 		UITableView *tableView = self.tableView;
 		
 		switch(type) {

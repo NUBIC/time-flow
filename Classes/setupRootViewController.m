@@ -346,7 +346,7 @@
       newIndexPath:(NSIndexPath *)newIndexPath {
     
 	if(!changeIsUserDriven){
-		NSLog(@"didChangeObject");
+		// NSLog(@"didChangeObject");
 		UITableView *tableView = self.tableView;
 		
 		switch(type) {
@@ -380,6 +380,8 @@
 		[self.tableView endUpdates];
 	}
 	self.navigationItem.title = [NSString stringWithFormat:@"Groups (%d)", [[self.fetchedResultsController fetchedObjects] count]];
+	NSLog(@"timers changed");
+	UIAppDelegate.timersViewController.timersChanged = YES;
 }
 
 

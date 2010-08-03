@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "itemInputController.h"
+#import "timeFlowAppDelegate.h"
+
+#define UIAppDelegate ((timeFlowAppDelegate *)[UIApplication sharedApplication].delegate)
 
 @interface setupRootViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate> {
 	// http://stackoverflow.com/questions/1664724/objective-c-double-delegate-protocol	
