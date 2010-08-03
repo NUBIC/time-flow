@@ -21,6 +21,9 @@
 #define barHeight		0.0
 #define barWidth		768
 
+#define RGB(r, g, b)		[UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
+#define RGBA(r, g, b, a)	[UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+
 #pragma mark -
 #pragma mark Event responsders
 
@@ -151,7 +154,7 @@
 	 */
 	
 	// alloc
-	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title];
+	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title borderColor:nil];
 	aButton.groupTitle = groupTitle;
 	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -200,13 +203,13 @@
 			[bar addSubview:[self toggleButtonWithTitle:[[timer valueForKey:@"timerTitle"] description] groupTitle:[[group valueForKey:@"groupTitle"] description] ]];
 		}
 		[bar layoutSubviews];
-		// NSLog(@"bar.frame.origin.y %f, bar.frame.size.height %f", bar.frame.origin.y, bar.frame.size.height);
+//		NSLog(@"bar.frame.origin.y %f, bar.frame.size.height %f", bar.frame.origin.y, bar.frame.size.height);
 		y += bar.frame.size.height;
 		[bar release];
 	}
 	
 	// resize scrollView
-	[self scrollView].contentSize = CGSizeMake(768.0, y);
+	[self scrollView].contentSize = CGSizeMake(768.0, y+5.0);
 	
 }
 

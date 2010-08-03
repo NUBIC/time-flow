@@ -10,7 +10,7 @@
 
 #define _padding	5.0
 #define _spacing	5.0
-#define labelHeight		21.0
+#define labelHeight		17.0
 #define labelWidth		758.0
 #define labelLeftPad	0.0
 
@@ -58,7 +58,7 @@
 
 - (void)layoutSubviews {
 //	NSLog(@"subviews: %@", self.subviews);
-	CGFloat x = _padding, y = _padding;
+	CGFloat x = _padding, y = _spacing;
 	CGFloat maxX = 0, lastHeight = 0;
 	CGFloat maxWidth = self.frame.size.width - _padding*2;
 	for (UIView* subview in self.subviews) {
@@ -68,13 +68,14 @@
 			y += lastHeight + _spacing;
 		}
 		subview.frame = CGRectMake(x, y, subview.frame.size.width, subview.frame.size.height);
-		x += subview.frame.size.width + _spacing;
+		x += subview.frame.size.width + _padding;
 		if (x > maxX) {
 			maxX = x;
 		}
 		lastHeight = subview.frame.size.height;
 	}
-	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, maxX+_padding, y+lastHeight+_padding);
+	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, maxX, y+lastHeight);
+//	NSLog(@"x:%f y:%f w:%f h:%f", self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
 }
 
 - (void)dealloc {

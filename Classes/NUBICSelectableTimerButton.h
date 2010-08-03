@@ -9,20 +9,22 @@
 
 
 #import <UIKit/UIKit.h>
-
+#import <QuartzCore/QuartzCore.h>
 
 @interface NUBICSelectableTimerButton : UIButton {
 	UILabel *time;
 	NSString *timerTitle;
 	NSString *groupTitle;
 	NSDate *startTime;
+	UIColor *borderColor;
 }
 
 @property (nonatomic, retain) NSString *timerTitle;
 @property (nonatomic, retain) NSString *groupTitle;
 @property (nonatomic, retain) NSDate *startTime;
+@property (nonatomic, retain) UIColor *borderColor;
 
-- (id)initWithFrame:(CGRect)frame title:(NSString*)title;
+- (id)initWithFrame:(CGRect)frame title:(NSString*)title borderColor:(UIColor *)bColor;
 - (void)setTimeText:(NSString *)str;
 
 @end

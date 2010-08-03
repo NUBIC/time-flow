@@ -33,7 +33,7 @@
 	setupSplitController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Setup" image:[UIImage imageNamed:@"gear.png"] tag:0] autorelease];	
 	
 	logViewController = [[LogViewController alloc] init];
-	logViewController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Log" image:[UIImage imageNamed:@"gear.png"] tag:0] autorelease];		
+	logViewController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Log" image:[UIImage imageNamed:@"log.png"] tag:0] autorelease];		
 	
 	// setup split view
 	[setupSplitController setHidesMasterViewInPortrait:NO];

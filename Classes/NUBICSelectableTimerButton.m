@@ -12,7 +12,7 @@
 
 @implementation NUBICSelectableTimerButton
 
-@synthesize timerTitle, groupTitle, startTime;
+@synthesize timerTitle, groupTitle, startTime, borderColor;
 
 #pragma mark -
 #pragma mark Constants
@@ -20,7 +20,7 @@
 #define padWidth	10
 #define minHeight	44
 
-- (id)initWithFrame:(CGRect)frame title:(NSString*)title {
+- (id)initWithFrame:(CGRect)frame title:(NSString*)title borderColor:(UIColor *)bColor {
 	if (self = [super initWithFrame: frame])
 	{
 		// Create background images
@@ -40,6 +40,8 @@
 		[self setBackgroundImage: normalImage forState: UIControlStateNormal];
 		//		[self setBackgroundImage: downImage forState: UIControlStateHighlighted];
 		[self setBackgroundImage: selectedImage forState: UIControlStateSelected];
+		
+		self.borderColor = bColor;
 
 		// Set target
 		[self addTarget: self action: @selector(button_clicked:) forControlEvents: UIControlEventTouchUpInside];
@@ -83,16 +85,29 @@
 }
 
 - (id)initWithFrame:(CGRect)frame {
-    return [self initWithFrame:frame title:@"Button"];
+    return [self initWithFrame:frame title:@"Button" borderColor:nil];
 }
 
-/*
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
-    // Drawing code
+	
+	if (self.borderColor) {
+		// Set the layer's corner radius
+		[[self layer] setCornerRadius:8.0f];
+		
+		// Turn on masking
+		[[self layer] setMasksToBounds:YES];
+		
+		// Display a border around the button 
+		[[self layer] setBorderWidth:2.0f];
+		[[self layer] setBorderColor:[self.borderColor CGColor]];		
+	}
+
+	[super drawRect:rect];
 }
-*/
+
 
 - (void)dealloc {
     [super dealloc];
