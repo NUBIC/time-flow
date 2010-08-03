@@ -29,7 +29,7 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-/*
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -38,8 +38,15 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	
+	// Set up the edit and add buttons.
+
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:nil] autorelease];
+	self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
+	
 }
-*/
+
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -72,12 +79,39 @@
 	//  NSLog(@"configureCell atIndexPath %@", indexPath);
 	//	NSLog(@"results %@", [self.fetchedResultsController fetchedObjects]);
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@:%@, %@-%@", [[managedObject valueForKey:@"timerTitle"] description], [[managedObject valueForKey:@"groupTitle"] description], [[managedObject valueForKey:@"startedOn"] description], [[managedObject valueForKey:@"endedOn"] description]];
+    cell.textLabel.text = [[managedObject valueForKey:@"groupTitle"] description];
+	cell.detailTextLabel.text = [[managedObject valueForKey:@"timerTitle"] description];
+
+	UILabel *startLabel = [[UILabel alloc] init];
+	startLabel.font = [UIFont systemFontOfSize:13.0];
+	startLabel.textColor = [UIColor grayColor];
+	
+	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	[df setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"]; 
+	// http://blog.evandavey.com/2008/12/how-to-convert-a-string-to-nsdate.html
+	// http://unicode.org/reports/tr35/#Date_Format_Patterns
+	
+	NSDateFormatter *shortFormat = [[NSDateFormatter alloc] init];
+	[shortFormat setDateFormat:@"H:mm:ss"];
+
+	NSDate *sOn = [df dateFromString:[[managedObject valueForKey:@"startedOn"] description]];
+	if([managedObject valueForKey:@"endedOn"]){
+		NSDate *eOn = [df dateFromString:[[managedObject valueForKey:@"endedOn"] description]];		
+		startLabel.text = [NSString stringWithFormat:@"%is", (int)[eOn timeIntervalSinceDate:sOn]];
+	}else {
+		startLabel.text = [NSString stringWithFormat:@"started: %@", [shortFormat stringFromDate:sOn]];
+	}
+	
+	cell.accessoryView = startLabel;
+	[startLabel sizeToFit];
+	
+	[df release];
+	[shortFormat release];
+	[startLabel release];
+
 }
 
 
-#pragma mark -
-#pragma mark Table view data source
 #pragma mark -
 #pragma mark Table view data source
 
@@ -99,9 +133,13 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+		cell.textLabel.font = [UIFont systemFontOfSize:13.0];
+		cell.textLabel.textColor = [UIColor grayColor];
+		cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:18.0];
+		cell.detailTextLabel.textColor = [UIColor blackColor];
     }
-    
+
     // Configure the cell.
     [self configureCell:cell atIndexPath:indexPath];
     
@@ -160,6 +198,13 @@
 	 [self.navigationController pushViewController:detailViewController animated:YES];
 	 [detailViewController release];
 	 */
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	((UILabel *)cell.accessoryView).textColor = [UIColor whiteColor];
+}
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	((UILabel *)cell.accessoryView).textColor = [UIColor grayColor];
+		
 }
 
 
@@ -185,7 +230,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startedOn" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startedOn" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];

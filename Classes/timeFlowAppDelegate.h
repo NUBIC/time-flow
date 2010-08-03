@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "timeFlowViewController.h"
-#import "RootViewController.h"
-#import "DetailViewController.h"
+#import "setupRootViewController.h"
+#import "setupDetailViewController.h"
 #import "LogViewController.h"
 
 #define UIAppDelegate ((timeFlowAppDelegate *)[UIApplication sharedApplication].delegate)
@@ -22,7 +22,7 @@
 	UITabBarController *tabBarController;
     timeFlowViewController *timersViewController;
 	UISplitViewController *setupSplitController;
-	LogViewController *logViewController;	
+	UISplitViewController *logSplitController;	
 
 @private
     NSManagedObjectContext *managedObjectContext_;
@@ -35,7 +35,7 @@
 @property (nonatomic, retain) UITabBarController *tabBarController;
 @property (nonatomic, retain) timeFlowViewController *timersViewController;
 @property (nonatomic, retain) UISplitViewController *setupSplitController;
-@property (nonatomic, retain) LogViewController *logViewController;
+@property (nonatomic, retain) UISplitViewController *logSplitController;
 
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;

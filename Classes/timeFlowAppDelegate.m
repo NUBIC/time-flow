@@ -10,7 +10,7 @@
 
 @implementation timeFlowAppDelegate
 
-@synthesize window, tabBarController, timersViewController, setupSplitController, logViewController;
+@synthesize window, tabBarController, timersViewController, setupSplitController, logSplitController;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -21,41 +21,54 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
-    // Override point for customization after app launch. 
+    // tab bar controller 
 	tabBarController = [[UITabBarController alloc] init];
 	tabBarController.delegate = self;
 	
-	// setup tabs
+	// tabs
 	timersViewController = [[timeFlowViewController alloc] init];
 	timersViewController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Timers" image:[UIImage imageNamed:@"timer.png"] tag:0] autorelease];	
 	
 	setupSplitController = [[UISplitViewController alloc] init];
 	setupSplitController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Setup" image:[UIImage imageNamed:@"gear.png"] tag:0] autorelease];	
 	
-	logViewController = [[LogViewController alloc] init];
-	logViewController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Log" image:[UIImage imageNamed:@"log.png"] tag:0] autorelease];		
+	logSplitController = [[UISplitViewController alloc] init];
+	logSplitController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Log" image:[UIImage imageNamed:@"log.png"] tag:0] autorelease];		
 	
-	// setup split view
+	// setup
 	[setupSplitController setHidesMasterViewInPortrait:NO];
-
-	// left pane
-	RootViewController *setupRootController = [[RootViewController alloc] init];
+	[logSplitController setHidesMasterViewInPortrait:NO];
+	
+	// setup: left pane
+	setupRootViewController *setupRootController = [[setupRootViewController alloc] init];
 	UINavigationController *setupNavigationController = [[UINavigationController alloc] initWithRootViewController:setupRootController];
 	setupNavigationController.toolbarHidden = NO;
 
-	// right pane (blank)
+	// setup: right pane (blank)
 	UIViewController *setupDetailController = [[UIViewController alloc] init];
 	setupDetailController.view = [[UIView alloc] init];
 	setupDetailController.view.backgroundColor = [UIColor whiteColor];
 
+	// log: left pane
+	LogViewController *logRootController = [[LogViewController alloc] init];
+	UINavigationController *logNavigationController = [[UINavigationController alloc] initWithRootViewController:logRootController];
+//	logNavigationController.toolbarHidden = NO;
+	
+	// log: right pane (blank)
+	UIViewController *logDetailController = [[UIViewController alloc] init];
+	logDetailController.view = [[UIView alloc] init];
+	logDetailController.view.backgroundColor = [UIColor whiteColor];
+	
+	
 	// core data
 	timersViewController.managedObjectContext = self.managedObjectContext;
 	setupRootController.managedObjectContext = self.managedObjectContext;
-	logViewController.managedObjectContext = self.managedObjectContext;
+	logRootController.managedObjectContext = self.managedObjectContext;
 
 	// add controllers to split view and tab bar
+	tabBarController.viewControllers = [NSArray arrayWithObjects:timersViewController, setupSplitController, logSplitController, nil];
 	setupSplitController.viewControllers = [NSArray arrayWithObjects:setupNavigationController, setupDetailController, nil];
-	tabBarController.viewControllers = [NSArray arrayWithObjects:timersViewController, setupSplitController, logViewController, nil];
+	logSplitController.viewControllers = [NSArray arrayWithObjects:logNavigationController, logDetailController, nil];
 	
 	[window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
