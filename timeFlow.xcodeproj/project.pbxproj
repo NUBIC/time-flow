@@ -23,6 +23,7 @@
 		3B7D936C11FE1F590064BABF /* setupRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D936B11FE1F590064BABF /* setupRootViewController.m */; };
 		3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D938F11FE20C30064BABF /* CoreData.framework */; };
 		3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */; };
+		3B91F49A120B14B900C1A066 /* v1-v2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */; };
 		3B98DC1411FF2E76002D6B88 /* itemInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B98DC1211FF2E76002D6B88 /* itemInputController.m */; };
 		3B98DC1511FF2E76002D6B88 /* itemInputController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B98DC1311FF2E76002D6B88 /* itemInputController.xib */; };
 		3BB9C0991207760A0082A194 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9C0981207760A0082A194 /* LogViewController.m */; };
@@ -57,6 +58,8 @@
 		3B7D936B11FE1F590064BABF /* setupRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setupRootViewController.m; sourceTree = "<group>"; };
 		3B7D938F11FE20C30064BABF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = coredataproject.xcdatamodel; sourceTree = "<group>"; };
+		3B91F466120B135800C1A066 /* v2.coredataproject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = v2.coredataproject.xcdatamodel; sourceTree = "<group>"; };
+		3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = "v1-v2.xcmappingmodel"; sourceTree = "<group>"; };
 		3B98DC1111FF2E76002D6B88 /* itemInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itemInputController.h; sourceTree = "<group>"; };
 		3B98DC1211FF2E76002D6B88 /* itemInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = itemInputController.m; sourceTree = "<group>"; };
 		3B98DC1311FF2E76002D6B88 /* itemInputController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = itemInputController.xib; path = Classes/itemInputController.xib; sourceTree = "<group>"; };
@@ -276,6 +279,7 @@
 				3B564A1A1200696F00ABF53F /* setupDetailViewController.m in Sources */,
 				3B112DEA120227C300478454 /* NUBICTimerBar.m in Sources */,
 				3BB9C0991207760A0082A194 /* LogViewController.m in Sources */,
+				3B91F49A120B14B900C1A066 /* v1-v2.xcmappingmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,9 +369,11 @@
 		3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */,
 				3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */,
+				3B91F466120B135800C1A066 /* v2.coredataproject.xcdatamodel */,
 			);
-			currentVersion = 3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */;
+			currentVersion = 3B91F466120B135800C1A066 /* v2.coredataproject.xcdatamodel */;
 			path = coredataproject.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

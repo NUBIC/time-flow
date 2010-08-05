@@ -13,6 +13,8 @@
 
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_, timerGroup;
 
+#define RGB(r, g, b)		[UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
+#define RGBA(r, g, b, a)	[UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -80,7 +82,7 @@
 }
 
 
-- (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item {
+- (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item highlight:(BOOL)highlight{
 	if([item length] > 0){
 		// Create a new instance of the entity managed by the fetched results controller.
 		NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
@@ -95,6 +97,9 @@
 		//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
 		[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
 		[newManagedObject setValue:self.timerGroup forKey:@"timerGroup"];
+		if (highlight) {
+			[newManagedObject setValue:RGBA(220,0,0,0.8) forKey:@"borderColor"];
+		}
 		
 //		NSLog(@"inserted %@", newManagedObject);
 //		NSLog(@"insert at %i", [items count]);

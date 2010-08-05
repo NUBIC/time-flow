@@ -147,14 +147,14 @@
 #pragma mark -
 #pragma mark View elements
 
-- (NUBICSelectableTimerButton *)toggleButtonWithTitle:(NSString *)title groupTitle:(NSString *)groupTitle {
+- (NUBICSelectableTimerButton *)toggleButtonWithTitle:(NSString *)title groupTitle:(NSString *)groupTitle borderColor:(UIColor *)borderColor {
 	//	NSLog(@"toggleButtonWithTitle %@", title);
 	/*
 	 Return a autoreleased ui bar button item, with a custom view - nubic selectable timer button, with the given title
 	 */
 	
 	// alloc
-	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title borderColor:nil];
+	NUBICSelectableTimerButton *aButton = [[NUBICSelectableTimerButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title borderColor:borderColor];
 	aButton.groupTitle = groupTitle;
 	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -200,7 +200,7 @@
 		NSSortDescriptor *byDisplayOrder = [[[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES] autorelease];
 		NSArray *sortDescriptors = [NSArray arrayWithObjects:byDisplayOrder, nil];
 		for(timer in [[[group valueForKey:@"timers"] allObjects] sortedArrayUsingDescriptors:sortDescriptors]){
-			[bar addSubview:[self toggleButtonWithTitle:[[timer valueForKey:@"timerTitle"] description] groupTitle:[[group valueForKey:@"groupTitle"] description] ]];
+			[bar addSubview:[self toggleButtonWithTitle:[[timer valueForKey:@"timerTitle"] description] groupTitle:[[group valueForKey:@"groupTitle"] description] borderColor:[timer valueForKey:@"borderColor"] ]];
 		}
 		[bar layoutSubviews];
 //		NSLog(@"bar.frame.origin.y %f, bar.frame.size.height %f", bar.frame.origin.y, bar.frame.size.height);

@@ -12,6 +12,7 @@
 
 @interface itemInputController : UIViewController {
 	UITextField *textField;
+	UISwitch *highlightSwitch;
 	UINavigationItem *navItem;
 	id<itemInputControllerDelegate> delegate;
 	NSString *inputType;
@@ -19,6 +20,7 @@
 
 
 @property (nonatomic, retain) IBOutlet UITextField *textField;
+@property (nonatomic, retain) IBOutlet UISwitch *highlightSwitch;
 @property (nonatomic, retain) IBOutlet UINavigationItem *navItem;
 @property (nonatomic, retain) NSString *inputType;
 
@@ -31,6 +33,8 @@
 
 @protocol itemInputControllerDelegate <NSObject>
 
+@optional
 - (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item;
+- (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item highlight:(BOOL)highlight;
 
 @end
