@@ -41,12 +41,14 @@
 	// Set up the edit and add buttons.
     
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(displayComposerSheet)] autorelease];
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:nil] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(trashButtonPressed)] autorelease];
 	self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
-	if (!MFMailComposeViewController.canSendMail) {
-		self.navigationItem.rightBarButtonItem.enabled = NO;
-	}
+
+	BOOL someEvents = [[self.fetchedResultsController fetchedObjects] count] > 0;
+	self.navigationItem.rightBarButtonItem.enabled = someEvents && MFMailComposeViewController.canSendMail;
+	self.navigationItem.leftBarButtonItem.enabled = someEvents;
 	
+
 }
 
 
@@ -78,51 +80,55 @@
 }
 
 #pragma mark -
+#pragma mark Action sheet delegate
+
+- (void) deleteAllEvents {
+	// http://stackoverflow.com/questions/1077810/delete-reset-all-entries-in-core-data
+    NSError *error;	
+    for (NSManagedObject *managedObject in [self.fetchedResultsController fetchedObjects]) {
+        [self.managedObjectContext deleteObject:managedObject];
+        DLog(@"%@ object deleted",entityDescription);
+    }
+    if (![self.managedObjectContext save:&error]) {
+        DLog(@"Error deleting %@ - error:%@",entityDescription,error);
+    }
+	
+}
+- (void) trashButtonPressed {
+	UIActionSheet *confirmation = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Events" otherButtonTitles:nil];
+	[confirmation showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+}
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+	if (buttonIndex == 0) {
+		[self deleteAllEvents];
+	}
+}
+
+
+#pragma mark -
 #pragma mark Mail
 
 -(NSData *)timersToCSV{
-	
-	NSDateFormatter *ldf = [[NSDateFormatter alloc] init];
-	[ldf setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"]; 
-	
-	NSDateFormatter *stf = [[NSDateFormatter alloc] init];
-	[stf setDateFormat:@"H:mm:ss"];
-
-	NSDateFormatter *sdf = [[NSDateFormatter alloc] init];
-	[sdf setDateFormat:@"yyyy-MM-dd"];
-
-	NSManagedObject *event;
+	NUBICTimerEvent *event;
 	NSMutableString *csv = [[[NSMutableString alloc] init] autorelease];
 	[csv appendString:@"Group,Timer,Started On (Date),Started On (Time),Ended On (Date),Ended On (Time),Duration (Seconds)\r\n"];
 	
 	for (event in [self.fetchedResultsController fetchedObjects]) {
-		
-		
-		[csv appendFormat:@"%@,%@,%@,%@,", \
-		 [[event valueForKey:@"groupTitle"] description], \
-		 [[event valueForKey:@"timerTitle"] description], \
-		 [sdf stringFromDate:[ldf dateFromString:[[event valueForKey:@"startedOn"] description]]], \
-		 [stf stringFromDate:[ldf dateFromString:[[event valueForKey:@"startedOn"] description]]]];
-		
-		if([event valueForKey:@"endedOn"]){
-			[csv appendFormat:@"%@,%@,%@\r\n", \
-			 [sdf stringFromDate:[ldf dateFromString:[[event valueForKey:@"endedOn"] description]]], \
-			 [stf stringFromDate:[ldf dateFromString:[[event valueForKey:@"endedOn"] description]]], \
-			 [NSString stringWithFormat:@"%i", (int)[[ldf dateFromString:[[event valueForKey:@"endedOn"] description]] timeIntervalSinceDate:[ldf dateFromString:[[event valueForKey:@"startedOn"] description]]]]
-			];
+		[csv appendFormat:@"%@,%@,%@,%@,", event.groupTitle, event.timerTitle, [event startedDate], [event startedTime]];
+		if(event.endedOn){
+			[csv appendFormat:@"%@,%@,%@\r\n", [event endedDate], [event endedTime], [event duration]];
 		}else {
 			[csv appendString:@",,\r\n"];
 		}
 	}
-	
-	[ldf release];
-	[stf release];
-	[sdf release];
 	return [csv dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 -(void)displayComposerSheet{
-	if (MFMailComposeViewController.canSendMail) {
+	if ([[self.fetchedResultsController fetchedObjects] count] == 0) {
+		UIAlertView *noEvents = [[UIAlertView alloc] initWithTitle:@"No events" message:@"No events to email." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		[noEvents show];
+	}else if (MFMailComposeViewController.canSendMail) {
 		MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 		picker.mailComposeDelegate = self;
 				
@@ -206,38 +212,25 @@
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 	//  NSLog(@"configureCell atIndexPath %@", indexPath);
 	//	NSLog(@"results %@", [self.fetchedResultsController fetchedObjects]);
-    NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[managedObject valueForKey:@"groupTitle"] description];
-	cell.detailTextLabel.text = [[managedObject valueForKey:@"timerTitle"] description];
+    NUBICTimerEvent *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = managedObject.groupTitle;
+	cell.detailTextLabel.text = managedObject.timerTitle;
+
+	UILabel *durationLabel = [[UILabel alloc] init];
+	durationLabel.font = [UIFont systemFontOfSize:13.0];
+	durationLabel.textColor = [UIColor lightGrayColor];
+	durationLabel.backgroundColor = [UIColor clearColor];
 	
-	UILabel *startLabel = [[UILabel alloc] init];
-	startLabel.font = [UIFont systemFontOfSize:13.0];
-	startLabel.textColor = [UIColor lightGrayColor];
-	startLabel.backgroundColor = [UIColor clearColor];
-	
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
-	[df setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"]; 
-	// http://blog.evandavey.com/2008/12/how-to-convert-a-string-to-nsdate.html
-	// http://unicode.org/reports/tr35/#Date_Format_Patterns
-	
-	NSDateFormatter *shortTimeFormat = [[NSDateFormatter alloc] init];
-	[shortTimeFormat setDateFormat:@"H:mm:ss"];
-	
-	NSDate *sOn = [df dateFromString:[[managedObject valueForKey:@"startedOn"] description]];
-	if([managedObject valueForKey:@"endedOn"]){
-		NSDate *eOn = [df dateFromString:[[managedObject valueForKey:@"endedOn"] description]];		
-		startLabel.text = [NSString stringWithFormat:@"%is", (int)[eOn timeIntervalSinceDate:sOn]];
+	if (managedObject.endedOn) {
+		durationLabel.text = [NSString stringWithFormat:@"%@s", [managedObject duration]];
 	}else {
-		startLabel.text = [NSString stringWithFormat:@"started: %@", [shortTimeFormat stringFromDate:sOn]];
+		durationLabel.text = [NSString stringWithFormat:@"started %@", [managedObject startedTime]];
 	}
 	
-	cell.accessoryView = startLabel;
-	[startLabel sizeToFit];
+	[durationLabel sizeToFit];
+	cell.accessoryView = durationLabel;
 	
-	[df release];
-	[shortTimeFormat release];
-	[startLabel release];
-	
+	[durationLabel release];
 }
 
 /*
@@ -345,7 +338,6 @@
     return fetchedResultsController_;
 }    
 
-
 #pragma mark -
 #pragma mark Fetched results controller delegate
 
@@ -411,6 +403,10 @@
 	if(!changeIsUserDriven){
 		//		NSLog(@"controllerDidChangeContent");
 		[self.tableView endUpdates];
+		BOOL someEvents = [[self.fetchedResultsController fetchedObjects] count] > 0;
+		self.navigationItem.rightBarButtonItem.enabled = someEvents && MFMailComposeViewController.canSendMail;
+		self.navigationItem.leftBarButtonItem.enabled = someEvents;
+		self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
 	}
 }
 

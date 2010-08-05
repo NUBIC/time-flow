@@ -381,7 +381,7 @@
 	}
 	self.navigationItem.title = [NSString stringWithFormat:@"Groups (%d)", [[self.fetchedResultsController fetchedObjects] count]];
 	NSLog(@"timers changed");
-	UIAppDelegate.timersViewController.timersChanged = YES;
+	[UIAppDelegate.timersViewController setTimersChanged:YES];
 }
 
 

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import <MessageUI/MessageUI.h>
+#import "NUBICTimerEvent.h"
 
-@interface LogViewController : UITableViewController <NSFetchedResultsControllerDelegate, MFMailComposeViewControllerDelegate> {
+@interface LogViewController : UITableViewController <NSFetchedResultsControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate> {
 
 @private
     Boolean changeIsUserDriven;

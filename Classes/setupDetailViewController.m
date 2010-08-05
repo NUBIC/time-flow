@@ -13,10 +13,6 @@
 
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_, timerGroup;
 
-#define RGB(r, g, b)		[UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
-#define RGBA(r, g, b, a)	[UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
-#define HEX(rrggbb, a)		[UIColor colorWithRed:((float)((rrggbb & 0xFF0000) >> 16))/255.0 green:((float)((rrggbb & 0xFF00) >> 8))/255.0 blue:((float)(rrggbb & 0xFF))/255.0 alpha:a]
-
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -377,7 +373,7 @@
 		
 	}
 	NSLog(@"timers changed");
-	UIAppDelegate.timersViewController.timersChanged = YES;
+	[UIAppDelegate.timersViewController setTimersChanged:YES];
 }
 
 

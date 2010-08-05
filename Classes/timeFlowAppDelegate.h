@@ -13,8 +13,6 @@
 #import "setupDetailViewController.h"
 #import "LogViewController.h"
 
-#define UIAppDelegate ((timeFlowAppDelegate *)[UIApplication sharedApplication].delegate)
-
 //@class timeFlowViewController;
 
 @interface timeFlowAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {

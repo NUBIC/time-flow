@@ -20,11 +20,13 @@
 		3B564CB31200D9F800ABF53F /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B564CB21200D9F800ABF53F /* timer.png */; };
 		3B564CDE1200DFDF00ABF53F /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B564CDD1200DFDF00ABF53F /* gear.png */; };
 		3B564CE51200E04700ABF53F /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B564CE41200E04700ABF53F /* Icon-72.png */; };
+		3B76DD52120B6D1400882DB7 /* LogDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B76DD51120B6D1400882DB7 /* LogDetailViewController.xib */; };
 		3B7D936C11FE1F590064BABF /* setupRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D936B11FE1F590064BABF /* setupRootViewController.m */; };
 		3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D938F11FE20C30064BABF /* CoreData.framework */; };
 		3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */; };
 		3B91F49A120B14B900C1A066 /* v1-v2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */; };
 		3B91F506120B366C00C1A066 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B91F505120B366C00C1A066 /* MessageUI.framework */; };
+		3B91F59F120B4A0900C1A066 /* NUBICTimerEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B91F59E120B4A0900C1A066 /* NUBICTimerEvent.m */; };
 		3B98DC1411FF2E76002D6B88 /* itemInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B98DC1211FF2E76002D6B88 /* itemInputController.m */; };
 		3B98DC1511FF2E76002D6B88 /* itemInputController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B98DC1311FF2E76002D6B88 /* itemInputController.xib */; };
 		3BB9C0991207760A0082A194 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9C0981207760A0082A194 /* LogViewController.m */; };
@@ -55,6 +57,7 @@
 		3B564CB21200D9F800ABF53F /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
 		3B564CDD1200DFDF00ABF53F /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
 		3B564CE41200E04700ABF53F /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		3B76DD51120B6D1400882DB7 /* LogDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LogDetailViewController.xib; path = Classes/LogDetailViewController.xib; sourceTree = "<group>"; };
 		3B7D936A11FE1F590064BABF /* setupRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setupRootViewController.h; sourceTree = "<group>"; };
 		3B7D936B11FE1F590064BABF /* setupRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setupRootViewController.m; sourceTree = "<group>"; };
 		3B7D938F11FE20C30064BABF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -62,6 +65,8 @@
 		3B91F466120B135800C1A066 /* v2.coredataproject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = v2.coredataproject.xcdatamodel; sourceTree = "<group>"; };
 		3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = "v1-v2.xcmappingmodel"; sourceTree = "<group>"; };
 		3B91F505120B366C00C1A066 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		3B91F59D120B4A0900C1A066 /* NUBICTimerEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NUBICTimerEvent.h; sourceTree = "<group>"; };
+		3B91F59E120B4A0900C1A066 /* NUBICTimerEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NUBICTimerEvent.m; sourceTree = "<group>"; };
 		3B98DC1111FF2E76002D6B88 /* itemInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itemInputController.h; sourceTree = "<group>"; };
 		3B98DC1211FF2E76002D6B88 /* itemInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = itemInputController.m; sourceTree = "<group>"; };
 		3B98DC1311FF2E76002D6B88 /* itemInputController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = itemInputController.xib; path = Classes/itemInputController.xib; sourceTree = "<group>"; };
@@ -122,7 +127,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				3B91F505120B366C00C1A066 /* MessageUI.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -146,6 +150,7 @@
 				3B564CDD1200DFDF00ABF53F /* gear.png */,
 				3B564CB21200D9F800ABF53F /* timer.png */,
 				3BE4BBA912089BCA0043A228 /* log.png */,
+				3B76DD51120B6D1400882DB7 /* LogDetailViewController.xib */,
 				2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */,
 				3B98DC1311FF2E76002D6B88 /* itemInputController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
@@ -157,6 +162,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3B91F505120B366C00C1A066 /* MessageUI.framework */,
 				3BBC9E3612085DC4003E4830 /* QuartzCore.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -173,6 +179,8 @@
 				3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */,
 				3B112DE8120227C300478454 /* NUBICTimerBar.h */,
 				3B112DE9120227C300478454 /* NUBICTimerBar.m */,
+				3B91F59D120B4A0900C1A066 /* NUBICTimerEvent.h */,
+				3B91F59E120B4A0900C1A066 /* NUBICTimerEvent.m */,
 			);
 			name = "NUBIC Models";
 			path = ..;
@@ -263,6 +271,7 @@
 				3B564CDE1200DFDF00ABF53F /* gear.png in Resources */,
 				3B564CE51200E04700ABF53F /* Icon-72.png in Resources */,
 				3BE4BBAA12089BCA0043A228 /* log.png in Resources */,
+				3B76DD52120B6D1400882DB7 /* LogDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +293,7 @@
 				3B112DEA120227C300478454 /* NUBICTimerBar.m in Sources */,
 				3BB9C0991207760A0082A194 /* LogViewController.m in Sources */,
 				3B91F49A120B14B900C1A066 /* v1-v2.xcmappingmodel in Sources */,
+				3B91F59F120B4A0900C1A066 /* NUBICTimerEvent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

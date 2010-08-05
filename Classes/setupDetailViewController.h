@@ -11,8 +11,6 @@
 #import "itemInputController.h"
 #import "timeFlowAppDelegate.h"
 
-#define UIAppDelegate ((timeFlowAppDelegate *)[UIApplication sharedApplication].delegate)
-
 @interface setupDetailViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate, UISplitViewControllerDelegate> {
 	
 	itemInputController *inputController;
