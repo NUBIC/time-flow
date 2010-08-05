@@ -24,6 +24,7 @@
 		3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D938F11FE20C30064BABF /* CoreData.framework */; };
 		3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */; };
 		3B91F49A120B14B900C1A066 /* v1-v2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */; };
+		3B91F506120B366C00C1A066 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B91F505120B366C00C1A066 /* MessageUI.framework */; };
 		3B98DC1411FF2E76002D6B88 /* itemInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B98DC1211FF2E76002D6B88 /* itemInputController.m */; };
 		3B98DC1511FF2E76002D6B88 /* itemInputController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B98DC1311FF2E76002D6B88 /* itemInputController.xib */; };
 		3BB9C0991207760A0082A194 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9C0981207760A0082A194 /* LogViewController.m */; };
@@ -60,6 +61,7 @@
 		3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = coredataproject.xcdatamodel; sourceTree = "<group>"; };
 		3B91F466120B135800C1A066 /* v2.coredataproject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = v2.coredataproject.xcdatamodel; sourceTree = "<group>"; };
 		3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = "v1-v2.xcmappingmodel"; sourceTree = "<group>"; };
+		3B91F505120B366C00C1A066 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		3B98DC1111FF2E76002D6B88 /* itemInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itemInputController.h; sourceTree = "<group>"; };
 		3B98DC1211FF2E76002D6B88 /* itemInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = itemInputController.m; sourceTree = "<group>"; };
 		3B98DC1311FF2E76002D6B88 /* itemInputController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = itemInputController.xib; path = Classes/itemInputController.xib; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */,
 				3BBC9E3712085DC4003E4830 /* QuartzCore.framework in Frameworks */,
+				3B91F506120B366C00C1A066 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +122,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				3B91F505120B366C00C1A066 /* MessageUI.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";

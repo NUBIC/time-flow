@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <MessageUI/MessageUI.h>
 
-@interface LogViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
+@interface LogViewController : UITableViewController <NSFetchedResultsControllerDelegate, MFMailComposeViewControllerDelegate> {
 
 @private
     Boolean changeIsUserDriven;
@@ -21,5 +22,7 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)displayComposerSheet;
+
 
 @end

@@ -101,7 +101,7 @@
 		[[self layer] setMasksToBounds:YES];
 		
 		// Display a border around the button 
-		[[self layer] setBorderWidth:2.0f];
+		[[self layer] setBorderWidth:3.0f];
 		[[self layer] setBorderColor:[self.borderColor CGColor]];		
 	}
 

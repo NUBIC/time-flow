@@ -8,7 +8,6 @@
 
 #import "LogViewController.h"
 
-
 @implementation LogViewController
 
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
@@ -40,9 +39,13 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
 	// Set up the edit and add buttons.
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil] autorelease];
+    
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(displayComposerSheet)] autorelease];
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:nil] autorelease];
 	self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
+	if (!MFMailComposeViewController.canSendMail) {
+		self.navigationItem.rightBarButtonItem.enabled = NO;
+	}
 	
 }
 
@@ -71,46 +74,100 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Override to allow orientations other than the default portrait orientation.
-    return YES;
+	return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-	//  NSLog(@"configureCell atIndexPath %@", indexPath);
-	//	NSLog(@"results %@", [self.fetchedResultsController fetchedObjects]);
-    NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[managedObject valueForKey:@"groupTitle"] description];
-	cell.detailTextLabel.text = [[managedObject valueForKey:@"timerTitle"] description];
+#pragma mark -
+#pragma mark Mail
 
-	UILabel *startLabel = [[UILabel alloc] init];
-	startLabel.font = [UIFont systemFontOfSize:13.0];
-	startLabel.textColor = [UIColor lightGrayColor];
-	startLabel.backgroundColor = [UIColor clearColor];
+-(NSData *)timersToCSV{
 	
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
-	[df setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"]; 
-	// http://blog.evandavey.com/2008/12/how-to-convert-a-string-to-nsdate.html
-	// http://unicode.org/reports/tr35/#Date_Format_Patterns
+	NSDateFormatter *ldf = [[NSDateFormatter alloc] init];
+	[ldf setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"]; 
 	
-	NSDateFormatter *shortFormat = [[NSDateFormatter alloc] init];
-	[shortFormat setDateFormat:@"H:mm:ss"];
+	NSDateFormatter *stf = [[NSDateFormatter alloc] init];
+	[stf setDateFormat:@"H:mm:ss"];
 
-	NSDate *sOn = [df dateFromString:[[managedObject valueForKey:@"startedOn"] description]];
-	if([managedObject valueForKey:@"endedOn"]){
-		NSDate *eOn = [df dateFromString:[[managedObject valueForKey:@"endedOn"] description]];		
-		startLabel.text = [NSString stringWithFormat:@"%is", (int)[eOn timeIntervalSinceDate:sOn]];
-	}else {
-		startLabel.text = [NSString stringWithFormat:@"started: %@", [shortFormat stringFromDate:sOn]];
+	NSDateFormatter *sdf = [[NSDateFormatter alloc] init];
+	[sdf setDateFormat:@"yyyy-MM-dd"];
+
+	NSManagedObject *event;
+	NSMutableString *csv = [[[NSMutableString alloc] init] autorelease];
+	[csv appendString:@"Group,Timer,Started On (Date),Started On (Time),Ended On (Date), Ended On Time,Duration\r\n"];
+	
+	for (event in [self.fetchedResultsController fetchedObjects]) {
+		
+		
+		[csv appendFormat:@"%@,%@,%@,%@,", \
+		 [[event valueForKey:@"groupTitle"] description], \
+		 [[event valueForKey:@"timerTitle"] description], \
+		 [sdf stringFromDate:[ldf dateFromString:[[event valueForKey:@"startedOn"] description]]], \
+		 [stf stringFromDate:[ldf dateFromString:[[event valueForKey:@"startedOn"] description]]]];
+		
+		if([event valueForKey:@"endedOn"]){
+			[csv appendFormat:@"%@,%@,%@\r\n", \
+			 [sdf stringFromDate:[ldf dateFromString:[[event valueForKey:@"endedOn"] description]]], \
+			 [stf stringFromDate:[ldf dateFromString:[[event valueForKey:@"endedOn"] description]]], \
+			 [NSString stringWithFormat:@"%i", (int)[[ldf dateFromString:[[event valueForKey:@"endedOn"] description]] timeIntervalSinceDate:[ldf dateFromString:[[event valueForKey:@"startedOn"] description]]]]
+			];
+		}else {
+			[csv appendString:@",,\r\n"];
+		}
 	}
 	
-	cell.accessoryView = startLabel;
-	[startLabel sizeToFit];
-	
-	[df release];
-	[shortFormat release];
-	[startLabel release];
+	[ldf release];
+	[stf release];
+	[sdf release];
+	return [csv dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+-(void)displayComposerSheet{
+	if (MFMailComposeViewController.canSendMail) {
+		MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+		picker.mailComposeDelegate = self;
+				
+		// Subject
+		[picker setSubject:@"timeFlow log"];
+		
+		// Recipients
+		//    NSArray *toRecipients = [NSArray arrayWithObjects:@"first@example.com", nil];
+		//    NSArray *ccRecipients = [NSArray arrayWithObjects:@"second@example.com", @"third@example.com", nil];
+		//    NSArray *bccRecipients = [NSArray arrayWithObjects:@"four@example.com", nil];
+		//    [picker setToRecipients:toRecipients];
+		//    [picker setCcRecipients:ccRecipients];
+		//    [picker setBccRecipients:bccRecipients];
+		
+		// Attachment
+		NSDateFormatter *shortDateTimeFormat = [[NSDateFormatter alloc] init];
+		[shortDateTimeFormat setDateFormat:@"yyyy-MM-dd_HH:mm:ss"];
+		[picker addAttachmentData:[self timersToCSV]
+				mimeType:@"text/csv"
+				fileName:[NSString stringWithFormat:@"timeFlow_%@.csv", [shortDateTimeFormat stringFromDate:[NSDate date]]]]; 
+		
+		// Body
+		// NSString *emailBody = @"";
+		// [picker setMessageBody:emailBody isHTML:NO];
+		
+		// Present the mail composition modally
+		//	picker.modalPresentationStyle = UIModalPresentationFormSheet;
+		[self presentModalViewController:picker animated:YES];
+		[picker release]; // Can safely release the controller now.
+		
+	}else {
+		UIAlertView *mailDisabled = [[UIAlertView alloc] initWithTitle:@"Cannot send email" message:@"Please set up this device for the delivery of email" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		[mailDisabled show];
+	}
+
 
 }
 
+// The mail compose view controller delegate method
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+		  didFinishWithResult:(MFMailComposeResult)result
+						error:(NSError *)error
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 #pragma mark -
 #pragma mark Table view data source
@@ -146,6 +203,42 @@
     return cell;
 }
 
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+	//  NSLog(@"configureCell atIndexPath %@", indexPath);
+	//	NSLog(@"results %@", [self.fetchedResultsController fetchedObjects]);
+    NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = [[managedObject valueForKey:@"groupTitle"] description];
+	cell.detailTextLabel.text = [[managedObject valueForKey:@"timerTitle"] description];
+	
+	UILabel *startLabel = [[UILabel alloc] init];
+	startLabel.font = [UIFont systemFontOfSize:13.0];
+	startLabel.textColor = [UIColor lightGrayColor];
+	startLabel.backgroundColor = [UIColor clearColor];
+	
+	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	[df setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"]; 
+	// http://blog.evandavey.com/2008/12/how-to-convert-a-string-to-nsdate.html
+	// http://unicode.org/reports/tr35/#Date_Format_Patterns
+	
+	NSDateFormatter *shortTimeFormat = [[NSDateFormatter alloc] init];
+	[shortTimeFormat setDateFormat:@"H:mm:ss"];
+	
+	NSDate *sOn = [df dateFromString:[[managedObject valueForKey:@"startedOn"] description]];
+	if([managedObject valueForKey:@"endedOn"]){
+		NSDate *eOn = [df dateFromString:[[managedObject valueForKey:@"endedOn"] description]];		
+		startLabel.text = [NSString stringWithFormat:@"%is", (int)[eOn timeIntervalSinceDate:sOn]];
+	}else {
+		startLabel.text = [NSString stringWithFormat:@"started: %@", [shortTimeFormat stringFromDate:sOn]];
+	}
+	
+	cell.accessoryView = startLabel;
+	[startLabel sizeToFit];
+	
+	[df release];
+	[shortTimeFormat release];
+	[startLabel release];
+	
+}
 
 /*
  // Override to support conditional editing of the table view.
