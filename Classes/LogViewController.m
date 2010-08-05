@@ -93,7 +93,7 @@
 
 	NSManagedObject *event;
 	NSMutableString *csv = [[[NSMutableString alloc] init] autorelease];
-	[csv appendString:@"Group,Timer,Started On (Date),Started On (Time),Ended On (Date), Ended On Time,Duration\r\n"];
+	[csv appendString:@"Group,Timer,Started On (Date),Started On (Time),Ended On (Date),Ended On (Time),Duration (Seconds)\r\n"];
 	
 	for (event in [self.fetchedResultsController fetchedObjects]) {
 		
