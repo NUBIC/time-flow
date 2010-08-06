@@ -8,6 +8,7 @@
 
 #import "LogViewController.h"
 #import "LogDetailViewController.h"
+#import "timeFlowAppDelegate.h"
 
 @implementation LogViewController
 
@@ -29,7 +30,14 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-
+- (void)refreshNavBar {
+	
+	BOOL someEvents = [[self.fetchedResultsController fetchedObjects] count] > 0;
+	self.navigationItem.rightBarButtonItem.enabled = someEvents && MFMailComposeViewController.canSendMail;
+	self.navigationItem.leftBarButtonItem.enabled = someEvents;
+	self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
+	
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -43,21 +51,15 @@
     
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(displayComposerSheet)] autorelease];
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(trashButtonPressed)] autorelease];
-	self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
-
-	BOOL someEvents = [[self.fetchedResultsController fetchedObjects] count] > 0;
-	self.navigationItem.rightBarButtonItem.enabled = someEvents && MFMailComposeViewController.canSendMail;
-	self.navigationItem.leftBarButtonItem.enabled = someEvents;
-	
 
 }
 
 
-/*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[self refreshNavBar];
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -104,11 +106,18 @@
 	[logDetailNavController release];
 }
 - (void) trashButtonPressed {
-	// don't present twice
-	[confirmationActionSheet dismissWithClickedButtonIndex:[confirmationActionSheet cancelButtonIndex] animated:NO];
+	if ([[UIAppDelegate.timersViewController runningTimers] count] == 0) {
+		// don't present twice
+		[confirmationActionSheet dismissWithClickedButtonIndex:[confirmationActionSheet cancelButtonIndex] animated:NO];
+		
+		confirmationActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Events" otherButtonTitles:nil];
+		[confirmationActionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:NO];
+		
+	}else {
+		UIAlertView *timersAreRunning = [[UIAlertView alloc] initWithTitle:@"Timers running" message:@"Please stop all timers before deleting" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		[timersAreRunning show];
 
-	confirmationActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Events" otherButtonTitles:nil];
-	[confirmationActionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:NO];
+	}
 }
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
 	if (buttonIndex == 0) {
@@ -428,10 +437,7 @@
 	if(!changeIsUserDriven){
 		//		NSLog(@"controllerDidChangeContent");
 		[self.tableView endUpdates];
-		BOOL someEvents = [[self.fetchedResultsController fetchedObjects] count] > 0;
-		self.navigationItem.rightBarButtonItem.enabled = someEvents && MFMailComposeViewController.canSendMail;
-		self.navigationItem.leftBarButtonItem.enabled = someEvents;
-		self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
+		[self refreshNavBar];
 	}
 }
 
