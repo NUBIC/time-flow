@@ -93,7 +93,15 @@
     if (![self.managedObjectContext save:&error]) {
         DLog(@"Error deleting %@ - error:%@",entityDescription,error);
     }
-	
+	UIViewController *logDetailController = [[UIViewController alloc] init];
+	logDetailController.view.backgroundColor = [UIColor whiteColor];
+	UINavigationController *logDetailNavController = [[UINavigationController alloc] initWithRootViewController:logDetailController];
+	logDetailController.navigationItem.title = @"Event";
+	UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
+	split.viewControllers = [[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], logDetailNavController, nil];
+
+	[logDetailController release];
+	[logDetailNavController release];
 }
 - (void) trashButtonPressed {
 	// don't present twice
