@@ -92,9 +92,9 @@
         [self.managedObjectContext deleteObject:managedObject];
         DLog(@"%@ object deleted",entityDescription);
     }
-    if (![self.managedObjectContext save:&error]) {
-        DLog(@"Error deleting %@ - error:%@",entityDescription,error);
-    }
+	// Save the context.
+	[UIAppDelegate saveContext:@"LogViewController deleteAllEvents"];
+	
 	UIViewController *logDetailController = [[UIViewController alloc] init];
 	logDetailController.view.backgroundColor = [UIColor whiteColor];
 	UINavigationController *logDetailNavController = [[UINavigationController alloc] initWithRootViewController:logDetailController];
