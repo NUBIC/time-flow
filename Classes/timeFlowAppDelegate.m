@@ -56,9 +56,9 @@
 	
 	// log: right pane (blank)
 	UIViewController *logDetailController = [[UIViewController alloc] init];
-	logDetailController.view = [[UIView alloc] init];
 	logDetailController.view.backgroundColor = [UIColor whiteColor];
-	
+	UINavigationController *logNavigationDetailController = [[UINavigationController alloc] initWithRootViewController:logDetailController];
+	logDetailController.navigationItem.title = @"Event";	
 	
 	// core data
 	timersViewController.managedObjectContext = self.managedObjectContext;
@@ -68,7 +68,7 @@
 	// add controllers to split view and tab bar
 	tabBarController.viewControllers = [NSArray arrayWithObjects:timersViewController, setupSplitController, logSplitController, nil];
 	setupSplitController.viewControllers = [NSArray arrayWithObjects:setupNavigationController, setupNavigationDetailController, nil];
-	logSplitController.viewControllers = [NSArray arrayWithObjects:logNavigationController, logDetailController, nil];
+	logSplitController.viewControllers = [NSArray arrayWithObjects:logNavigationController, logNavigationDetailController, nil];
 	
 	[window addSubview:tabBarController.view];
     [window makeKeyAndVisible];

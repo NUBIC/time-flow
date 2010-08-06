@@ -32,6 +32,9 @@
 		3BB9C0991207760A0082A194 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9C0981207760A0082A194 /* LogViewController.m */; };
 		3BBC9E3712085DC4003E4830 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBC9E3612085DC4003E4830 /* QuartzCore.framework */; };
 		3BE4BBAA12089BCA0043A228 /* log.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BE4BBA912089BCA0043A228 /* log.png */; };
+		3BE666EF120C538700C4A771 /* LogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE666EE120C538700C4A771 /* LogDetailViewController.m */; };
+		3BE6678C120C5F6900C4A771 /* timerOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE6678A120C5F6900C4A771 /* timerOptionsViewController.m */; };
+		3BE6678D120C5F6900C4A771 /* timerOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BE6678B120C5F6900C4A771 /* timerOptionsViewController.xib */; };
 		3BF2436511EF76F300016791 /* blueBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF2436311EF76F300016791 /* blueBlackSegment.png */; };
 		3BF2436611EF76F300016791 /* grayBlackSegment.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF2436411EF76F300016791 /* grayBlackSegment.png */; };
 		3BF243CD11EFB24000016791 /* NUBICSelectableTimerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF243CC11EFB24000016791 /* NUBICSelectableTimerButton.m */; };
@@ -74,6 +77,11 @@
 		3BB9C0981207760A0082A194 /* LogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogViewController.m; sourceTree = "<group>"; };
 		3BBC9E3612085DC4003E4830 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3BE4BBA912089BCA0043A228 /* log.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = log.png; sourceTree = "<group>"; };
+		3BE666ED120C538700C4A771 /* LogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogDetailViewController.h; sourceTree = "<group>"; };
+		3BE666EE120C538700C4A771 /* LogDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogDetailViewController.m; sourceTree = "<group>"; };
+		3BE66789120C5F6900C4A771 /* timerOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timerOptionsViewController.h; sourceTree = "<group>"; };
+		3BE6678A120C5F6900C4A771 /* timerOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timerOptionsViewController.m; sourceTree = "<group>"; };
+		3BE6678B120C5F6900C4A771 /* timerOptionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = timerOptionsViewController.xib; path = Classes/timerOptionsViewController.xib; sourceTree = "<group>"; };
 		3BF2436311EF76F300016791 /* blueBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueBlackSegment.png; sourceTree = "<group>"; };
 		3BF2436411EF76F300016791 /* grayBlackSegment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayBlackSegment.png; sourceTree = "<group>"; };
 		3BF243CB11EFB24000016791 /* NUBICSelectableTimerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NUBICSelectableTimerButton.h; path = Classes/NUBICSelectableTimerButton.h; sourceTree = "<group>"; };
@@ -152,6 +160,7 @@
 				3BE4BBA912089BCA0043A228 /* log.png */,
 				3B76DD51120B6D1400882DB7 /* LogDetailViewController.xib */,
 				2899E5210DE3E06400AC0155 /* timeFlowViewController.xib */,
+				3BE6678B120C5F6900C4A771 /* timerOptionsViewController.xib */,
 				3B98DC1311FF2E76002D6B88 /* itemInputController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* timeFlow-Info.plist */,
@@ -191,6 +200,8 @@
 			children = (
 				28D7ACF60DDB3853001CB0EB /* timeFlowViewController.h */,
 				3B49CE6011ECF63E0041CE70 /* timeFlowViewController.m */,
+				3BE66789120C5F6900C4A771 /* timerOptionsViewController.h */,
+				3BE6678A120C5F6900C4A771 /* timerOptionsViewController.m */,
 			);
 			name = Timers;
 			sourceTree = "<group>";
@@ -213,6 +224,8 @@
 			children = (
 				3BB9C0971207760A0082A194 /* LogViewController.h */,
 				3BB9C0981207760A0082A194 /* LogViewController.m */,
+				3BE666ED120C538700C4A771 /* LogDetailViewController.h */,
+				3BE666EE120C538700C4A771 /* LogDetailViewController.m */,
 			);
 			name = Log;
 			sourceTree = "<group>";
@@ -272,6 +285,7 @@
 				3B564CE51200E04700ABF53F /* Icon-72.png in Resources */,
 				3BE4BBAA12089BCA0043A228 /* log.png in Resources */,
 				3B76DD52120B6D1400882DB7 /* LogDetailViewController.xib in Resources */,
+				3BE6678D120C5F6900C4A771 /* timerOptionsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +308,8 @@
 				3BB9C0991207760A0082A194 /* LogViewController.m in Sources */,
 				3B91F49A120B14B900C1A066 /* v1-v2.xcmappingmodel in Sources */,
 				3B91F59F120B4A0900C1A066 /* NUBICTimerEvent.m in Sources */,
+				3BE666EF120C538700C4A771 /* LogDetailViewController.m in Sources */,
+				3BE6678C120C5F6900C4A771 /* timerOptionsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -83,11 +83,17 @@
 {
 	self.selected = !self.selected;
 }
-
 - (id)initWithFrame:(CGRect)frame {
     return [self initWithFrame:frame title:@"Button" borderColor:nil];
 }
-
++ (id)buttonWithTitle:(NSString *)title groupTitle:(NSString *)groupTitle borderColor:(UIColor *)borderColor {
+	// NSLog(@"buttonWithTitle %@", title);
+	// Return a autoreleased button
+	
+	NUBICSelectableTimerButton *aButton = [[[self alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 0.0) title:title borderColor:borderColor] autorelease];
+	aButton.groupTitle = groupTitle;
+	return aButton;
+}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -107,7 +113,6 @@
 
 	[super drawRect:rect];
 }
-
 
 - (void)dealloc {
     [super dealloc];

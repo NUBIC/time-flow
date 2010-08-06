@@ -17,6 +17,7 @@
     Boolean changeIsUserDriven;
 	NSFetchedResultsController *fetchedResultsController_;
     NSManagedObjectContext *managedObjectContext_;
+	UIActionSheet *confirmationActionSheet;
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;

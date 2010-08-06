@@ -7,6 +7,7 @@
 //
 
 #import "LogViewController.h"
+#import "LogDetailViewController.h"
 
 @implementation LogViewController
 
@@ -95,8 +96,11 @@
 	
 }
 - (void) trashButtonPressed {
-	UIActionSheet *confirmation = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Events" otherButtonTitles:nil];
-	[confirmation showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+	// don't present twice
+	[confirmationActionSheet dismissWithClickedButtonIndex:[confirmationActionSheet cancelButtonIndex] animated:NO];
+
+	confirmationActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Events" otherButtonTitles:nil];
+	[confirmationActionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:NO];
 }
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
 	if (buttonIndex == 0) {
@@ -277,6 +281,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
+	LogDetailViewController *detailViewController = [[LogDetailViewController alloc] initWithNibName:@"LogDetailViewController" bundle:nil];
+	NUBICTimerEvent *timerEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	detailViewController.timerEvent = timerEvent;
+	
+	UINavigationController *logDetailNavController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+	
+	UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
+	split.viewControllers = [[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], logDetailNavController, nil];
+
+	[detailViewController release];
+	[logDetailNavController release];
+	
+	
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
      // ...

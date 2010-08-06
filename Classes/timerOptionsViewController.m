@@ -1,17 +1,15 @@
     //
-//  LogDetailViewController.m
+//  timerOptionsViewController.m
 //  timeFlow
 //
-//  Created by Mark Yoon on 8/5/2010.
+//  Created by Mark Yoon on 8/6/2010.
 //  Copyright 2010 NUBIC. All rights reserved.
 //
 
-#import "LogDetailViewController.h"
+#import "timerOptionsViewController.h"
 
 
-@implementation LogDetailViewController
-
-@synthesize timerEvent, groupTitle, timerTitle, startedOn, endedOn;
+@implementation timerOptionsViewController
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -23,20 +21,12 @@
 }
 */
 
-
+/*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	if(self.timerEvent){
-		self.groupTitle.text = [NSString stringWithFormat:@"Group: %@", timerEvent.groupTitle];
-		self.timerTitle.text = [NSString stringWithFormat:@"Timer: %@", timerEvent.timerTitle];
-		self.startedOn.text = [NSString stringWithFormat:@"Started: %@ %@", [timerEvent startedTime], [timerEvent startedDate]];
-		self.endedOn.text = [NSString stringWithFormat:@"Ended: %@ %@", [timerEvent endedTime], [timerEvent endedDate]];
-	}
-	
-	self.navigationItem.title = @"Event";
 }
-
+*/
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
