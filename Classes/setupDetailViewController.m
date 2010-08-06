@@ -14,11 +14,35 @@
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_, timerGroup;
 
 #pragma mark -
+#pragma mark Core Data
+
+- (NSManagedObject *)timerWithTitle:(NSString *)timerTitle{
+	// setup fetch request
+	NSError *error = nil;
+	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"timerWithTitle" substitutionVariables:[NSDictionary dictionaryWithObject:timerTitle forKey:@"timerTitle"]];
+	
+	// execute fetch request
+	NSArray *timers = [self.managedObjectContext executeFetchRequest:fetch error:&error];
+	if (!timers || [timers count] != 1) {
+		/*
+		 Replace this implementation with code to handle the error appropriately.
+		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+		 */
+		NSLog(@"Unresolved timerWithTitle fetch error %@, %@", error, [error userInfo]);
+		abort();
+	}
+	return [timers lastObject];
+}
+
+
+#pragma mark -
 #pragma mark View lifecycle
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.allowsSelectionDuringEditing = YES;
+	self.tableView.allowsSelection = NO;
 	
     // Set up the edit and add buttons.
 	[self setToolbarItems:[NSArray arrayWithObject:self.editButtonItem]];    
@@ -67,7 +91,7 @@
 }
 
 #pragma mark -
-#pragma mark Add a new object
+#pragma mark itemInputControllerDelegate
 
 - (void)insertNewObject {
 	inputController = [[itemInputController alloc] init];
@@ -114,6 +138,22 @@
 	}
 	[self dismissModalViewControllerAnimated:YES];
 }
+- (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle highlight:(BOOL)highlight {
+	NSLog(@"old:%@ new:%@", oldTitle, newTitle);
+	
+	NSManagedObject *timer = [self timerWithTitle:oldTitle];
+	[timer setValue:newTitle forKey:@"timerTitle"];
+	if (highlight) {
+		[timer setValue:HEX(0xFFD700,0.8) forKey:@"borderColor"];
+	}else {
+		[timer setValue:nil forKey:@"borderColor"];
+	}
+
+	[UIAppDelegate saveContext:@"didEditItem timer"];
+	
+	[self dismissModalViewControllerAnimated:YES];
+}
+
 
 #pragma mark -
 #pragma mark Table view data source
@@ -232,14 +272,21 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	/*
-	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-	 [self.navigationController pushViewController:detailViewController animated:YES];
-	 [detailViewController release];
-	 */
+	if (tableView.editing) {
+		NSManagedObject *timer = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+		
+		inputController = [[itemInputController alloc] init];
+		inputController.delegate = self;
+		inputController.modalPresentationStyle = UIModalPresentationFormSheet;
+		inputController.inputType = @"Timer";
+		inputController.oldTitle = [timer valueForKey:@"timerTitle"];
+		inputController.oldHighlightOn = [timer valueForKey:@"borderColor"] != nil;
+		inputController.editMode = YES;
+		[self presentModalViewController:inputController animated:YES];
+		[inputController release];
+	}else {
+
+	}
 }
 
 #pragma mark -

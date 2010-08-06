@@ -15,10 +15,33 @@
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 
 #pragma mark -
+#pragma mark Core Data
+-(NSManagedObject *) timerGroupWithTitle:(NSString *)groupTitle {
+	// setup fetch request
+	NSError *error = nil;
+	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"timerGroupWithTitle" substitutionVariables:[NSDictionary dictionaryWithObject:groupTitle forKey:@"groupTitle"]];
+							 
+	// execute fetch request
+	NSArray *groups = [self.managedObjectContext executeFetchRequest:fetch error:&error];
+	if (!groups || [groups count] != 1) {
+		/*
+		 Replace this implementation with code to handle the error appropriately.
+		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+		 */
+		NSLog(@"Unresolved timerGroupWithTitle fetch error %@, %@", error, [error userInfo]);
+		abort();
+	}
+	return [groups lastObject];
+}
+
+#pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.allowsSelectionDuringEditing = YES;
+	self.clearsSelectionOnViewWillAppear = NO;
+
 //	NSLog(@"RootViewController moc: %@", self.managedObjectContext);
     // Set up the edit and add buttons.
     [self setToolbarItems:[NSArray arrayWithObject:self.editButtonItem]];
@@ -28,13 +51,12 @@
     [addButton release];
 }
 
-
+/*
 // Implement viewWillAppear: to do additional setup before the view is presented.
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//	self.tableView.allowsSelectionDuringEditing = YES;
 }
-
+*/
 
 /*
 - (void)viewDidAppear:(BOOL)animated {
@@ -72,7 +94,7 @@
 
 
 #pragma mark -
-#pragma mark Add a new object
+#pragma mark itemInputControllerDelegate
 
 - (void)insertNewObject {
 	inputController = [[itemInputController alloc] init];
@@ -83,8 +105,7 @@
 	[inputController release];
 }
 
-
-- (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item {
+- (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item highlight:(BOOL)highlight {
 	if([item length] > 0){
 		// Create a new instance of the entity managed by the fetched results controller.
 		NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
@@ -112,6 +133,15 @@
 			abort();
 		}
 	}
+	[self dismissModalViewControllerAnimated:YES];
+}
+- (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle highlight:(BOOL)highlight {
+	NSLog(@"old:%@ new:%@", oldTitle, newTitle);
+	
+	NSManagedObject *group = [self timerGroupWithTitle:oldTitle];
+	[group setValue:newTitle forKey:@"groupTitle"];
+	[UIAppDelegate saveContext:@"didEditItem group"];
+	
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -231,10 +261,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	if (tableView.editing) {
-		NSLog(@"didSelectRowAtIndexPath while editing");
+		NSManagedObject *group = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+		
+		inputController = [[itemInputController alloc] init];
+		inputController.delegate = self;
+		inputController.modalPresentationStyle = UIModalPresentationFormSheet;
+		inputController.inputType = @"Group";
+		inputController.oldTitle = [group valueForKey:@"groupTitle"];
+		inputController.editMode = YES;
+		[self presentModalViewController:inputController animated:YES];
+		[inputController release];
 	}else {
 		// setup right pane
-		setupDetailViewController *detailViewController = [[setupDetailViewController alloc] init];
+		setupDetailViewController *detailViewController = [[setupDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		UINavigationController *setupDetailNavigationController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
 		setupDetailNavigationController.toolbarHidden = NO;
 		
@@ -246,7 +285,6 @@
 		UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
 		split.viewControllers = [[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], setupDetailNavigationController, nil];
 		
-//		[self.navigationController pushViewController:detailViewController animated:YES];
 		[detailViewController release];
 		[setupDetailNavigationController release];
 	

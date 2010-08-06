@@ -40,13 +40,14 @@
 	[logSplitController setHidesMasterViewInPortrait:NO];
 	
 	// setup: left pane
-	setupRootViewController *setupRootController = [[setupRootViewController alloc] init];
+	setupRootViewController *setupRootController = [[setupRootViewController alloc] initWithStyle:UITableViewStyleGrouped ];
 	UINavigationController *setupNavigationController = [[UINavigationController alloc] initWithRootViewController:setupRootController];
 	setupNavigationController.toolbarHidden = NO;
 
 	// setup: right pane (blank)
 	UIViewController *setupDetailController = [[UIViewController alloc] init];
-	setupDetailController.view.backgroundColor = [UIColor whiteColor];
+	setupDetailController.view.backgroundColor = RGB(218,221,226);
+	setupDetailController.view.opaque = YES;
 	UINavigationController *setupNavigationDetailController = [[UINavigationController alloc] initWithRootViewController:setupDetailController];
 	setupDetailController.navigationItem.title = @"Timers";
 	
@@ -220,6 +221,18 @@
     }    
     
     return persistentStoreCoordinator_;
+}
+-(void) saveContext:(NSString *)triggeredBy {
+	// Save the context.
+	NSError *error = nil;
+	if (![self.managedObjectContext save:&error]) {
+		/*
+		 Replace this implementation with code to handle the error appropriately.
+		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+		 */
+		NSLog(@"Unresolved %@ error %@, %@", triggeredBy, error, [error userInfo]);
+		abort();
+	}
 }
 
 

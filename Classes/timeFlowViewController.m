@@ -10,6 +10,7 @@
 #import "NUBICSelectableTimerButton.h"
 #import "NUBICTimerBar.h"
 #import "timerOptionsViewController.h"
+#import "timeFlowAppDelegate.h"
 
 @implementation timeFlowViewController
 
@@ -59,28 +60,13 @@
     }
 	return [timers lastObject];
 }
-
-
--(void) saveContext:(NSString *)triggeredBy {
-	// Save the context.
-	NSError *error = nil;
-	if (![self.managedObjectContext save:&error]) {
-		/*
-		 Replace this implementation with code to handle the error appropriately.
-		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-		 */
-		NSLog(@"Unresolved %@ error %@, %@", triggeredBy, error, [error userInfo]);
-		abort();
-	}
-}
-
 -(void) createEvent:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn {
 	// Create a new event
 	NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
 	[newManagedObject setValue:timerTitle forKey:@"timerTitle"];
 	[newManagedObject setValue:groupTitle forKey:@"groupTitle"];
 	[newManagedObject setValue:startedOn forKey:@"startedOn"];
-	[self saveContext:@"createEvent"];
+	[UIAppDelegate saveContext:@"createEvent"];
 }
 
 -(void) closeEvent:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn {
@@ -103,12 +89,12 @@
 	
 //	NSManagedObject *event = [self runningEventForTimer:timerTitle group:groupTitle startedOn:startedOn];
 //	[event setValue:[NSDate date] forKey:@"endedOn"];
-	[self saveContext:@"closeEvent"];
+	[UIAppDelegate saveContext:@"closeEvent"];
 //	[event release];
 }
 -(void) deleteEevent:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn {
 	[self.managedObjectContext deleteObject:[self runningEventForTimer:timerTitle group:groupTitle startedOn:startedOn]];
-	[self saveContext:@"deleteEvent"];
+	[UIAppDelegate saveContext:@"deleteEvent"];
 }
 
 #pragma mark -

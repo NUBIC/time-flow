@@ -10,7 +10,7 @@
 
 @implementation itemInputController
 
-@synthesize delegate, textField, highlightSwitch, navItem, inputType;
+@synthesize delegate, textField, highlightLabel, highlightSwitch, navItem, inputType, editMode, oldTitle, oldHighlightOn;
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -29,6 +29,7 @@
 		self.inputType = @"Item";
 	}else if (self.inputType != @"Timer") {
 		highlightSwitch.hidden = YES;
+		highlightLabel.hidden = YES;
 	}
 	
 	UILabel *aLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 60.0, 21.0)];
@@ -45,22 +46,26 @@
 	[aLabel release];
 	navItem.title = [NSString stringWithFormat:@"New %@", inputType];
 	[textField becomeFirstResponder];
+	
+	if (editMode) {
+		textField.text = oldTitle;
+		if (self.inputType = @"Timer") {
+			highlightSwitch.on = (int)oldHighlightOn;
+		}
+		navItem.title = [NSString stringWithFormat:@"Edit %@", inputType];
+	}
 }
-
 
 - (IBAction)doneButtonPressed:(id)sender{
-	if (self.inputType == @"Timer") {
-		[self.delegate itemInputController:self didAddItem:textField.text highlight:highlightSwitch.on];
+	if (editMode) {
+		[self.delegate itemInputController:self didEditItem:self.oldTitle newTitle:textField.text highlight:highlightSwitch.on];
 	}else {
-		[self.delegate itemInputController:self didAddItem:textField.text];
+		[self.delegate itemInputController:self didAddItem:textField.text highlight:highlightSwitch.on];
 	}
+
 }
 - (IBAction)cancelButtonPressed:(id)sender{
-	if (self.inputType == @"Timer") {
-		[self.delegate itemInputController:self didAddItem:@"" highlight:NO];
-	}else {
-		[self.delegate itemInputController:self didAddItem:@""];
-	}
+	[self.delegate itemInputController:self didAddItem:@"" highlight:NO];
 }
 
 
