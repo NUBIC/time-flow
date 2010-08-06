@@ -9,7 +9,7 @@
 #import "timeFlowViewController.h"
 #import "NUBICSelectableTimerButton.h"
 #import "NUBICTimerBar.h"
-#import "LogDetailViewController.h"
+#import "timerOptionsViewController.h"
 
 @implementation timeFlowViewController
 
@@ -42,7 +42,7 @@
     }
 	return timers;
 }
--(NSManagedObject *) runningEventForTimer:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn{
+-(NUBICTimerEvent *) runningEventForTimer:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn{
 	// setup fetch request
 	NSError *error = nil;
 	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"runningEvent" substitutionVariables:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:timerTitle, groupTitle, startedOn, nil] forKeys:[NSArray arrayWithObjects: @"timerTitle", @"groupTitle", @"startedOn", nil]]];
@@ -156,10 +156,10 @@
 	//build our custom popover view
 	UIViewController* popoverContent = [[UIViewController alloc] init];
 	
-	LogDetailViewController *logDetailView = [[LogDetailViewController alloc] init];	
+	timerOptionsViewController *timerOptionsView = [[timerOptionsViewController alloc] init];	
 	NUBICSelectableTimerButton *timerButton = (NUBICSelectableTimerButton *)gestureRecognizer.view;
-	logDetailView.timerEvent = [self runningEventForTimer:timerButton.timerTitle group:timerButton.groupTitle startedOn:timerButton.startTime];
-	popoverContent.view = logDetailView.view;
+	timerOptionsView.timerEvent = [self runningEventForTimer:timerButton.timerTitle group:timerButton.groupTitle startedOn:timerButton.startTime];
+	popoverContent.view = timerOptionsView.view;
 	
 //	UIView* popoverView = [[UIView alloc]
 //						   initWithFrame:CGRectMake(0, 0, 300, 400)];
@@ -167,7 +167,7 @@
 //	popoverContent.view = popoverView;
 	
 	//resize the popover view shown in the current view to the view's size
-	popoverContent.contentSizeForViewInPopover = CGSizeMake(300, 400);
+	popoverContent.contentSizeForViewInPopover = CGSizeMake(320, 170);
 	
 	//create a popover controller
 	self.popoverController = [[UIPopoverController alloc] initWithContentViewController:popoverContent];
@@ -177,12 +177,9 @@
 	[self.popoverController presentPopoverFromRect:CGRectMake(gestureRecognizer.view.frame.size.width/2, gestureRecognizer.view.frame.size.height/2 + 5.0, 1.0, 1.0) inView:gestureRecognizer.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	
 	//release the popover content
-	[logDetailView release];
+	[timerOptionsView release];
 //	[popoverView release];
 	[popoverContent release];
-	
-}
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	
 }
 

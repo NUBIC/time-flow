@@ -11,6 +11,8 @@
 
 @implementation timerOptionsViewController
 
+@synthesize timerEvent;
+
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -21,12 +23,18 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+//	if(self.timerEvent){
+//		self.groupTitle.text = [NSString stringWithFormat:@"Group: %@", timerEvent.groupTitle];
+//		self.timerTitle.text = [NSString stringWithFormat:@"Timer: %@", timerEvent.timerTitle];
+//		self.startedOn.text = [NSString stringWithFormat:@"Started: %@ %@", [timerEvent startedTime], [timerEvent startedDate]];
+//		self.endedOn.text = [NSString stringWithFormat:@"Ended: %@ %@", [timerEvent endedTime], [timerEvent endedDate]];
+//	}	
 }
-*/
+
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

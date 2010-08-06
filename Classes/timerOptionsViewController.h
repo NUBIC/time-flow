@@ -13,4 +13,6 @@
 	NUBICTimerEvent *timerEvent;
 }
 
+@property(nonatomic, retain) NUBICTimerEvent *timerEvent;
+
 @end
