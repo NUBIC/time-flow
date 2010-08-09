@@ -219,8 +219,12 @@
 	NSError *error = nil;
 	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestTemplateForName:@"allTimerGroups"];
 	
+	// sort
+	NSSortDescriptor *byDisplayOrder = [[[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES] autorelease];
+	NSArray *sortDescriptors = [NSArray arrayWithObjects:byDisplayOrder, nil];
+	
 	// execute fetch request
-	NSArray *groups = [self.managedObjectContext executeFetchRequest:fetch error:&error];
+	NSArray *groups = [[self.managedObjectContext executeFetchRequest:fetch error:&error] sortedArrayUsingDescriptors:sortDescriptors];
 	if (!groups) {
         /*
          Replace this implementation with code to handle the error appropriately.
@@ -242,8 +246,6 @@
 															 text:[[group valueForKey:@"groupTitle"] description]];
 		[[self scrollView] addSubview:bar];
 		NSManagedObject *timer;
-		NSSortDescriptor *byDisplayOrder = [[[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES] autorelease];
-		NSArray *sortDescriptors = [NSArray arrayWithObjects:byDisplayOrder, nil];
 		for(timer in [[[group valueForKey:@"timers"] allObjects] sortedArrayUsingDescriptors:sortDescriptors]){
 			[bar addSubview:[self buttonWithTitle:[[timer valueForKey:@"timerTitle"] description] groupTitle:[[group valueForKey:@"groupTitle"] description] borderColor:[timer valueForKey:@"borderColor"] ]];
 		}
