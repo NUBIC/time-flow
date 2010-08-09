@@ -14,6 +14,12 @@
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_, timerGroup;
 
 #pragma mark -
+#pragma mark Constants
+
+
+#define _highlightColor	0xBB1100
+
+#pragma mark -
 #pragma mark Core Data
 
 - (NSManagedObject *)timerWithTitle:(NSString *)timerTitle{
@@ -119,7 +125,7 @@
 		[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
 		[newManagedObject setValue:self.timerGroup forKey:@"timerGroup"];
 		if (highlight) {
-			[newManagedObject setValue:HEX(0xFFD700,0.8) forKey:@"borderColor"];
+			[newManagedObject setValue:HEX(_highlightColor,0.8) forKey:@"borderColor"];
 		}
 		
 //		NSLog(@"inserted %@", newManagedObject);
@@ -135,7 +141,7 @@
 	NSManagedObject *timer = [self timerWithTitle:oldTitle];
 	[timer setValue:newTitle forKey:@"timerTitle"];
 	if (highlight) {
-		[timer setValue:HEX(0xFFD700,0.8) forKey:@"borderColor"];
+		[timer setValue:HEX(_highlightColor,0.8) forKey:@"borderColor"];
 	}else {
 		[timer setValue:nil forKey:@"borderColor"];
 	}
