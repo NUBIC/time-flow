@@ -8,11 +8,13 @@
 
 #import "NUBICTimerBar.h"
 
-#define _padding	5.0
-#define _spacing	5.0
-#define labelHeight		17.0
-#define labelWidth		758.0
-#define labelLeftPad	0.0
+#define button_x_padding 4.0
+#define button_y_padding 4.0
+#define group_x_padding 4.0
+#define group_y_padding 2.0
+
+#define label_height		20.0
+#define label_width		758.0
 
 @implementation NUBICTimerBar
 
@@ -21,7 +23,7 @@
         // Initialization code
 		self.backgroundColor = [UIColor clearColor];
 		// alloc
-		UILabel *aLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelLeftPad, 0.0, labelWidth, labelHeight)];
+		UILabel *aLabel = [[UILabel alloc] initWithFrame:CGRectMake(group_x_padding, 0.0, label_width, label_height)];
 		aLabel.textAlignment = UITextAlignmentLeft;
 		aLabel.textColor = [UIColor whiteColor];
 		aLabel.backgroundColor = [UIColor clearColor];
@@ -58,23 +60,21 @@
 
 - (void)layoutSubviews {
 //	NSLog(@"subviews: %@", self.subviews);
-	CGFloat x = _padding, y = _spacing;
-	CGFloat maxX = 0, lastHeight = 0;
-	CGFloat maxWidth = self.frame.size.width - _padding*2;
+	CGFloat x = group_x_padding, y = group_y_padding;
+	CGFloat maxX = 0, rowHeight = 0;
+	CGFloat maxWidth = self.frame.size.width - (group_x_padding * 2);
 	for (UIView* subview in self.subviews) {
-//		NSLog(@"x %f, y %f, maxX %f, lastHeight %f, maxWidth %f", x, y, maxX, lastHeight, maxWidth);
 		if (x + subview.frame.size.width > maxWidth) {
-			x = _padding;
-			y += lastHeight + _spacing;
+			x = group_x_padding;
+			y += rowHeight + button_y_padding;
+			rowHeight = 0;
 		}
 		subview.frame = CGRectMake(x, y, subview.frame.size.width, subview.frame.size.height);
-		x += subview.frame.size.width + _padding;
-		if (x > maxX) {
-			maxX = x;
-		}
-		lastHeight = subview.frame.size.height;
+		x += subview.frame.size.width + button_x_padding;
+		maxX = MAX(x, maxX);
+		rowHeight = MAX(subview.frame.size.height, rowHeight);
 	}
-	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, maxX, y+lastHeight);
+	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, maxX, y+rowHeight);
 //	NSLog(@"x:%f y:%f w:%f h:%f", self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
 }
 
