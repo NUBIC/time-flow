@@ -21,6 +21,7 @@
 		3B564CDE1200DFDF00ABF53F /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B564CDD1200DFDF00ABF53F /* gear.png */; };
 		3B564CE51200E04700ABF53F /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B564CE41200E04700ABF53F /* Icon-72.png */; };
 		3B76DD52120B6D1400882DB7 /* LogDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B76DD51120B6D1400882DB7 /* LogDetailViewController.xib */; };
+		3B7A7C10121064D300AF7D07 /* UISplitViewController+Rotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A7C0F121064D300AF7D07 /* UISplitViewController+Rotate.m */; };
 		3B7D936C11FE1F590064BABF /* setupRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D936B11FE1F590064BABF /* setupRootViewController.m */; };
 		3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D938F11FE20C30064BABF /* CoreData.framework */; };
 		3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */; };
@@ -61,6 +62,8 @@
 		3B564CDD1200DFDF00ABF53F /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
 		3B564CE41200E04700ABF53F /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		3B76DD51120B6D1400882DB7 /* LogDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LogDetailViewController.xib; path = Classes/LogDetailViewController.xib; sourceTree = "<group>"; };
+		3B7A7C0E121064D300AF7D07 /* UISplitViewController+Rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISplitViewController+Rotate.h"; sourceTree = "<group>"; };
+		3B7A7C0F121064D300AF7D07 /* UISplitViewController+Rotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISplitViewController+Rotate.m"; sourceTree = "<group>"; };
 		3B7D936A11FE1F590064BABF /* setupRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setupRootViewController.h; sourceTree = "<group>"; };
 		3B7D936B11FE1F590064BABF /* setupRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setupRootViewController.m; sourceTree = "<group>"; };
 		3B7D938F11FE20C30064BABF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -190,6 +193,8 @@
 				3B112DE9120227C300478454 /* NUBICTimerBar.m */,
 				3B91F59D120B4A0900C1A066 /* NUBICTimerEvent.h */,
 				3B91F59E120B4A0900C1A066 /* NUBICTimerEvent.m */,
+				3B7A7C0E121064D300AF7D07 /* UISplitViewController+Rotate.h */,
+				3B7A7C0F121064D300AF7D07 /* UISplitViewController+Rotate.m */,
 			);
 			name = "NUBIC Models";
 			path = ..;
@@ -310,6 +315,7 @@
 				3B91F59F120B4A0900C1A066 /* NUBICTimerEvent.m in Sources */,
 				3BE666EF120C538700C4A771 /* LogDetailViewController.m in Sources */,
 				3BE6678C120C5F6900C4A771 /* timerOptionsViewController.m in Sources */,
+				3B7A7C10121064D300AF7D07 /* UISplitViewController+Rotate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

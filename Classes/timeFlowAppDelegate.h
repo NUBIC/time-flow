@@ -12,6 +12,7 @@
 #import "setupRootViewController.h"
 #import "setupDetailViewController.h"
 #import "LogViewController.h"
+#import "UISplitViewController+Rotate.h"
 
 //@class timeFlowViewController;
 
