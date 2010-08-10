@@ -300,6 +300,10 @@
 
 
 - (void)dealloc {
+	[managedObjectContext_ release];
+
+	[scrollView release];
+	[navBar release];
 	[runningTimers release];
 	[super dealloc];
 }

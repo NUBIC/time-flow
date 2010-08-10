@@ -124,6 +124,11 @@
 }
 
 - (void)dealloc {
+	[timerTitle release];
+	[groupTitle release];
+	[startTime release];
+	[borderColor release];
+	
     [super dealloc];
 }
 

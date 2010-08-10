@@ -113,8 +113,7 @@
              
              abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
              */
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            [UIAppDelegate errorWithTitle:@"managedObjectContext save error" message:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]]];
         } 
     }
 	
@@ -216,8 +215,7 @@
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        [UIAppDelegate errorWithTitle:@"Persistent store coordinator error" message:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]]];
     }    
     
     return persistentStoreCoordinator_;
@@ -230,11 +228,14 @@
 		 Replace this implementation with code to handle the error appropriately.
 		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
 		 */
-		DLog(@"Unresolved %@ error %@, %@", triggeredBy, error, [error userInfo]);
-		abort();
+		[UIAppDelegate errorWithTitle:@"Save error" message:[NSString stringWithFormat:@"Unresolved %@ error %@, %@", triggeredBy, error, [error userInfo]]];
 	}
 }
-
+-(void) errorWithTitle:(NSString *)errorTitle message:(NSString *)errorMessage{
+	DLog(@"%@:%@", errorTitle || @"Oops", errorMessage || @"Please press the Home Button and restart the application.");
+	UIAlertView *errorAlert = [[[UIAlertView alloc] initWithTitle:errorTitle || @"Oops" message:errorMessage || @"Please press the Home Button and restart the application." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+	[errorAlert show];
+}
 
 #pragma mark -
 #pragma mark Application's Documents directory
@@ -259,14 +260,15 @@
 
 
 - (void)dealloc {
-	
+
     [managedObjectContext_ release];
     [managedObjectModel_ release];
     [persistentStoreCoordinator_ release];
 	
+	[tabBarController release];
 	[timersViewController release];
 	[setupSplitController release];
-	[tabBarController release];
+	[logSplitController release];
 
     [window release];
     [super dealloc];

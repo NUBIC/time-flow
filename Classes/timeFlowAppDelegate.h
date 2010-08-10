@@ -41,6 +41,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 -(void) saveContext:(NSString *)triggeredBy;
+-(void) errorWithTitle:(NSString *)errorTitle message:(NSString *)errorMessage;
 - (NSString *)applicationDocumentsDirectory;
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController;
 

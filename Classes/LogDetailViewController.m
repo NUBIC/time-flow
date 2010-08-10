@@ -63,6 +63,12 @@
 
 
 - (void)dealloc {
+	[timerEvent release];
+	[groupTitle release];
+	[timerTitle release];
+	[startedOn release];
+	[endedOn release];
+	
     [super dealloc];
 }
 
