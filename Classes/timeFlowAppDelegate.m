@@ -169,7 +169,7 @@
     }
     NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"coredataproject" ofType:@"momd"];
     NSURL *modelURL = [NSURL fileURLWithPath:modelPath]; 
-	NSLog(@"model path %@", modelPath);
+	// NSLog(@"model path %@", modelPath);
     managedObjectModel_ = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
     return managedObjectModel_;
 }

@@ -126,8 +126,8 @@
 	}
 	[self dismissModalViewControllerAnimated:YES];
 }
-- (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle highlight:(BOOL)highlight {
-	NSLog(@"old:%@ new:%@", oldTitle, newTitle);
+- (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle oldHighlight:(BOOL)oldHighlight newHighlight:(BOOL)newHighlight {
+	// NSLog(@"old:%@ new:%@", oldTitle, newTitle);
 	
 	NSManagedObject *group = [self timerGroupWithTitle:oldTitle];
 	[group setValue:newTitle forKey:@"groupTitle"];
@@ -207,7 +207,6 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
 	changeIsUserDriven = YES;
 	
-	NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
 	NSMutableArray *items = [[self.fetchedResultsController fetchedObjects] mutableCopy];
 	
 	// Grab the item we're moving.
@@ -224,7 +223,7 @@
 	for (NSManagedObject *managedObject in items)
 	{
 		[managedObject setValue:[NSNumber numberWithInt:i] forKey:@"displayOrder"];
-		NSLog(@"Updated %@ to %i", managedObject, i);
+		// NSLog(@"Updated %@ to %i", managedObject, i);
 		i++;
 	}	
 
@@ -265,7 +264,7 @@
 		detailViewController.managedObjectContext = self.managedObjectContext;
 		
 		UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
-		split.viewControllers = [[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], setupDetailNavigationController, nil];
+		split.viewControllers = [[[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], setupDetailNavigationController, nil] autorelease];
 		
 		[detailViewController release];
 		[setupDetailNavigationController release];
@@ -347,7 +346,7 @@
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
 	if(!changeIsUserDriven){
-		NSLog(@"didChangeSection");
+		// NSLog(@"didChangeSection");
 		switch(type) {
 			case NSFetchedResultsChangeInsert:
 				[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];

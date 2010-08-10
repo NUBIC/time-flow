@@ -25,8 +25,8 @@
 - (NSManagedObject *)timerWithTitle:(NSString *)timerTitle{
 	// setup fetch request
 	NSError *error = nil;
-	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"timerWithTitle" substitutionVariables:[NSDictionary dictionaryWithObject:timerTitle forKey:@"timerTitle"]];
-	
+	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"timerWithTitle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:timerTitle, @"timerTitle", self.timerGroup, @"timerGroup", nil]];
+
 	// execute fetch request
 	NSArray *timers = [self.managedObjectContext executeFetchRequest:fetch error:&error];
 	if (!timers || [timers count] != 1) {
@@ -110,6 +110,7 @@
 
 
 - (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item highlight:(BOOL)highlight{
+	// NSLog(@"itemInputController didAddItem:%@ highlight:%d", item, highlight);
 	if([item length] > 0){
 		// Create a new instance of the entity managed by the fetched results controller.
 		NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
@@ -135,19 +136,22 @@
 	}
 	[self dismissModalViewControllerAnimated:YES];
 }
-- (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle highlight:(BOOL)highlight {
-	NSLog(@"old:%@ new:%@", oldTitle, newTitle);
-	
-	NSManagedObject *timer = [self timerWithTitle:oldTitle];
-	[timer setValue:newTitle forKey:@"timerTitle"];
-	if (highlight) {
-		[timer setValue:HEX(_highlightColor,0.8) forKey:@"borderColor"];
+- (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle oldHighlight:(BOOL)oldHighlight newHighlight:(BOOL)newHighlight {
+//	NSLog(@"itemInputController didEditItem:%@ newTitle:%@ oldHighlight:%d highlight:%d", oldTitle, newTitle, oldHighlight, newHighlight);
+	if (oldTitle == newTitle && oldHighlight == newHighlight) {
+//		NSLog(@"same");
 	}else {
-		[timer setValue:nil forKey:@"borderColor"];
+		NSManagedObject *timer = [self timerWithTitle:oldTitle];
+		[timer setValue:newTitle forKey:@"timerTitle"];
+		if (newHighlight) {
+			[timer setValue:HEX(_highlightColor,0.8) forKey:@"borderColor"];
+		}else {
+			[timer setValue:nil forKey:@"borderColor"];
+		}
+		
+		[UIAppDelegate saveContext:@"didEditItem timer"];
 	}
 
-	[UIAppDelegate saveContext:@"didEditItem timer"];
-	
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -215,8 +219,6 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
 	changeIsUserDriven = YES;
-	
-	NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
 	NSMutableArray *items = [[self.fetchedResultsController fetchedObjects] mutableCopy];
 	
 	// Grab the item we're moving.
@@ -233,7 +235,7 @@
 	for (NSManagedObject *managedObject in items)
 	{
 		[managedObject setValue:[NSNumber numberWithInt:i] forKey:@"displayOrder"];
-		NSLog(@"Updated %@ to %i", managedObject, i);
+		// NSLog(@"Updated %@ to %i", managedObject, i);
 		i++;
 	}	
 	
@@ -322,7 +324,7 @@
          
          abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        NSLog(@"Unresolved setupDetailViewController fetchedResultsController error %@, %@", error, [error userInfo]);
         abort();
     }
     

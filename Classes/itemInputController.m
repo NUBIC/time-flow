@@ -50,25 +50,34 @@
 	if (editMode) {
 		textField.text = oldTitle;
 		if (self.inputType = @"Timer") {
-			highlightSwitch.on = (int)oldHighlightOn;
+			highlightSwitch.on = oldHighlightOn;
 		}
 		navItem.title = [NSString stringWithFormat:@"Edit %@", inputType];
 	}
 }
 
 - (IBAction)doneButtonPressed:(id)sender{
+	// NSLog(@"donebuttonpressed");
+	
 	if (editMode) {
-		[self.delegate itemInputController:self didEditItem:self.oldTitle newTitle:textField.text highlight:highlightSwitch.on];
+		if (self.delegate != NULL && [self.delegate respondsToSelector:@selector(itemInputController:didEditItem:newTitle:oldHighlight:newHighlight:)]) {
+			// NSLog(@"edit mode");
+			// NSLog(@"itemInputController:%@ didEditItem:%@ newTitle:%@ oldHighlight:%d newHighlight:%d", self, oldTitle, textField.text, oldHighlightOn, highlightSwitch.on);
+			[self.delegate itemInputController:self didEditItem:oldTitle newTitle:textField.text oldHighlight:oldHighlightOn newHighlight:highlightSwitch.on];
+		}
 	}else {
-		[self.delegate itemInputController:self didAddItem:textField.text highlight:highlightSwitch.on];
+		if (self.delegate != NULL && [self.delegate respondsToSelector:@selector(itemInputController:didAddItem:highlight:)]) {
+			// NSLog(@"add mode");
+			[self.delegate itemInputController:self didAddItem:textField.text highlight:highlightSwitch.on];
+		}
 	}
 
 }
 - (IBAction)cancelButtonPressed:(id)sender{
-	[self.delegate itemInputController:self didAddItem:@"" highlight:NO];
+	if (self.delegate != NULL && [self.delegate respondsToSelector:@selector(itemInputController:didAddItem:highlight:)]) {
+		[self.delegate itemInputController:self didAddItem:@"" highlight:NO];
+	}
 }
-
-
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -91,6 +100,12 @@
 
 - (void)dealloc {
 	[textField release];
+	[highlightLabel release];
+	[highlightSwitch release];
+	[navItem release];
+	[inputType release];
+	[oldTitle release];
+	
     [super dealloc];
 }
 

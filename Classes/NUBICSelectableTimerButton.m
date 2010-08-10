@@ -70,6 +70,15 @@
 	
 	return self;
 }
+- (void)startTimer {
+	self.startTime = [NSDate date];
+	[self setTimeText:@"0:00"];
+}
+- (void)stopTimer {
+	self.startTime = nil;
+	[self setTimeText:@""];
+}
+
 - (void)setTimeText:(NSString *)str {
 	if([str length]){
 		self.titleEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 13.0, 0.0);

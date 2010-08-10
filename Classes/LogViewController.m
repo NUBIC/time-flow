@@ -87,7 +87,6 @@
 
 - (void) deleteAllEvents {
 	// http://stackoverflow.com/questions/1077810/delete-reset-all-entries-in-core-data
-    NSError *error;	
     for (NSManagedObject *managedObject in [self.fetchedResultsController fetchedObjects]) {
         [self.managedObjectContext deleteObject:managedObject];
         DLog(@"%@ object deleted",entityDescription);
@@ -177,6 +176,7 @@
 		
 		// Present the mail composition modally
 		//	picker.modalPresentationStyle = UIModalPresentationFormSheet;
+		[shortDateTimeFormat release];
 		[self presentModalViewController:picker animated:YES];
 		[picker release]; // Can safely release the controller now.
 		
@@ -365,7 +365,7 @@
          
          abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        NSLog(@"Unresolved LogViewController fetchedResultsController error %@, %@", error, [error userInfo]);
         abort();
     }
     
@@ -387,7 +387,7 @@
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
 	if(!changeIsUserDriven){
-		NSLog(@"didChangeSection");
+		// NSLog(@"didChangeSection");
 		switch(type) {
 			case NSFetchedResultsChangeInsert:
 				[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];

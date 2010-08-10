@@ -8,25 +8,30 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "NUBICSelectableTimerButton.h"
 
 @interface timeFlowViewController : UIViewController <NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
-	NSTimer *clockTimer;
+	UIScrollView *scrollView;
+	UINavigationBar *navBar;
+
 	NSMutableArray *runningTimers;
 	Boolean timersChanged;
-	UIPopoverController *popoverController;
+
+	NSTimer *clockTimer;
+	NUBICSelectableTimerButton *currentActionTimer;
+	Boolean swappingTimers;
 
 @private
     NSManagedObjectContext *managedObjectContext_;
 }
 
-@property (nonatomic, retain) NSMutableArray *runningTimers;
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
 
+@property (nonatomic, retain) NSMutableArray *runningTimers;
 @property (nonatomic, assign) Boolean timersChanged;
 
--(IBAction) toggleTouchUpInside:(id)sender;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 @end
 

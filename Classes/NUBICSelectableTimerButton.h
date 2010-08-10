@@ -26,6 +26,9 @@
 
 - (id)initWithFrame:(CGRect)frame title:(NSString*)title borderColor:(UIColor *)bColor;
 - (void)setTimeText:(NSString *)str;
+- (void)startTimer;
+- (void)stopTimer;
+
 + (id)buttonWithTitle:(NSString *)title groupTitle:(NSString *)groupTitle borderColor:(UIColor *)borderColor;
 
 @end

@@ -14,14 +14,15 @@
 
 @implementation timeFlowViewController
 
-@synthesize managedObjectContext=managedObjectContext_, scrollView, runningTimers, timersChanged, popoverController;
+@synthesize managedObjectContext=managedObjectContext_, scrollView, navBar, runningTimers, timersChanged; //, popoverController;
 
 #pragma mark -
-#pragma mark Constants
+#pragma mark Badge
+-(void) updateBadge {
+	//	NSLog(@"updateBadge: %i", [runningTimers count]);
+	self.tabBarItem.badgeValue = [runningTimers count] > 0 ? [NSString stringWithFormat:@"%i", [runningTimers count]] : nil;
+}
 
-#define pageTop			0.0
-#define barHeight		0.0
-#define barWidth		768
 
 #pragma mark -
 #pragma mark Core data
@@ -29,7 +30,7 @@
 -(NSArray *) runningEvents {
 	// setup fetch request
 	NSError *error = nil;
-	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"runningEvents"];
+	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestTemplateForName:@"runningEvents"];
 	
 	// execute fetch request
 	NSArray *timers = [[self.managedObjectContext executeFetchRequest:fetch error:&error] autorelease];
@@ -55,7 +56,7 @@
          Replace this implementation with code to handle the error appropriately.
          abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
          */
-        NSLog(@"Unresolved runningTimer fetch error %@, %@", error, [error userInfo]);
+        NSLog(@"Unresolved runningEventForTimer fetch error %@, %@", error, [error userInfo]);
         abort();
     }
 	return [timers lastObject];
@@ -70,117 +71,90 @@
 }
 
 -(void) closeEvent:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn {
-	// Close an existing event
-	// setup fetch request
-	NSError *error = nil;
-	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"runningEvent" substitutionVariables:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:timerTitle, groupTitle, startedOn, nil] forKeys:[NSArray arrayWithObjects: @"timerTitle", @"groupTitle", @"startedOn", nil]]];
-	
-	// execute fetch request
-	NSArray *timers = [self.managedObjectContext executeFetchRequest:fetch error:&error];
-	if (!timers || [timers count] != 1) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-         */
-        NSLog(@"Unresolved runningTimer fetch error %@, %@", error, [error userInfo]);
-        abort();
-    }
-	[[timers lastObject] setValue:[NSDate date] forKey:@"endedOn"];	
-	
-//	NSManagedObject *event = [self runningEventForTimer:timerTitle group:groupTitle startedOn:startedOn];
-//	[event setValue:[NSDate date] forKey:@"endedOn"];
+	[[self runningEventForTimer:timerTitle group:groupTitle startedOn:startedOn] setValue:[NSDate date] forKey:@"endedOn"];	
 	[UIAppDelegate saveContext:@"closeEvent"];
-//	[event release];
 }
--(void) deleteEevent:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn {
-	[self.managedObjectContext deleteObject:[self runningEventForTimer:timerTitle group:groupTitle startedOn:startedOn]];
+-(void) deleteEvent:(NUBICSelectableTimerButton *)timer {
+	[runningTimers removeObject:timer];
+	[self.managedObjectContext deleteObject:[self runningEventForTimer:timer.timerTitle group:timer.groupTitle startedOn:timer.startTime]];
+	[timer stopTimer];
+	[self updateBadge];
+	currentActionTimer.selected = NO;
+	currentActionTimer = nil;
 	[UIAppDelegate saveContext:@"deleteEvent"];
 }
 
 #pragma mark -
 #pragma mark Event responsders
--(IBAction) toggleTouchUpInside:(id)sender{	
-	//	NSLog(@"toggleTouchUpInside");
-	//	Toggles label and startTime for button, add/removes it from runningTimers
-
-	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
-	[timeFormat setTimeStyle: NSDateFormatterMediumStyle];
+-(void) toggleTouchUpInside:(id)sender{	
+//	NSLog(@"toggleTouchUpInside");
+	NUBICSelectableTimerButton *timer = (NUBICSelectableTimerButton *)sender;
 	
-	if (((NUBICSelectableTimerButton*)sender).selected) {
-		((NUBICSelectableTimerButton*)sender).startTime = [NSDate date];
-		[(NUBICSelectableTimerButton*)sender setTimeText:@"0:00"];
-		[self createEvent:((NUBICSelectableTimerButton*)sender).timerTitle group:((NUBICSelectableTimerButton*)sender).groupTitle startedOn:((NUBICSelectableTimerButton*)sender).startTime];
-		[runningTimers addObject: sender];
+	if (swappingTimers) {
+		[timer startTimer];
+		timer.startTime = currentActionTimer.startTime;
+		[self createEvent:timer.timerTitle group:timer.groupTitle startedOn:currentActionTimer.startTime];
+		[runningTimers addObject:timer];
+		
+		for (NUBICSelectableTimerButton *runningTimer in runningTimers) {
+			runningTimer.enabled = YES;
+		}
+
+		[self deleteEvent:currentActionTimer];
+		swappingTimers = NO;
 	}else {
-		[self closeEvent:((NUBICSelectableTimerButton*)sender).timerTitle group:((NUBICSelectableTimerButton*)sender).groupTitle startedOn:((NUBICSelectableTimerButton*)sender).startTime];
-		[(NUBICSelectableTimerButton*)sender setStartTime:nil];
-		[(NUBICSelectableTimerButton*)sender setTimeText:@""];
-		[runningTimers removeObject: sender];
+		if (timer.selected) {
+			[timer startTimer];
+			[self createEvent:timer.timerTitle group:timer.groupTitle startedOn:timer.startTime];
+			[runningTimers addObject: timer];
+		}else {
+			[runningTimers removeObject:timer];
+			[self closeEvent:timer.timerTitle group:timer.groupTitle startedOn:timer.startTime];
+			[timer stopTimer];
+		}
 	}
-	//	NSLog(@"badge: %i", [runningTimers count]);
-	if ([runningTimers count] > 0) {
-		self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i", [runningTimers count]];
-	}else {
-		self.tabBarItem.badgeValue = nil;
-	}
+	[self updateBadge];
 }
 -(void) timerLongPress:(UIGestureRecognizer *)gestureRecognizer {
 //	NSLog(@"longPress");
-//	UIActionSheet *confirmation = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
-//	[confirmation showInView:gestureRecognizer.view];
-//	[confirmation showFromRect:CGRectMake(0.0, 0.0, 1.0, 1.0) inView:gestureRecognizer.view animated:YES];
-	if([self.popoverController isPopoverVisible] || !((NUBICSelectableTimerButton *)[gestureRecognizer view]).selected)
-	{
-		//close the popover view if toolbar button was touched
-		//again and popover is already visible
-		//Thanks to @chrisonhismac
-		
-//		[self.popoverController dismissPopoverAnimated:YES];
-		return;
+	if(gestureRecognizer.state == UIGestureRecognizerStateBegan && ((NUBICSelectableTimerButton *)gestureRecognizer.view).selected){
+		// NSLog(@"longPress state began on button that is selected");
+		UIActionSheet *confirmation = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Swap", nil];
+		[confirmation showFromRect:gestureRecognizer.view.bounds inView:gestureRecognizer.view animated:NO];
+		currentActionTimer = (NUBICSelectableTimerButton *)gestureRecognizer.view;
 	}
-	
-	//build our custom popover view
-	UIViewController* popoverContent = [[UIViewController alloc] init];
-	
-	timerOptionsViewController *timerOptionsView = [[timerOptionsViewController alloc] init];	
-	NUBICSelectableTimerButton *timerButton = (NUBICSelectableTimerButton *)gestureRecognizer.view;
-	timerOptionsView.timerEvent = [self runningEventForTimer:timerButton.timerTitle group:timerButton.groupTitle startedOn:timerButton.startTime];
-	popoverContent.view = timerOptionsView.view;
-	
-//	UIView* popoverView = [[UIView alloc]
-//						   initWithFrame:CGRectMake(0, 0, 300, 400)];
-//	popoverView.backgroundColor = [UIColor blackColor];
-//	popoverContent.view = popoverView;
-	
-	//resize the popover view shown in the current view to the view's size
-	popoverContent.contentSizeForViewInPopover = CGSizeMake(320, 170);
-	
-	//create a popover controller
-	self.popoverController = [[UIPopoverController alloc] initWithContentViewController:popoverContent];
-	
-	//present the popover view non-modal with a
-	//refrence to the toolbar button which was pressed
-	[self.popoverController presentPopoverFromRect:CGRectMake(gestureRecognizer.view.frame.size.width/2, gestureRecognizer.view.frame.size.height/2 + 5.0, 1.0, 1.0) inView:gestureRecognizer.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	
-	//release the popover content
-	[timerOptionsView release];
-//	[popoverView release];
-	[popoverContent release];
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.destructiveButtonIndex) {
+		[self deleteEvent:currentActionTimer];
+	}else if (buttonIndex == 1) {
+		// NSLog(@"swap");
+		swappingTimers = YES;
+		for (NUBICSelectableTimerButton *runningTimer in runningTimers) {
+			runningTimer.enabled = NO;
+		}
+	}else if (buttonIndex == 2) {
+		// add note
+		NSLog(@"Add Note");
+	}
 	
 }
 
 #pragma mark -
-#pragma mark Timers
+#pragma mark Updating timer views
 - (void) startClockTimer{
-	// NSLog(@"startClockTimer");
-	// Starts timer which fires updateClock method every 1.0 seconds
+// NSLog(@"startClockTimer");
+// Starts timer which fires updateClock method every 1.0 seconds
 
 	// scheduledTimerWithTimeInterval returns an autoreleased object
 	clockTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0 target: self selector: @selector(updateClock) userInfo: nil repeats: YES];	
 }
 - (void) updateClock{
-	// NSLog(@"updateClock");
-	// Updates running timers' labels
+// NSLog(@"updateClock");
+// Updates running timers' labels
 
 	NSDateFormatter *timeFormat = [[[NSDateFormatter alloc] init] autorelease];
 	[timeFormat setTimeStyle:NSDateFormatterMediumStyle];
@@ -203,8 +177,7 @@
 
 
 #pragma mark -
-#pragma mark View elements
-
+#pragma mark Creating timer views
 - (NUBICSelectableTimerButton *)buttonWithTitle:(NSString *)title groupTitle:(NSString *)groupTitle borderColor:(UIColor *)borderColor {
 	// autoreleased object
 	NUBICSelectableTimerButton *aButton = [NUBICSelectableTimerButton buttonWithTitle:title groupTitle:groupTitle borderColor:borderColor];
@@ -220,11 +193,11 @@
 	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestTemplateForName:@"allTimerGroups"];
 	
 	// sort
-	NSSortDescriptor *byDisplayOrder = [[[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES] autorelease];
-	NSArray *sortDescriptors = [NSArray arrayWithObjects:byDisplayOrder, nil];
+	NSArray *sortDescriptors = [NSArray arrayWithObjects:[[[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES] autorelease], nil];
+	[fetch setSortDescriptors:sortDescriptors];
 	
 	// execute fetch request
-	NSArray *groups = [[self.managedObjectContext executeFetchRequest:fetch error:&error] sortedArrayUsingDescriptors:sortDescriptors];
+	NSArray *groups = [self.managedObjectContext executeFetchRequest:fetch error:&error];
 	if (!groups) {
         /*
          Replace this implementation with code to handle the error appropriately.
@@ -238,20 +211,19 @@
 	for (UIView *sub in [self.scrollView subviews]) {
 		[sub removeFromSuperview];
 	}
-	int y = pageTop;
+	float y = 0.0;
 	
 	// loop through timerGroups and Timers, create subviews
 	for(NSManagedObject *group in groups){
-		NUBICTimerBar *bar = [[NUBICTimerBar alloc] initWithFrame:CGRectMake(0.0, y, barWidth, barHeight)
-															 text:[[group valueForKey:@"groupTitle"] description]];
-		[[self scrollView] addSubview:bar];
-		NSManagedObject *timer;
-		for(timer in [[[group valueForKey:@"timers"] allObjects] sortedArrayUsingDescriptors:sortDescriptors]){
+		NUBICTimerBar *bar = [[NUBICTimerBar alloc] initWithFrame:CGRectMake(0, y, 768, 65) text:[[group valueForKey:@"groupTitle"] description]];
+		for(NSManagedObject *timer in [[[group valueForKey:@"timers"] allObjects] sortedArrayUsingDescriptors:sortDescriptors]){
 			[bar addSubview:[self buttonWithTitle:[[timer valueForKey:@"timerTitle"] description] groupTitle:[[group valueForKey:@"groupTitle"] description] borderColor:[timer valueForKey:@"borderColor"] ]];
 		}
 		[bar layoutSubviews];
+		[[self scrollView] addSubview:bar];
+
 		y += bar.frame.size.height;
-		[bar release];
+		// NSLog(@"y: %f", y);
 	}
 	
 	// resize scrollView
@@ -261,8 +233,6 @@
 
 #pragma mark -
 #pragma mark View lifecycle
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
@@ -330,6 +300,7 @@
 
 
 - (void)dealloc {
+	[runningTimers release];
 	[super dealloc];
 }
 
