@@ -84,7 +84,7 @@
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
 	[UIApplication sharedApplication].idleTimerDisabled = NO;
-
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:[timersViewController.runningTimers count] ];
 }
 
 
@@ -103,6 +103,7 @@
      See also applicationDidEnterBackground:.
      */
 	[UIApplication sharedApplication].idleTimerDisabled = NO;
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:[timersViewController.runningTimers count] ];
 
 	NSError *error = nil;
     if (managedObjectContext_ != nil) {
