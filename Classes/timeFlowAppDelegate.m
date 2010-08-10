@@ -38,7 +38,7 @@
 	// setup
 	[setupSplitController setHidesMasterViewInPortrait:NO];
 	[logSplitController setHidesMasterViewInPortrait:NO];
-	
+
 	// setup: left pane
 	setupRootViewController *setupRootController = [[setupRootViewController alloc] initWithStyle:UITableViewStyleGrouped ];
 	UINavigationController *setupNavigationController = [[UINavigationController alloc] initWithRootViewController:setupRootController];
@@ -60,7 +60,6 @@
 	logDetailController.view.backgroundColor = [UIColor whiteColor];
 	UINavigationController *logNavigationDetailController = [[UINavigationController alloc] initWithRootViewController:logDetailController];
 	logDetailController.navigationItem.title = @"Event";	
-	
 	// core data
 	timersViewController.managedObjectContext = self.managedObjectContext;
 	setupRootController.managedObjectContext = self.managedObjectContext;

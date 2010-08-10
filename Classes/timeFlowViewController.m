@@ -27,22 +27,28 @@
 #pragma mark -
 #pragma mark Core data
 
--(NSArray *) runningEvents {
+-(NUBICTimerEvent *) runningEventForTimer:(NSString *)timerTitle group:(NSString *)groupTitle {
 	// setup fetch request
 	NSError *error = nil;
-	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestTemplateForName:@"runningEvents"];
+	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"runningEvents" 
+		substitutionVariables:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:timerTitle, groupTitle, nil] 
+														  forKeys:[NSArray arrayWithObjects: @"timerTitle", @"groupTitle", nil]]];
 	
+	NSArray *sortDescriptors = [NSArray arrayWithObjects:[[[NSSortDescriptor alloc] initWithKey:@"startedOn" ascending:YES] autorelease], nil];
+	[fetch setSortDescriptors:sortDescriptors];
+	
+	// http://coderslike.us/2009/05/05/finding-freeddeallocated-instances-of-objects/
 	// execute fetch request
-	NSArray *timers = [[self.managedObjectContext executeFetchRequest:fetch error:&error] autorelease];
-	if (!timers) {
+	NSArray *events = [self.managedObjectContext executeFetchRequest:fetch error:&error];
+	if (!events) {
         /*
          Replace this implementation with code to handle the error appropriately.
          abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
          */
-        NSLog(@"Unresolved runningTimer fetch error %@, %@", error, [error userInfo]);
+        NSLog(@"Unresolved runningEventForTimer fetch error %@, %@", error, [error userInfo]);
         abort();
     }
-	return timers;
+	return [events lastObject];
 }
 -(NUBICTimerEvent *) runningEventForTimer:(NSString *)timerTitle group:(NSString *)groupTitle startedOn:(NSDate *)startedOn{
 	// setup fetch request
@@ -217,10 +223,21 @@
 	for(NSManagedObject *group in groups){
 		NUBICTimerBar *bar = [[NUBICTimerBar alloc] initWithFrame:CGRectMake(0, y, 768, 65) text:[[group valueForKey:@"groupTitle"] description]];
 		for(NSManagedObject *timer in [[[group valueForKey:@"timers"] allObjects] sortedArrayUsingDescriptors:sortDescriptors]){
-			[bar addSubview:[self buttonWithTitle:[[timer valueForKey:@"timerTitle"] description] groupTitle:[[group valueForKey:@"groupTitle"] description] borderColor:[timer valueForKey:@"borderColor"] ]];
+			NUBICSelectableTimerButton *button = [self buttonWithTitle:[[timer valueForKey:@"timerTitle"] description] groupTitle:[[group valueForKey:@"groupTitle"] description] borderColor:[timer valueForKey:@"borderColor"]];
+			[bar addSubview: button];
+
+			// start timer if there is an existing event
+			NUBICTimerEvent *existingEvent = [self runningEventForTimer:[[timer valueForKey:@"timerTitle"] description] group:[[group valueForKey:@"groupTitle"] description]];
+			if (existingEvent) {
+				NSLog(@"existing event");
+				[button startTimer];
+				button.startTime = existingEvent.startedOn;
+				button.selected = YES;
+				[runningTimers addObject:button];
+			}
 		}
 		[bar layoutSubviews];
-		[[self scrollView] addSubview:bar];
+		[self.scrollView addSubview:bar];
 
 		y += bar.frame.size.height;
 		// NSLog(@"y: %f", y);
@@ -228,7 +245,6 @@
 	
 	// resize scrollView
 	[self scrollView].contentSize = CGSizeMake(768.0, y+5.0);
-	
 }
 
 #pragma mark -
