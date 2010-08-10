@@ -16,7 +16,7 @@
 
 #pragma mark -
 #pragma mark Core Data
--(NSManagedObject *) timerGroupWithTitle:(NSString *)groupTitle {
+- (NSManagedObject *)timerGroupWithTitle:(NSString *)groupTitle {
 	// setup fetch request
 	NSError *error = nil;
 	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"timerGroupWithTitle" substitutionVariables:[NSDictionary dictionaryWithObject:groupTitle forKey:@"groupTitle"]];
@@ -24,15 +24,23 @@
 	// execute fetch request
 	NSArray *groups = [self.managedObjectContext executeFetchRequest:fetch error:&error];
 	if (!groups || [groups count] != 1) {
-		/*
-		 Replace this implementation with code to handle the error appropriately.
-		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-		 */
-		NSLog(@"Unresolved timerGroupWithTitle fetch error %@, %@", error, [error userInfo]);
-		abort();
+		[UIAppDelegate errorWithTitle:@"Fetch error" message:[NSString stringWithFormat:@"setupRootViewController timerGroupWithTitle fetch error %@, %@", error, [error userInfo]]];
 	}
 	return [groups lastObject];
 }
+- (BOOL)groupIsUnique:(NSString *)groupTitle {
+	// setup fetch request
+	NSError *error = nil;
+	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"timerGroupWithTitle" substitutionVariables:[NSDictionary dictionaryWithObject:groupTitle forKey:@"groupTitle"]];
+	
+	// execute fetch request
+	NSArray *groups = [self.managedObjectContext executeFetchRequest:fetch error:&error];
+	if (!groups) {
+		[UIAppDelegate errorWithTitle:@"Fetch error" message:[NSString stringWithFormat:@"setupRootViewController groupIsUnique fetch error %@, %@", error, [error userInfo]]];
+	}
+	return [groups count] == 0;
+}
+
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -107,35 +115,51 @@
 
 - (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item highlight:(BOOL)highlight {
 	if([item length] > 0){
-		// Create a new instance of the entity managed by the fetched results controller.
-		NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-		NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-		
-		
-		NSArray *items = [self.fetchedResultsController fetchedObjects];
-		
-		// If appropriate, configure the new managed object.
-		[newManagedObject setValue:item forKey:@"groupTitle"];
-//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
-		[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
-		
-//		NSLog(@"insert at count %i", [items count]);
-		// Save the context.
-		[UIAppDelegate saveContext:@"setupRootViewController didAddItem"];
+		if ([self groupIsUnique:item]) {
+			// Create a new instance of the entity managed by the fetched results controller.
+			NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+			NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+			NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+			
+			
+			NSArray *items = [self.fetchedResultsController fetchedObjects];
+			
+			// If appropriate, configure the new managed object.
+			[newManagedObject setValue:item forKey:@"groupTitle"];
+			//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
+			[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
+			
+			//		NSLog(@"insert at count %i", [items count]);
+			// Save the context.
+			[UIAppDelegate saveContext:@"setupRootViewController didAddItem"];
+			[self dismissModalViewControllerAnimated:YES];
+		}else {
+			UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Group Not Unique" message:@"The title you selected is already taken." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+			[notUnique show];
+			[notUnique release];
+		}
+	}else {
+		[self dismissModalViewControllerAnimated:YES];
 	}
-	[self dismissModalViewControllerAnimated:YES];
-}
-- (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle oldHighlight:(BOOL)oldHighlight newHighlight:(BOOL)newHighlight {
-	// NSLog(@"old:%@ new:%@", oldTitle, newTitle);
-	
-	NSManagedObject *group = [self timerGroupWithTitle:oldTitle];
-	[group setValue:newTitle forKey:@"groupTitle"];
-	[UIAppDelegate saveContext:@"didEditItem group"];
-	
-	[self dismissModalViewControllerAnimated:YES];
 }
 
+
+- (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle oldHighlight:(BOOL)oldHighlight newHighlight:(BOOL)newHighlight {
+	//	NSLog(@"itemInputController didEditItem:%@ newTitle:%@ oldHighlight:%d highlight:%d", oldTitle, newTitle, oldHighlight, newHighlight);
+	if (![oldTitle isEqualToString:newTitle] && ![self groupIsUnique:newTitle]) {
+		DLog(@"different title, not unique");
+		UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Group Not Unique" message:@"The title you selected is already taken." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		[notUnique show];
+		[notUnique release];
+	}else if (![oldTitle isEqualToString:newTitle] || oldHighlight != newHighlight) {
+		NSManagedObject *group = [self timerGroupWithTitle:oldTitle];
+		[group setValue:newTitle forKey:@"groupTitle"];
+		[UIAppDelegate saveContext:@"didEditItem group"];
+		[self dismissModalViewControllerAnimated:YES];
+	}else {
+		[self dismissModalViewControllerAnimated:YES];
+	}
+}
 
 #pragma mark -
 #pragma mark Table view data source

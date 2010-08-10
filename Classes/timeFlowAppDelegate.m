@@ -232,8 +232,8 @@
 	}
 }
 -(void) errorWithTitle:(NSString *)errorTitle message:(NSString *)errorMessage{
-	DLog(@"%@:%@", errorTitle || @"Oops", errorMessage || @"Please press the Home Button and restart the application.");
-	UIAlertView *errorAlert = [[[UIAlertView alloc] initWithTitle:errorTitle || @"Oops" message:errorMessage || @"Please press the Home Button and restart the application." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+	DLog(@"%@: %@", errorTitle, errorMessage);
+	UIAlertView *errorAlert = [[[UIAlertView alloc] initWithTitle:errorTitle message:errorMessage delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
 	[errorAlert show];
 }
 

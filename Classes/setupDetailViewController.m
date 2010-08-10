@@ -34,10 +34,24 @@
 		 Replace this implementation with code to handle the error appropriately.
 		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
 		 */
-		NSLog(@"Unresolved timerWithTitle fetch error %@, %@", error, [error userInfo]);
-//		abort();
+		[UIAppDelegate errorWithTitle:@"Fetch error" message:[NSString stringWithFormat:@"setupDetailViewController timerWithTitle fetch error %@, %@", error, [error userInfo]]];
 	}
 	return [timers lastObject];
+}
+- (BOOL)timerIsUnique:(NSString *)timerTitle {
+	NSError *error = nil;
+	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"timerWithTitle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:timerTitle, @"timerTitle", self.timerGroup, @"timerGroup", nil]];
+
+	// execute fetch request
+	NSArray *timers = [self.managedObjectContext executeFetchRequest:fetch error:&error];
+	if (!timers) {
+		/*
+		 Replace this implementation with code to handle the error appropriately.
+		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+		 */
+		[UIAppDelegate errorWithTitle:@"Fetch error" message:[NSString stringWithFormat:@"setupDetailViewController timerIsUnique fetch error %@, %@", error, [error userInfo]]];
+	}
+	return [timers count] == 0;
 }
 
 
@@ -112,47 +126,53 @@
 - (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item highlight:(BOOL)highlight{
 	// NSLog(@"itemInputController didAddItem:%@ highlight:%d", item, highlight);
 	if([item length] > 0){
-		// Create a new instance of the entity managed by the fetched results controller.
-		NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-		NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-		
-		
-		NSArray *items = [self.fetchedResultsController fetchedObjects];
-		
-		// If appropriate, configure the new managed object.
-		[newManagedObject setValue:item forKey:@"timerTitle"];
-		//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
-		[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
-		[newManagedObject setValue:self.timerGroup forKey:@"timerGroup"];
-		if (highlight) {
-			[newManagedObject setValue:HEX(_highlightColor,0.8) forKey:@"borderColor"];
+		if ([self timerIsUnique:item]) {
+			// Create a new instance of the entity managed by the fetched results controller.
+			NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+			NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+			NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+			
+			NSArray *items = [self.fetchedResultsController fetchedObjects];
+			
+			// If appropriate, configure the new managed object.
+			[newManagedObject setValue:item forKey:@"timerTitle"];
+			//		[newManagedObject setValue:[NSNumber numberWithInt:[[self.fetchedResultsController fetchedObjects] count]] forKey:@"displayOrder"];
+			[newManagedObject setValue:[NSNumber numberWithInt:[items count]] forKey:@"displayOrder"];
+			[newManagedObject setValue:self.timerGroup forKey:@"timerGroup"];
+			if (highlight) {
+				[newManagedObject setValue:HEX(_highlightColor,0.8) forKey:@"borderColor"];
+			}
+			
+			//		NSLog(@"inserted %@", newManagedObject);
+			//		NSLog(@"insert at %i", [items count]);
+			// Save the context.
+			[UIAppDelegate saveContext:@"setupDetailViewController didAddItem"];
+			[self dismissModalViewControllerAnimated:YES];
+		}else {
+			UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Timer Not Unique" message:@"The title you selected is already taken." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+			[notUnique show];
+			[notUnique release];
 		}
-		
-//		NSLog(@"inserted %@", newManagedObject);
-//		NSLog(@"insert at %i", [items count]);
-		// Save the context.
-		[UIAppDelegate saveContext:@"setupDetailViewController didAddItem"];
-	}
-	[self dismissModalViewControllerAnimated:YES];
+	}else {
+		[self dismissModalViewControllerAnimated:YES];
+	}	
 }
 - (void)itemInputController:(itemInputController *)inputController didEditItem:(NSString *)oldTitle newTitle:(NSString *)newTitle oldHighlight:(BOOL)oldHighlight newHighlight:(BOOL)newHighlight {
 //	NSLog(@"itemInputController didEditItem:%@ newTitle:%@ oldHighlight:%d highlight:%d", oldTitle, newTitle, oldHighlight, newHighlight);
-	if (oldTitle == newTitle && oldHighlight == newHighlight) {
-//		NSLog(@"same");
-	}else {
+	if (![oldTitle isEqualToString:newTitle] && ![self timerIsUnique:newTitle]) {
+		DLog(@"different title, not unique");
+		UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Timer Not Unique" message:@"The title you selected is already taken." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		[notUnique show];
+		[notUnique release];
+	}else if (![oldTitle isEqualToString:newTitle] || oldHighlight != newHighlight) {
 		NSManagedObject *timer = [self timerWithTitle:oldTitle];
 		[timer setValue:newTitle forKey:@"timerTitle"];
-		if (newHighlight) {
-			[timer setValue:HEX(_highlightColor,0.8) forKey:@"borderColor"];
-		}else {
-			[timer setValue:nil forKey:@"borderColor"];
-		}
-		
+		[timer setValue:newHighlight ? HEX(_highlightColor,0.8) : nil forKey:@"borderColor"];
 		[UIAppDelegate saveContext:@"didEditItem timer"];
+		[self dismissModalViewControllerAnimated:YES];
+	}else {
+		[self dismissModalViewControllerAnimated:YES];
 	}
-
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 
