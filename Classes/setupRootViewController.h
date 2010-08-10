@@ -11,9 +11,9 @@
 #import "itemInputController.h"
 #import "timeFlowAppDelegate.h"
 
-@interface setupRootViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate> {
+@interface setupRootViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate, UIAlertViewDelegate> {
 	// http://stackoverflow.com/questions/1664724/objective-c-double-delegate-protocol	
-	itemInputController *inputController;
+	itemInputController *GroupInputController;
 
 @private
     Boolean changeIsUserDriven;

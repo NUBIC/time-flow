@@ -111,15 +111,23 @@
 }
 
 #pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[TimerInputController.textField becomeFirstResponder];
+}
+
+
+#pragma mark -
 #pragma mark itemInputControllerDelegate
 
 - (void)insertNewObject {
-	inputController = [[itemInputController alloc] init];
-	inputController.delegate = self;
-	inputController.modalPresentationStyle = UIModalPresentationFormSheet;
-	inputController.inputType = @"Timer";
-	[self presentModalViewController:inputController animated:YES];
-	[inputController release];
+	TimerInputController = [[itemInputController alloc] init];
+	TimerInputController.delegate = self;
+	TimerInputController.modalPresentationStyle = UIModalPresentationFormSheet;
+	TimerInputController.inputType = @"Timer";
+	[self presentModalViewController:TimerInputController animated:YES];
+	[TimerInputController release];
 }
 
 
@@ -149,7 +157,7 @@
 			[UIAppDelegate saveContext:@"setupDetailViewController didAddItem"];
 			[self dismissModalViewControllerAnimated:YES];
 		}else {
-			UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Timer Not Unique" message:@"The title you selected is already taken." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+			UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Timer Not Unique" message:@"The title you selected is already taken." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 			[notUnique show];
 			[notUnique release];
 		}
@@ -161,7 +169,7 @@
 //	NSLog(@"itemInputController didEditItem:%@ newTitle:%@ oldHighlight:%d highlight:%d", oldTitle, newTitle, oldHighlight, newHighlight);
 	if (![oldTitle isEqualToString:newTitle] && ![self timerIsUnique:newTitle]) {
 		DLog(@"different title, not unique");
-		UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Timer Not Unique" message:@"The title you selected is already taken." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Timer Not Unique" message:@"The title you selected is already taken." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 		[notUnique show];
 		[notUnique release];
 	}else if (![oldTitle isEqualToString:newTitle] || oldHighlight != newHighlight) {
@@ -276,15 +284,15 @@
 	if (tableView.editing) {
 		NSManagedObject *timer = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 		
-		inputController = [[itemInputController alloc] init];
-		inputController.delegate = self;
-		inputController.modalPresentationStyle = UIModalPresentationFormSheet;
-		inputController.inputType = @"Timer";
-		inputController.oldTitle = [timer valueForKey:@"timerTitle"];
-		inputController.oldHighlightOn = [timer valueForKey:@"borderColor"] != nil;
-		inputController.editMode = YES;
-		[self presentModalViewController:inputController animated:YES];
-		[inputController release];
+		TimerInputController = [[itemInputController alloc] init];
+		TimerInputController.delegate = self;
+		TimerInputController.modalPresentationStyle = UIModalPresentationFormSheet;
+		TimerInputController.inputType = @"Timer";
+		TimerInputController.oldTitle = [timer valueForKey:@"timerTitle"];
+		TimerInputController.oldHighlightOn = [timer valueForKey:@"borderColor"] != nil;
+		TimerInputController.editMode = YES;
+		[self presentModalViewController:TimerInputController animated:YES];
+		[TimerInputController release];
 	}else {
 
 	}

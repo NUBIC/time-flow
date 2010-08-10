@@ -99,18 +99,24 @@
 	} 
 	
 }
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[GroupInputController.textField becomeFirstResponder];
+}
 
 
 #pragma mark -
 #pragma mark itemInputControllerDelegate
 
 - (void)insertNewObject {
-	inputController = [[itemInputController alloc] init];
-	inputController.delegate = self;
-	inputController.modalPresentationStyle = UIModalPresentationFormSheet;
-	inputController.inputType = @"Group";
-	[self presentModalViewController:inputController animated:YES];
-	[inputController release];
+	GroupInputController = [[itemInputController alloc] init];
+	GroupInputController.delegate = self;
+	GroupInputController.modalPresentationStyle = UIModalPresentationFormSheet;
+	GroupInputController.inputType = @"Group";
+	[self presentModalViewController:GroupInputController animated:YES];
+	[GroupInputController release];
 }
 
 - (void)itemInputController:(itemInputController *)inputController didAddItem:(NSString	*)item highlight:(BOOL)highlight {
@@ -134,7 +140,7 @@
 			[UIAppDelegate saveContext:@"setupRootViewController didAddItem"];
 			[self dismissModalViewControllerAnimated:YES];
 		}else {
-			UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Group Not Unique" message:@"The title you selected is already taken." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+			UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Group Not Unique" message:@"The title you selected is already taken." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 			[notUnique show];
 			[notUnique release];
 		}
@@ -148,7 +154,7 @@
 	//	NSLog(@"itemInputController didEditItem:%@ newTitle:%@ oldHighlight:%d highlight:%d", oldTitle, newTitle, oldHighlight, newHighlight);
 	if (![oldTitle isEqualToString:newTitle] && ![self groupIsUnique:newTitle]) {
 		DLog(@"different title, not unique");
-		UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Group Not Unique" message:@"The title you selected is already taken." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		UIAlertView *notUnique = [[UIAlertView alloc] initWithTitle:@"Group Not Unique" message:@"The title you selected is already taken." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 		[notUnique show];
 		[notUnique release];
 	}else if (![oldTitle isEqualToString:newTitle] || oldHighlight != newHighlight) {
@@ -268,14 +274,14 @@
 	if (tableView.editing) {
 		NSManagedObject *group = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 		
-		inputController = [[itemInputController alloc] init];
-		inputController.delegate = self;
-		inputController.modalPresentationStyle = UIModalPresentationFormSheet;
-		inputController.inputType = @"Group";
-		inputController.oldTitle = [group valueForKey:@"groupTitle"];
-		inputController.editMode = YES;
-		[self presentModalViewController:inputController animated:YES];
-		[inputController release];
+		GroupInputController = [[itemInputController alloc] init];
+		GroupInputController.delegate = self;
+		GroupInputController.modalPresentationStyle = UIModalPresentationFormSheet;
+		GroupInputController.inputType = @"Group";
+		GroupInputController.oldTitle = [group valueForKey:@"groupTitle"];
+		GroupInputController.editMode = YES;
+		[self presentModalViewController:GroupInputController animated:YES];
+		[GroupInputController release];
 	}else {
 		// setup right pane
 		setupDetailViewController *detailViewController = [[setupDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];

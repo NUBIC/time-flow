@@ -11,9 +11,9 @@
 #import "itemInputController.h"
 #import "timeFlowAppDelegate.h"
 
-@interface setupDetailViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate, UISplitViewControllerDelegate> {
+@interface setupDetailViewController : UITableViewController <NSFetchedResultsControllerDelegate, itemInputControllerDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate> {
 	
-	itemInputController *inputController;
+	itemInputController *TimerInputController;
 	NSManagedObject *timerGroup;
 	
 @private
