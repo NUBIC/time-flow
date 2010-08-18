@@ -49,7 +49,7 @@
 	
 	if (editMode) {
 		textField.text = oldTitle;
-		if (self.inputType = @"Timer") {
+		if (self.inputType == @"Timer") {
 			highlightSwitch.on = oldHighlightOn;
 		}
 		navItem.title = [NSString stringWithFormat:@"Edit %@", inputType];
