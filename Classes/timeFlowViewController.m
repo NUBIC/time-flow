@@ -127,6 +127,7 @@
 		// NSLog(@"longPress state began on button that is selected");
 		UIActionSheet *confirmation = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Swap", nil];
 		[confirmation showFromRect:gestureRecognizer.view.bounds inView:gestureRecognizer.view animated:NO];
+		[confirmation release];
 		currentActionTimer = (NUBICSelectableTimerButton *)gestureRecognizer.view;
 	}
 }
@@ -190,6 +191,7 @@
 	[aButton addTarget:self action:@selector(toggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(timerLongPress:)];
 	[aButton addGestureRecognizer:longPress];
+	[longPress release];
 	return aButton;
 }
 
