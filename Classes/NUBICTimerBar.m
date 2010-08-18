@@ -8,9 +8,9 @@
 
 #import "NUBICTimerBar.h"
 
-#define _padding	5.0
-#define _spacing	5.0
-#define labelHeight		17.0
+#define _padding	4.0
+#define _spacing	4.0
+#define labelHeight		20.0
 #define labelWidth		758.0
 #define labelLeftPad	0.0
 
