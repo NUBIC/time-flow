@@ -107,23 +107,29 @@
 - (void) trashButtonPressed {
 	if ([[UIAppDelegate.timersViewController runningTimers] count] == 0) {
 		// don't present twice
-		[confirmationActionSheet dismissWithClickedButtonIndex:[confirmationActionSheet cancelButtonIndex] animated:NO];
-		
-		confirmationActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Events" otherButtonTitles:nil];
-		[confirmationActionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:NO];
-		
+		// [confirmationActionSheet dismissWithClickedButtonIndex:[confirmationActionSheet cancelButtonIndex] animated:NO];
+		// confirmationActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Events" otherButtonTitles:nil];
+		// [confirmationActionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:NO];
+		// [confirmationActionSheet showInView:self.view];		
+		UIAlertView *confirmDelete = [[UIAlertView alloc] initWithTitle:@"Delete all events?" message:@"This is the point of no return." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil ];
+		[confirmDelete show];
 	}else {
 		UIAlertView *timersAreRunning = [[UIAlertView alloc] initWithTitle:@"Timers running" message:@"Please stop all timers before deleting" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 		[timersAreRunning show];
 
 	}
 }
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-	if (buttonIndex == 0) {
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+//	if (buttonIndex == 0) {
+//		[self deleteAllEvents];
+//	}
+//}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	NSLog(@"%d", buttonIndex);
+	if (buttonIndex == 1) {
 		[self deleteAllEvents];
 	}
 }
-
 
 #pragma mark -
 #pragma mark Mail
@@ -175,8 +181,9 @@
 		// [picker setMessageBody:emailBody isHTML:NO];
 		
 		// Present the mail composition modally
-		//	picker.modalPresentationStyle = UIModalPresentationFormSheet;
+		// picker.modalPresentationStyle = UIModalPresentationFormSheet;
 		[shortDateTimeFormat release];
+		
 		[self presentModalViewController:picker animated:YES];
 		[picker release]; // Can safely release the controller now.
 		

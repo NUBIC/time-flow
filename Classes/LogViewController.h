@@ -11,13 +11,13 @@
 #import <MessageUI/MessageUI.h>
 #import "NUBICTimerEvent.h"
 
-@interface LogViewController : UITableViewController <NSFetchedResultsControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate> {
+@interface LogViewController : UITableViewController <NSFetchedResultsControllerDelegate, MFMailComposeViewControllerDelegate, UIAlertViewDelegate> { //, UIActionSheetDelegate> {
 
 @private
     Boolean changeIsUserDriven;
 	NSFetchedResultsController *fetchedResultsController_;
     NSManagedObjectContext *managedObjectContext_;
-	UIActionSheet *confirmationActionSheet;
+	// UIActionSheet *confirmationActionSheet;
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
