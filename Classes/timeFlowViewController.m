@@ -219,6 +219,7 @@
 	for (UIView *sub in [self.scrollView subviews]) {
 		[sub removeFromSuperview];
 	}
+	self.scrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
 	float y = 0.0;
 	
 	// loop through timerGroups and Timers, create subviews
