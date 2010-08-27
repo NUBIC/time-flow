@@ -54,6 +54,7 @@
 	// log: left pane
 	LogViewController *logRootController = [[LogViewController alloc] init];
 	UINavigationController *logNavigationController = [[UINavigationController alloc] initWithRootViewController:logRootController];
+	logNavigationController.toolbarHidden = NO;
 	
 	// log: right pane (blank)
 	UIViewController *logDetailController = [[UIViewController alloc] init];

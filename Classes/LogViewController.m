@@ -36,7 +36,7 @@
 	self.navigationItem.rightBarButtonItem.enabled = someEvents && MFMailComposeViewController.canSendMail;
 	self.navigationItem.leftBarButtonItem.enabled = someEvents;
 	self.navigationItem.title = [NSString stringWithFormat:@"Events (%d)", [[self.fetchedResultsController fetchedObjects] count]];
-	
+
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,7 +51,7 @@
     
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(displayComposerSheet)] autorelease];
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(trashButtonPressed)] autorelease];
-
+	[self setToolbarItems:[NSArray arrayWithObject:self.editButtonItem]];
 }
 
 
