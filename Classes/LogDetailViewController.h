@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "NUBICTimerEvent.h"
+#import "timeFlowAppDelegate.h"
 
-@interface LogDetailViewController : UIViewController {
+@interface LogDetailViewController : UIViewController <UITextViewDelegate> {
 	NUBICTimerEvent *timerEvent;
 	UILabel *groupTitle;
 	UILabel *timerTitle;
 	UILabel *startedOn;
 	UILabel *endedOn;
+	UITextView *eventNote;
 	
 }
 
@@ -23,5 +25,8 @@
 @property (nonatomic, retain) IBOutlet UILabel *timerTitle;
 @property (nonatomic, retain) IBOutlet UILabel *startedOn;
 @property (nonatomic, retain) IBOutlet UILabel *endedOn;
+@property (nonatomic, retain) IBOutlet UITextView *eventNote;
+
+- (IBAction)noteChanged:(id)sender;
 
 @end

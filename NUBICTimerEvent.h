@@ -16,11 +16,13 @@
 @property (nonatomic, assign) NSString *timerTitle;
 @property (nonatomic, assign) NSDate *startedOn;
 @property (nonatomic, assign) NSDate *endedOn;
+@property (nonatomic, assign) NSString *eventNote;
 
 - (NSString *)startedDate;
 - (NSString *)startedTime;
 - (NSString *)endedDate;
 - (NSString *)endedTime;
 - (NSString *)duration;
+- (NSString *)note;
 
 @end

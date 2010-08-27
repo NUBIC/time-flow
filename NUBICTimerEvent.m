@@ -11,7 +11,7 @@
 
 @implementation NUBICTimerEvent
 
-@dynamic groupTitle, timerTitle, startedOn, endedOn;
+@dynamic groupTitle, timerTitle, startedOn, endedOn, eventNote;
 
 - (NSString *)startedDate{
 	if(!self.startedOn){ return @""; }
@@ -44,5 +44,8 @@
 		return [NSString stringWithFormat:@"%i", (int)[self.endedOn timeIntervalSinceDate:self.startedOn]];
 	}
 }
-
+- (NSString *)note{
+	if(!self.eventNote){ return @""; }
+	return [NSString stringWithFormat:@"%@", self.eventNote];
+}
 @end

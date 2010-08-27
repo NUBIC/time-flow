@@ -137,14 +137,14 @@
 -(NSData *)timersToCSV{
 	NUBICTimerEvent *event;
 	NSMutableString *csv = [[[NSMutableString alloc] init] autorelease];
-	[csv appendString:@"Group,Timer,Started On (Date),Started On (Time),Ended On (Date),Ended On (Time),Duration (Seconds)\r\n"];
+	[csv appendString:@"Group,Timer,Started On (Date),Started On (Time),Ended On (Date),Ended On (Time),Duration (Seconds),Note\r\n"];
 	
 	for (event in [self.fetchedResultsController fetchedObjects]) {
 		[csv appendFormat:@"%@,%@,%@,%@,", event.groupTitle, event.timerTitle, [event startedDate], [event startedTime]];
 		if(event.endedOn){
-			[csv appendFormat:@"%@,%@,%@\r\n", [event endedDate], [event endedTime], [event duration]];
+			[csv appendFormat:@"%@,%@,%@,%@\r\n", [event endedDate], [event endedTime], [event duration], [event note]];
 		}else {
-			[csv appendString:@",,\r\n"];
+			[csv appendFormat:@",,,%@\r\n", [event note]];
 		}
 	}
 	return [csv dataUsingEncoding:NSUTF8StringEncoding];
@@ -269,19 +269,38 @@
  }
  */
 
-/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+        // [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+		
+		// Delete the managed object for the given index path
+        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        
+		// Save the context.
+		[UIAppDelegate saveContext:@"LogViewController commitEditingStyle"];
+		
+		
+		UIViewController *logDetailController = [[UIViewController alloc] init];
+		logDetailController.view.backgroundColor = [UIColor whiteColor];
+		UINavigationController *logNavigationDetailController = [[UINavigationController alloc] initWithRootViewController:logDetailController];
+		logDetailController.navigationItem.title = @"Event";	
+
+		
+		UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
+		split.viewControllers = [[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], logNavigationDetailController, nil];
+		
+		[logDetailController release];
+		[logNavigationDetailController release];
+		
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
 
 /*

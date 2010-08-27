@@ -25,6 +25,7 @@
 		3B7D936C11FE1F590064BABF /* setupRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D936B11FE1F590064BABF /* setupRootViewController.m */; };
 		3B7D939011FE20C30064BABF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B7D938F11FE20C30064BABF /* CoreData.framework */; };
 		3B7D93CC11FE233B0064BABF /* coredataproject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D93CB11FE233B0064BABF /* coredataproject.xcdatamodeld */; };
+		3B8E0CEA12281770007C2510 /* v2-v3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3B8E0CE912281770007C2510 /* v2-v3.xcmappingmodel */; };
 		3B91F49A120B14B900C1A066 /* v1-v2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */; };
 		3B91F506120B366C00C1A066 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B91F505120B366C00C1A066 /* MessageUI.framework */; };
 		3B91F59F120B4A0900C1A066 /* NUBICTimerEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B91F59E120B4A0900C1A066 /* NUBICTimerEvent.m */; };
@@ -68,6 +69,8 @@
 		3B7D936B11FE1F590064BABF /* setupRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setupRootViewController.m; sourceTree = "<group>"; };
 		3B7D938F11FE20C30064BABF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = coredataproject.xcdatamodel; sourceTree = "<group>"; };
+		3B8E0CE3122816FE007C2510 /* v3.coredataproject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = v3.coredataproject.xcdatamodel; sourceTree = "<group>"; };
+		3B8E0CE912281770007C2510 /* v2-v3.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = "v2-v3.xcmappingmodel"; sourceTree = "<group>"; };
 		3B91F466120B135800C1A066 /* v2.coredataproject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = v2.coredataproject.xcdatamodel; sourceTree = "<group>"; };
 		3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = "v1-v2.xcmappingmodel"; sourceTree = "<group>"; };
 		3B91F505120B366C00C1A066 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -316,6 +319,7 @@
 				3BE666EF120C538700C4A771 /* LogDetailViewController.m in Sources */,
 				3BE6678C120C5F6900C4A771 /* timerOptionsViewController.m in Sources */,
 				3B7A7C10121064D300AF7D07 /* UISplitViewController+Rotate.m in Sources */,
+				3B8E0CEA12281770007C2510 /* v2-v3.xcmappingmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,10 +410,12 @@
 			isa = XCVersionGroup;
 			children = (
 				3B91F469120B139800C1A066 /* v1-v2.xcmappingmodel */,
+				3B8E0CE912281770007C2510 /* v2-v3.xcmappingmodel */,
 				3B7D93C311FE22940064BABF /* coredataproject.xcdatamodel */,
 				3B91F466120B135800C1A066 /* v2.coredataproject.xcdatamodel */,
+				3B8E0CE3122816FE007C2510 /* v3.coredataproject.xcdatamodel */,
 			);
-			currentVersion = 3B91F466120B135800C1A066 /* v2.coredataproject.xcdatamodel */;
+			currentVersion = 3B8E0CE3122816FE007C2510 /* v3.coredataproject.xcdatamodel */;
 			path = coredataproject.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

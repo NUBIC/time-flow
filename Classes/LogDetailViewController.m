@@ -11,7 +11,7 @@
 
 @implementation LogDetailViewController
 
-@synthesize timerEvent, groupTitle, timerTitle, startedOn, endedOn;
+@synthesize timerEvent, groupTitle, timerTitle, startedOn, endedOn, eventNote;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -32,12 +32,24 @@
 		self.timerTitle.text = [NSString stringWithFormat:@"Timer: %@", timerEvent.timerTitle];
 		self.startedOn.text = [NSString stringWithFormat:@"Started: %@ %@", [timerEvent startedTime], [timerEvent startedDate]];
 		self.endedOn.text = [NSString stringWithFormat:@"Ended: %@ %@", [timerEvent endedTime], [timerEvent endedDate]];
+		self.eventNote.text  = [NSString stringWithFormat:@"%@", [timerEvent note]];
+		self.eventNote.delegate = self;
+
+		self.eventNote.layer.backgroundColor = [[UIColor whiteColor] CGColor];
+		self.eventNote.layer.borderColor = [[UIColor grayColor] CGColor];
+		self.eventNote.layer.borderWidth = 1.0;
+		self.eventNote.layer.cornerRadius = 5.0f;
+		self.eventNote.clipsToBounds = YES;
 	}
 	
 	self.navigationItem.title = @"Event";
 }
 
-
+- (void)textViewDidEndEditing:(UITextView *)textView {
+	self.timerEvent.eventNote =  textView.text;
+	[UIAppDelegate saveContext:@"didEditItem timer"];
+	
+}
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -68,6 +80,7 @@
 	[timerTitle release];
 	[startedOn release];
 	[endedOn release];
+	[eventNote release];
 	
     [super dealloc];
 }
