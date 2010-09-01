@@ -58,6 +58,15 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self refreshNavBar];
+	
+	[self.tableView reloadData];
+	
+	// clear the right pane
+	UIViewController *blankDetailController = [[UIViewController alloc] init];
+	blankDetailController.view.backgroundColor = [UIColor whiteColor];
+	blankDetailController.navigationItem.title = @"Event";
+	[[[self.navigationController.parentViewController viewControllers] objectAtIndex:1] setViewControllers:[NSArray arrayWithObject:blankDetailController]];		
+	[blankDetailController release];
 }
 
 /*
@@ -258,16 +267,20 @@
 	[durationLabel sizeToFit];
 	cell.accessoryView = durationLabel;
 	
+	cell.selected = NO;
+	
 	[durationLabel release];
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
+
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+// Return NO if you do not want the specified item to be editable.
+	NUBICTimerEvent *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	return managedObject.endedOn != nil;
+	// return YES;
+}
+
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -283,18 +296,12 @@
 		// Save the context.
 		[UIAppDelegate saveContext:@"LogViewController commitEditingStyle"];
 		
-		
-		UIViewController *logDetailController = [[UIViewController alloc] init];
-		logDetailController.view.backgroundColor = [UIColor whiteColor];
-		UINavigationController *logNavigationDetailController = [[UINavigationController alloc] initWithRootViewController:logDetailController];
-		logDetailController.navigationItem.title = @"Event";	
-
-		
-		UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
-		split.viewControllers = [[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], logNavigationDetailController, nil];
-		
-		[logDetailController release];
-		[logNavigationDetailController release];
+		// Clear the right pane
+		UIViewController *blankDetailController = [[UIViewController alloc] init];
+		blankDetailController.view.backgroundColor = [UIColor whiteColor];
+		blankDetailController.navigationItem.title = @"Event";
+		[[[self.navigationController.parentViewController viewControllers] objectAtIndex:1] setViewControllers:[NSArray arrayWithObject:blankDetailController]];		
+		[blankDetailController release];
 		
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -328,14 +335,8 @@
 	NUBICTimerEvent *timerEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	detailViewController.timerEvent = timerEvent;
 	
-	UINavigationController *logDetailNavController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
-	
-	UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
-	split.viewControllers = [[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], logDetailNavController, nil];
-
+	[[[self.navigationController.parentViewController viewControllers] objectAtIndex:1] setViewControllers:[NSArray arrayWithObject:detailViewController]];
 	[detailViewController release];
-	[logDetailNavController release];
-	
 	
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];

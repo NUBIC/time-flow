@@ -57,10 +57,11 @@
 	logNavigationController.toolbarHidden = NO;
 	
 	// log: right pane (blank)
-	UIViewController *logDetailController = [[UIViewController alloc] init];
-	logDetailController.view.backgroundColor = [UIColor whiteColor];
-	UINavigationController *logNavigationDetailController = [[UINavigationController alloc] initWithRootViewController:logDetailController];
-	logDetailController.navigationItem.title = @"Event";	
+	UIViewController *blankDetailController = [[UIViewController alloc] init];
+	blankDetailController.view.backgroundColor = [UIColor whiteColor];
+	UINavigationController *logNavigationDetailController = [[UINavigationController alloc] initWithRootViewController:blankDetailController];
+	blankDetailController.navigationItem.title = @"Event";
+	
 	// core data
 	timersViewController.managedObjectContext = self.managedObjectContext;
 	setupRootController.managedObjectContext = self.managedObjectContext;
