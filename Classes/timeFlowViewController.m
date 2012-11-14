@@ -198,7 +198,7 @@
 - (void) populateTimers {	
 	// setup fetch request
 	NSError *error = nil;
-	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestTemplateForName:@"allTimerGroups"];
+	NSFetchRequest *fetch = [[[self.managedObjectContext persistentStoreCoordinator] managedObjectModel] fetchRequestFromTemplateWithName:@"allTimerGroups" substitutionVariables:nil];
 	
 	// sort
 	NSArray *sortDescriptors = [NSArray arrayWithObjects:[[[NSSortDescriptor alloc] initWithKey:@"displayOrder" ascending:YES] autorelease], nil];

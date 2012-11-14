@@ -65,7 +65,7 @@
 	UIViewController *blankDetailController = [[UIViewController alloc] init];
 	blankDetailController.view.backgroundColor = [UIColor whiteColor];
 	blankDetailController.navigationItem.title = @"Event";
-	[[[self.navigationController.parentViewController viewControllers] objectAtIndex:1] setViewControllers:[NSArray arrayWithObject:blankDetailController]];		
+	[[[(UISplitViewController *)self.navigationController.parentViewController viewControllers] objectAtIndex:1] setViewControllers:[NSArray arrayWithObject:blankDetailController]];		
 	[blankDetailController release];
 }
 
@@ -300,7 +300,7 @@
 		UIViewController *blankDetailController = [[UIViewController alloc] init];
 		blankDetailController.view.backgroundColor = [UIColor whiteColor];
 		blankDetailController.navigationItem.title = @"Event";
-		[[[self.navigationController.parentViewController viewControllers] objectAtIndex:1] setViewControllers:[NSArray arrayWithObject:blankDetailController]];		
+		[[[(UISplitViewController *)self.navigationController.parentViewController viewControllers] objectAtIndex:1] setViewControllers:[NSArray arrayWithObject:blankDetailController]];		
 		[blankDetailController release];
 		
     }   
@@ -335,7 +335,9 @@
 	NUBICTimerEvent *timerEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	detailViewController.timerEvent = timerEvent;
 	
-	[[[self.navigationController.parentViewController viewControllers] objectAtIndex:1] setViewControllers:[NSArray arrayWithObject:detailViewController]];
+  UISplitViewController *split = (UISplitViewController *)self.parentViewController;
+  split.viewControllers = [[[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], detailViewController, nil] autorelease];
+
 	[detailViewController release];
 	
 	/*

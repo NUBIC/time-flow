@@ -31,13 +31,15 @@
 	
 	setupSplitController = [[UISplitViewController alloc] init];
 	setupSplitController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Setup" image:[UIImage imageNamed:@"gear.png"] tag:0] autorelease];	
+  setupSplitController.delegate = self;
 	
 	logSplitController = [[UISplitViewController alloc] init];
 	logSplitController.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"Log" image:[UIImage imageNamed:@"log.png"] tag:0] autorelease];		
-	
+	logSplitController.delegate = self;
+  
 	// setup
-	[setupSplitController setHidesMasterViewInPortrait:NO];
-	[logSplitController setHidesMasterViewInPortrait:NO];
+//	[setupSplitController setHidesMasterViewInPortrait:NO];
+//	[logSplitController setHidesMasterViewInPortrait:NO];
 
 	// setup: left pane
 	setupRootViewController *setupRootController = [[setupRootViewController alloc] initWithStyle:UITableViewStyleGrouped ];
@@ -135,6 +137,14 @@
 	}
 
 //	return tappedViewController != navigationController;
+}
+
+#pragma mark -
+#pragma mark UISplitViewControllerDelegate
+
+-(BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+  return NO;
 }
 
 #pragma mark -

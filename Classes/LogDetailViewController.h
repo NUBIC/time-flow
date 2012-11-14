@@ -27,6 +27,4 @@
 @property (nonatomic, retain) IBOutlet UILabel *endedOn;
 @property (nonatomic, retain) IBOutlet UITextView *eventNote;
 
-- (IBAction)noteChanged:(id)sender;
-
 @end

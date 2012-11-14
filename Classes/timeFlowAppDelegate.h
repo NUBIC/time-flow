@@ -16,7 +16,7 @@
 
 //@class timeFlowViewController;
 
-@interface timeFlowAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
+@interface timeFlowAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, UISplitViewControllerDelegate> {
     UIWindow *window;
 	UITabBarController *tabBarController;
     timeFlowViewController *timersViewController;

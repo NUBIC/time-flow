@@ -295,7 +295,7 @@
 		
 		UISplitViewController *split = (UISplitViewController *)self.navigationController.parentViewController;
 		split.viewControllers = [[[NSArray alloc] initWithObjects:[split.viewControllers objectAtIndex:0], setupDetailNavigationController, nil] autorelease];
-		
+    
 		[detailViewController release];
 		[setupDetailNavigationController release];
 	
