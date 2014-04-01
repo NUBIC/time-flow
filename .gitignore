@@ -5,3 +5,5 @@ build/
 *.DS_Store
 timeFlow.xcodeproj/xcuserdata/
 timeFlow.xcodeproj/project.xcworkspace/
+time-flow.xcodeproj/project.xcworkspace/
+time-flow.xcodeproj/xcuserdata/
